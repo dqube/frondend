@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import { useForm, type Resolver } from "react-hook-form";
+import { useForm, Controller, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Loader2, Eye, Tag, X } from "lucide-react";
-import { toast } from "@modernstores/ui";
+import { toast, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@modernstores/ui";
 import { adminProductsApi } from "@modernstores/api-client/admin";
 import { ImageUploader, type UploadedImage } from "./image-uploader";
 import { VariantsEditor } from "./variants-editor";
@@ -294,17 +294,24 @@ export function ProductForm() {
               <label className="mb-1.5 block text-sm font-medium text-foreground">
                 Category <span className="text-rose-500">*</span>
               </label>
-              <select
-                {...register("categoryId")}
-                className="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-colors"
-              >
-                <option value="">Select a category…</option>
-                {CATEGORIES.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
+              <Controller
+                name="categoryId"
+                control={control}
+                render={({ field }) => (
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger className="w-full rounded-xl">
+                      <SelectValue placeholder="Select a category…" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CATEGORIES.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
               {errors.categoryId && (
                 <p className="mt-1.5 text-xs text-rose-500">{errors.categoryId.message}</p>
               )}

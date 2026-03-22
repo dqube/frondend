@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Plus, Minus, Eye } from "lucide-react";
 import Link from "next/link";
 import { motion } from "motion/react";
+import { toast } from "@modernstores/ui";
 
 export interface Product {
   id: string;
@@ -31,6 +32,7 @@ export function ProductCard({ product, onAddToCart, className = "" }: ProductCar
     const next = qty + 1;
     setQty(next);
     onAddToCart?.(product.id, next);
+    if (qty === 0) toast.success(`${product.name} added to cart`);
   }
 
   function decrement() {

@@ -25,7 +25,13 @@ import {
   Trash2,
   Eye,
   Copy,
-  Package,
+  Download,
+  Upload,
+  Package2,
+  TrendingDown,
+  AlertTriangle,
+  CheckCircle2,
+  LayoutGrid,
 } from "lucide-react";
 
 // ─── Mock data ────────────────────────────────────────────────────────────────
@@ -247,18 +253,77 @@ const MOCK_PRODUCTS: Product[] = [
   },
 ];
 
+// ─── Category styling ─────────────────────────────────────────────────────────
+
+const CATEGORY_CONFIG: Record<string, { emoji: string; bg: string; text: string; border: string }> = {
+  Fruits:     { emoji: "🍎", bg: "bg-rose-50",   text: "text-rose-700",   border: "border-rose-200" },
+  Vegetables: { emoji: "🥦", bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-200" },
+  Dairy:      { emoji: "🥛", bg: "bg-sky-50",    text: "text-sky-700",    border: "border-sky-200" },
+  Bakery:     { emoji: "🍞", bg: "bg-amber-50",  text: "text-amber-700",  border: "border-amber-200" },
+  Beverages:  { emoji: "☕", bg: "bg-purple-50", text: "text-purple-700", border: "border-purple-200" },
+};
+
+const DEFAULT_CATEGORY_CONFIG = { emoji: "📦", bg: "bg-muted", text: "text-muted-foreground", border: "border-border" };
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+function getTotalStock(product: Product) {
+  return product.variants.reduce((sum, v) => sum + v.stockQuantity, 0);
+}
+
 function getStockStatus(product: Product) {
-  const total = product.variants.reduce((sum, v) => sum + v.stockQuantity, 0);
-  if (total === 0) return { label: "Out of stock", variant: "destructive" as const };
-  if (total < 50) return { label: "Low stock", variant: "secondary" as const };
-  return { label: "In stock", variant: "default" as const };
+  const total = getTotalStock(product);
+  if (total === 0) return { label: "Out of stock", color: "text-rose-600", dot: "bg-rose-500", bg: "bg-rose-50 border-rose-200" };
+  if (total < 50) return { label: "Low stock",    color: "text-amber-600", dot: "bg-amber-500", bg: "bg-amber-50 border-amber-200" };
+  return              { label: "In stock",        color: "text-emerald-600", dot: "bg-emerald-500", bg: "bg-emerald-50 border-emerald-200" };
+}
+
+function getPriceDisplay(product: Product): string {
+  if (product.variants.length === 0) return "—";
+  const prices = product.variants.map((v) => v.price);
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  if (min === max) return `$${min.toFixed(2)}`;
+  return `$${min.toFixed(2)} – $${max.toFixed(2)}`;
 }
 
 function getBasePrice(product: Product) {
   if (product.variants.length === 0) return 0;
   return Math.min(...product.variants.map((v) => v.price));
+}
+
+// ─── Summary stats ────────────────────────────────────────────────────────────
+
+function computeStats(products: Product[]) {
+  const total = products.length;
+  const active = products.filter((p) => p.isActive).length;
+  const outOfStock = products.filter((p) => getTotalStock(p) === 0).length;
+  const lowStock = products.filter((p) => {
+    const s = getTotalStock(p);
+    return s > 0 && s < 50;
+  }).length;
+  return { total, active, lowStock, outOfStock };
+}
+
+interface StatCardProps {
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+  iconBg: string;
+}
+
+function StatCard({ icon, label, value, iconBg }: StatCardProps) {
+  return (
+    <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 shadow-sm">
+      <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${iconBg}`}>
+        {icon}
+      </div>
+      <div>
+        <p className="text-xl font-bold leading-none tracking-tight">{value}</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">{label}</p>
+      </div>
+    </div>
+  );
 }
 
 // ─── Columns ──────────────────────────────────────────────────────────────────
@@ -293,37 +358,53 @@ const columns: ColumnDef<Product>[] = [
     header: ({ column }) => <DataGridColumnHeader column={column} title="Product" />,
     cell: ({ row }) => {
       const product = row.original;
+      const cat = product.category?.name ?? "";
+      const cfg = CATEGORY_CONFIG[cat] ?? DEFAULT_CATEGORY_CONFIG;
       return (
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-muted shrink-0">
-            <Package className="h-4 w-4 text-muted-foreground" />
+        <div className="flex items-center gap-3">
+          <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-base ${cfg.bg} border ${cfg.border}`}>
+            {cfg.emoji}
           </div>
           <div className="min-w-0">
-            <p className="font-medium text-sm leading-tight truncate">{product.name}</p>
-            <p className="text-xs text-muted-foreground leading-tight">{product.sku}</p>
+            <p className="font-semibold text-sm leading-tight truncate">{product.name}</p>
+            <p className="text-[11px] text-muted-foreground leading-tight font-mono mt-0.5">{product.sku}</p>
           </div>
         </div>
       );
     },
-    minSize: 200,
+    minSize: 220,
   },
   {
     id: "category",
     accessorFn: (row) => row.category?.name ?? "",
     header: ({ column }) => <DataGridColumnHeader column={column} title="Category" />,
-    cell: ({ getValue }) => <span className="text-sm">{getValue() as string}</span>,
+    cell: ({ getValue }) => {
+      const cat = getValue() as string;
+      const cfg = CATEGORY_CONFIG[cat] ?? DEFAULT_CATEGORY_CONFIG;
+      return (
+        <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px] font-medium ${cfg.bg} ${cfg.text} ${cfg.border}`}>
+          <span>{cfg.emoji}</span>
+          {cat}
+        </span>
+      );
+    },
     filterFn: (row, id, filterValues: string[]) => {
       return filterValues.includes(row.getValue(id) as string);
     },
-    minSize: 100,
+    minSize: 130,
   },
   {
     id: "price",
     accessorFn: (row) => getBasePrice(row),
     header: ({ column }) => <DataGridColumnHeader column={column} title="Price" />,
-    cell: ({ getValue }) => {
-      const price = getValue() as number;
-      return <span className="font-medium tabular-nums">${price.toFixed(2)}</span>;
+    cell: ({ row }) => {
+      const display = getPriceDisplay(row.original);
+      const isRange = display.includes("–");
+      return (
+        <span className={`font-semibold tabular-nums text-sm ${isRange ? "text-muted-foreground" : ""}`}>
+          {display}
+        </span>
+      );
     },
     filterFn: (row, id, range: [number | undefined, number | undefined]) => {
       const price = row.getValue(id) as number;
@@ -332,31 +413,44 @@ const columns: ColumnDef<Product>[] = [
       if (max !== undefined && price > max) return false;
       return true;
     },
-    size: 100,
+    size: 130,
   },
   {
     id: "stock",
-    accessorFn: (row) => row.variants.reduce((sum, v) => sum + v.stockQuantity, 0),
+    accessorFn: (row) => getTotalStock(row),
     header: ({ column }) => <DataGridColumnHeader column={column} title="Stock" />,
     cell: ({ row }) => {
+      const total = getTotalStock(row.original);
       const status = getStockStatus(row.original);
-      return <Badge variant={status.variant}>{status.label}</Badge>;
+      return (
+        <div className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px] font-medium ${status.bg}`}>
+          <span className={`h-1.5 w-1.5 rounded-full ${status.dot}`} />
+          <span className={status.color}>{status.label}</span>
+          {total > 0 && <span className="text-muted-foreground">({total})</span>}
+        </div>
+      );
     },
     filterFn: (row, _id, filterValues: string[]) => {
       const status = getStockStatus(row.original);
       return filterValues.includes(status.label);
     },
-    size: 110,
+    size: 150,
   },
   {
     accessorKey: "isActive",
     header: ({ column }) => <DataGridColumnHeader column={column} title="Status" />,
     cell: ({ getValue }) => {
       const active = getValue() as boolean;
-      return (
-        <Badge variant={active ? "default" : "secondary"}>
-          {active ? "Active" : "Draft"}
-        </Badge>
+      return active ? (
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[11px] font-medium text-emerald-700">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          Active
+        </span>
+      ) : (
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
+          Draft
+        </span>
       );
     },
     filterFn: (row, id, filterValues: string[]) => {
@@ -370,8 +464,15 @@ const columns: ColumnDef<Product>[] = [
     id: "variants",
     accessorFn: (row) => row.variants.length,
     header: ({ column }) => <DataGridColumnHeader column={column} title="Variants" />,
-    cell: ({ getValue }) => <span className="text-sm tabular-nums">{getValue() as number}</span>,
-    size: 80,
+    cell: ({ getValue }) => {
+      const count = getValue() as number;
+      return (
+        <span className="inline-flex items-center justify-center rounded-md border border-border bg-muted/60 px-2 py-0.5 text-xs font-medium tabular-nums">
+          {count}
+        </span>
+      );
+    },
+    size: 85,
   },
   {
     accessorKey: "updatedAt",
@@ -379,7 +480,7 @@ const columns: ColumnDef<Product>[] = [
     cell: ({ getValue }) => {
       const date = new Date(getValue() as string);
       return (
-        <span className="text-sm text-muted-foreground whitespace-nowrap">
+        <span className="text-xs text-muted-foreground whitespace-nowrap">
           {date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
         </span>
       );
@@ -395,37 +496,35 @@ const columns: ColumnDef<Product>[] = [
         <div className="flex items-center justify-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-7 w-7 rounded-lg">
+                <MoreHorizontal className="h-3.5 w-3.5" />
                 <span className="sr-only">Actions</span>
               </Button>
             </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <Link href={`/products/${product.id}`}>
-                <Eye className="mr-2 h-3.5 w-3.5" />
-                View
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href={`/products/${product.id}`}>
-                <Pencil className="mr-2 h-3.5 w-3.5" />
-                Edit
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(product.sku)}
-            >
-              <Copy className="mr-2 h-3.5 w-3.5" />
-              Copy SKU
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-destructive">
-              <Trash2 className="mr-2 h-3.5 w-3.5" />
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <DropdownMenuContent align="end" className="w-44">
+              <DropdownMenuItem asChild>
+                <Link href={`/products/${product.id}`}>
+                  <Eye className="mr-2 h-3.5 w-3.5" />
+                  View details
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={`/products/${product.id}/edit`}>
+                  <Pencil className="mr-2 h-3.5 w-3.5" />
+                  Edit product
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(product.sku)}>
+                <Copy className="mr-2 h-3.5 w-3.5" />
+                Copy SKU
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-destructive focus:text-destructive">
+                <Trash2 className="mr-2 h-3.5 w-3.5" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       );
     },
@@ -476,25 +575,65 @@ const rangeFilters: DataTableRangeFilterConfig[] = [
 
 export default function ProductsPage() {
   const [data] = useState(MOCK_PRODUCTS);
+  const stats = computeStats(data);
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      {/* Header */}
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h1 className="text-xl md:text-2xl font-semibold tracking-tight">Products</h1>
+          <h1 className="text-xl md:text-2xl font-bold tracking-tight">Product Catalog</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Manage your product catalog
+            Manage inventory, pricing, and product listings
           </p>
         </div>
-        <Button asChild className="w-full sm:w-auto">
-          <Link href="/products/new">
-            <Plus className="mr-2 h-4 w-4" />
-            Add Product
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2 shrink-0">
+          <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs">
+            <Upload className="h-3.5 w-3.5" />
+            Import
+          </Button>
+          <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs">
+            <Download className="h-3.5 w-3.5" />
+            Export
+          </Button>
+          <Button asChild size="sm" className="h-9 gap-1.5">
+            <Link href="/products/new">
+              <Plus className="h-3.5 w-3.5" />
+              Add Product
+            </Link>
+          </Button>
+        </div>
       </div>
 
-      <div className="w-full overflow-x-auto">
+      {/* Summary stats */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <StatCard
+          icon={<LayoutGrid className="h-4 w-4 text-primary" />}
+          label="Total products"
+          value={stats.total}
+          iconBg="bg-primary/10"
+        />
+        <StatCard
+          icon={<CheckCircle2 className="h-4 w-4 text-emerald-600" />}
+          label="Active listings"
+          value={stats.active}
+          iconBg="bg-emerald-50"
+        />
+        <StatCard
+          icon={<TrendingDown className="h-4 w-4 text-amber-600" />}
+          label="Low stock"
+          value={stats.lowStock}
+          iconBg="bg-amber-50"
+        />
+        <StatCard
+          icon={<AlertTriangle className="h-4 w-4 text-rose-600" />}
+          label="Out of stock"
+          value={stats.outOfStock}
+          iconBg="bg-rose-50"
+        />
+      </div>
+
+      {/* Table */}
       <DataTable
         columns={columns}
         data={data}
@@ -503,9 +642,7 @@ export default function ProductsPage() {
         filters={filters}
         rangeFilters={rangeFilters}
         pageSizes={[10, 25, 50]}
-        stripped
       />
-      </div>
     </div>
   );
 }

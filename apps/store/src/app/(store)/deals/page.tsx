@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Tag, Clock, Percent, Gift, ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
+import { toast } from "@modernstores/ui";
 import { ProductCard } from "@/components/home/product-card";
 import { ALL_PRODUCTS } from "@/lib/products";
 
@@ -72,7 +73,10 @@ export default function DealsPage() {
                   {Math.round((1 - deal.price / deal.originalPrice) * 100)}% OFF
                 </span>
               </div>
-              <button className="w-full bg-primary text-primary-foreground rounded-lg py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors">
+              <button
+                onClick={() => toast.success(`${deal.name} added to cart`)}
+                className="w-full bg-primary text-primary-foreground rounded-lg py-2.5 text-sm font-semibold hover:bg-primary/90 transition-colors"
+              >
                 Add to Cart
               </button>
             </motion.div>

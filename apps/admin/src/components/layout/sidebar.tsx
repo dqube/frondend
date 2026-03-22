@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, Package, ShoppingCart, Users,
   Warehouse, Tag, Settings, Menu, ChevronLeft,
-  LogOut, User, ChevronUp
+  LogOut, User, ChevronUp, Layers
 } from "lucide-react";
 import {
   cn, Button, Sheet, SheetContent, SheetTitle, SheetTrigger,
@@ -13,7 +13,7 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@modernstores/ui";
-import { useState } from "react";
+import { Logo, LogoMark } from "@/components/layout/logo";
 
 const mockUser = {
   name: "Admin User",
@@ -28,6 +28,7 @@ const navItems = [
   { href: "/customers", label: "Customers", icon: Users },
   { href: "/inventory", label: "Inventory", icon: Warehouse },
   { href: "/promotions",label: "Promotions",icon: Tag },
+  { href: "/ui-showcase",label: "UI Components",icon: Layers },
   { href: "/settings",  label: "Settings",  icon: Settings },
 ];
 
@@ -147,12 +148,19 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
           collapsed ? "justify-center px-2" : "px-6"
         )}>
           {collapsed ? (
-            <span className="text-lg font-bold text-primary">M</span>
+            <Link href="/dashboard" className="text-primary">
+              <LogoMark size={28} />
+            </Link>
           ) : (
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-bold text-primary">ModernStores</span>
-              <span className="text-xs text-muted-foreground">Admin</span>
-            </div>
+            <Link href="/dashboard" className="flex items-center gap-2.5 text-primary">
+              <Logo size={32} />
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-lg font-bold tracking-tight leading-none">
+                  Modern<span className="text-foreground">Stores</span>
+                </span>
+                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Admin</span>
+              </div>
+            </Link>
           )}
         </div>
         <SidebarNav collapsed={collapsed} />
@@ -168,8 +176,15 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
         <SheetContent side="left" className="w-64 p-0">
           <SheetTitle className="sr-only">Navigation</SheetTitle>
           <div className="flex h-16 items-center border-b px-6">
-            <span className="text-lg font-bold text-primary">ModernStores</span>
-            <span className="ml-2 text-xs text-muted-foreground">Admin</span>
+            <Link href="/dashboard" className="flex items-center gap-2.5 text-primary">
+              <Logo size={32} />
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-lg font-bold tracking-tight leading-none">
+                  Modern<span className="text-foreground">Stores</span>
+                </span>
+                <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Admin</span>
+              </div>
+            </Link>
           </div>
           <SidebarNav />
         </SheetContent>

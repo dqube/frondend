@@ -169,7 +169,7 @@ export function DataTable<TData extends object, TValue>({
         </CardHeader>
       )}
 
-      <CardContent className="p-0">
+      <CardContent className="p-0 min-w-0">
         <DataGrid
           table={table}
           recordCount={data.length}
@@ -186,8 +186,8 @@ export function DataTable<TData extends object, TValue>({
           }}
         >
           {/* Toolbar */}
-          <div className="flex items-center justify-between gap-4 p-4">
-            <div className="flex flex-1 items-center gap-2">
+          <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 p-4">
+            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
               {globalSearchColumn && (
                 <GlobalSearch
                   table={table}
@@ -290,9 +290,11 @@ export function DataTable<TData extends object, TValue>({
           </div>
 
           {/* Table */}
-          <DataGridContainer className="mx-4 rounded-md border" border={false}>
-            <DataGridTable />
-          </DataGridContainer>
+          <div className="px-4">
+            <DataGridContainer className="overflow-x-auto rounded-md border" border={false}>
+              <DataGridTable />
+            </DataGridContainer>
+          </div>
 
           {/* Pagination */}
           <div className="px-4 py-4">

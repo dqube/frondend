@@ -7,7 +7,7 @@ import {
   ChevronRight, Star, ShoppingCart, Heart, Share2,
   Truck, Shield, RotateCcw, Leaf, Plus, Minus, ThumbsUp,
 } from "lucide-react";
-import { Badge } from "@modernstores/ui";
+import { Badge, toast } from "@modernstores/ui";
 import { getProductById, getRelatedProducts, getCategoryLabel } from "@/lib/products";
 import { ProductCard } from "@/components/home/product-card";
 
@@ -239,7 +239,10 @@ export default function ProductDetailPage({ params }: Props) {
               </span>
             </div>
 
-            <button className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground h-12 rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm">
+            <button
+              onClick={() => toast.success(`${product.name} added to cart`)}
+              className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground h-12 rounded-xl font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm"
+            >
               <ShoppingCart className="h-4 w-4" />
               Add to Cart
             </button>

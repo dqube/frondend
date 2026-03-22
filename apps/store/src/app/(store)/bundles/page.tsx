@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Package, ShoppingCart, Users, Clock, Star } from "lucide-react";
 import { motion } from "motion/react";
+import { toast } from "@modernstores/ui";
 
 interface Bundle {
   id: string;
@@ -106,6 +107,8 @@ export default function BundlesPage() {
 
   function addToCart(id: string) {
     setAddedBundles((prev) => new Set(prev).add(id));
+    const bundle = BUNDLES.find((b) => b.id === id);
+    toast.success(`${bundle?.name ?? "Bundle"} added to cart`);
   }
 
   return (
