@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { ScrollArea, ScrollBar } from "@modernstores/ui";
+import { motion } from "motion/react";
 
 const CATEGORIES = [
   { id: "vegetables",  label: "Fresh Vegetables", emoji: "🥦" },
@@ -30,9 +33,15 @@ export function Categories() {
 
       <ScrollArea className="w-full">
         <div className="flex gap-6 pb-4 justify-start md:justify-center flex-nowrap px-1">
-          {CATEGORIES.map((cat) => (
-            <Link
+          {CATEGORIES.map((cat, index) => (
+            <motion.div
               key={cat.id}
+              initial={{ opacity: 0, y: 20, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.35, delay: index * 0.03, ease: "easeOut" }}
+            >
+            <Link
               href={`/products?category=${cat.id}`}
               className="flex flex-col items-center gap-2 shrink-0 group"
               aria-label={cat.label}
@@ -44,6 +53,7 @@ export function Categories() {
                 {cat.label}
               </span>
             </Link>
+            </motion.div>
           ))}
         </div>
         <ScrollBar orientation="horizontal" className="hidden" />

@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
   ThemeToggle,
 } from "@modernstores/ui";
+import { motion } from "motion/react";
 import { Logo } from "./logo";
 
 const NAV_ITEMS = [
@@ -51,22 +52,39 @@ export function Header() {
   const initials = user.name.split(" ").map((n) => n[0]).join("").toUpperCase();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/70 backdrop-blur-md">
+    <motion.header
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/70 backdrop-blur-md"
+    >
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
 
         {/* Logo */}
+        <motion.div
+          initial={{ x: -16, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+        >
         <Link href="/" className="flex items-center gap-2 text-primary">
           <Logo />
           <span className="text-lg font-bold tracking-tight leading-none">
             Modern<span className="text-foreground">Stores</span>
           </span>
         </Link>
+        </motion.div>
 
         {/* Nav */}
         <nav className="hidden md:flex items-center gap-1 text-sm">
-          {NAV_ITEMS.map((item) =>
+          {NAV_ITEMS.map((item, index) =>
             item.children ? (
-              <DropdownMenu key={item.label}>
+              <motion.div
+                key={item.label}
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.15 + index * 0.05, ease: "easeOut" }}
+              >
+              <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-1 px-3 py-1.5 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors outline-none">
                     {item.label}
@@ -86,20 +104,32 @@ export function Header() {
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
+              </motion.div>
             ) : (
-              <Link
+              <motion.div
                 key={item.label}
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.15 + index * 0.05, ease: "easeOut" }}
+              >
+              <Link
                 href={item.href!}
                 className="px-3 py-1.5 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors"
               >
                 {item.label}
               </Link>
+              </motion.div>
             )
           )}
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-2">
+        <motion.div
+          initial={{ x: 16, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.2, ease: "easeOut" }}
+          className="flex items-center gap-2"
+        >
           {/* Search */}
           <button
             aria-label="Search"
@@ -197,8 +227,8 @@ export function Header() {
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </motion.div>
       </div>
-    </header>
+    </motion.header>
   );
 }

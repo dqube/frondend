@@ -25,6 +25,17 @@ export * from "./components/select";
 export * from "./components/switch";
 export * from "./components/textarea";
 
+// Alert
+export * from "./components/alert";
+
+// Calendar & Date Pickers
+export * from "./components/calendar";
+export * from "./components/date-picker";
+export * from "./components/date-range-picker";
+
+// Autocomplete (combobox)
+export * from "./components/autocomplete";
+
 // Layout
 export * from "./components/tabs";
 export * from "./components/scroll-area";

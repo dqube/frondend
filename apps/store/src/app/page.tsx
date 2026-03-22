@@ -4,6 +4,7 @@ import { PromotionsCarousel } from "@/components/home/promotions-carousel";
 import { PromoBanners } from "@/components/home/promo-banners";
 import { Categories } from "@/components/home/categories";
 import { ProductRow } from "@/components/home/product-row";
+import { AnimatedSection } from "@/components/layout/animated-section";
 import type { Product } from "@/components/home/product-card";
 
 const BEST_SELLERS: Product[] = [
@@ -102,27 +103,33 @@ export default function HomePage() {
         <Categories />
 
         <section>
+          <AnimatedSection>
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-xl font-bold">Best Sellers</h2>
             <a href="/products?sort=best-sellers" className="text-xs font-semibold text-primary bg-white/60 backdrop-blur-sm border border-white/80 px-3 py-1.5 rounded-full hover:bg-white/80 transition-colors">View all</a>
           </div>
           <ProductRow products={BEST_SELLERS} />
+          </AnimatedSection>
         </section>
 
         <section>
+          <AnimatedSection delay={0.1}>
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-xl font-bold">Latest Products</h2>
             <a href="/products?sort=newest" className="text-xs font-semibold text-primary bg-white/60 backdrop-blur-sm border border-white/80 px-3 py-1.5 rounded-full hover:bg-white/80 transition-colors">View all</a>
           </div>
           <ProductRow products={LATEST_PRODUCTS} />
+          </AnimatedSection>
         </section>
 
         <section>
+          <AnimatedSection delay={0.15}>
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-xl font-bold">🥦 Fresh Vegetables</h2>
             <a href="/products?category=vegetables" className="text-xs font-semibold text-primary bg-white/60 backdrop-blur-sm border border-white/80 px-3 py-1.5 rounded-full hover:bg-white/80 transition-colors">View all</a>
           </div>
           <ProductRow products={FRESH_VEGETABLES} />
+          </AnimatedSection>
         </section>
       </main>
       <Footer />

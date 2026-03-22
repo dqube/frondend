@@ -1,155 +1,19 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ChevronRight, ChevronDown } from "lucide-react";
+import { ChevronLeft, ChevronRight, SlidersHorizontal, X, Star, Check } from "lucide-react";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Button, Sheet, SheetContent, SheetTitle,
+  Switch,
 } from "@modernstores/ui";
 import { useSearchParams } from "next/navigation";
-import { ProductCard, type Product } from "@/components/home/product-card";
+import { ProductCard } from "@/components/home/product-card";
+import { ALL_PRODUCTS, CATEGORIES, type StoreProduct } from "@/lib/products";
 
-/* ------------------------------------------------------------------ */
-/*  Categories                                                         */
-/* ------------------------------------------------------------------ */
-
-const CATEGORIES = [
-  { id: "vegetables", label: "Fresh Vegetables", emoji: "🥦", count: 45 },
-  { id: "diet",       label: "Diet Foods",       emoji: "🥗", count: 32 },
-  { id: "nutrition",  label: "Diet Nutrition",   emoji: "💊", count: 18 },
-  { id: "fastfood",   label: "Fast Food Items",  emoji: "🍔", count: 27 },
-  { id: "fruits",     label: "Fruits Items",     emoji: "🍉", count: 38 },
-  { id: "healthy",    label: "Healthy Foods",    emoji: "🥑", count: 24 },
-  { id: "grocery",    label: "Grocery Items",    emoji: "🛒", count: 56 },
-  { id: "dairy",      label: "Quality Milk",     emoji: "🥛", count: 19 },
-  { id: "drinks",     label: "Cold Drinks",      emoji: "🥤", count: 22 },
-  { id: "beef",       label: "Beef Steak",       emoji: "🥩", count: 15 },
-  { id: "vitamins",   label: "Vitamin Items",    emoji: "🍋", count: 12 },
-  { id: "chicken",    label: "Raw Chicken",      emoji: "🍗", count: 14 },
-  { id: "breakfast",  label: "Breakfast Item",   emoji: "🍳", count: 21 },
-  { id: "fish",       label: "Fish Items",       emoji: "🐟", count: 16 },
-  { id: "greens",     label: "Green Vegetables", emoji: "🥬", count: 28 },
-  { id: "snacks",     label: "Cookies & Biscuits", emoji: "🍪", count: 34 },
-];
-
-/* ------------------------------------------------------------------ */
-/*  Mock products – mapped to categories                               */
-/* ------------------------------------------------------------------ */
-
-const ALL_PRODUCTS: (Product & { categoryId: string })[] = [
-  // vegetables
-  { id: "p1",  name: "Broccoli Crown Large",        price: 2.49,                                    unit: "1 each",  emoji: "🥦", categoryId: "vegetables" },
-  { id: "p2",  name: "Organic Baby Spinach 150g",   price: 3.29, originalPrice: 3.99, onSale: true, unit: "150g",    emoji: "🥬", categoryId: "vegetables" },
-  { id: "p3",  name: "Cherry Tomatoes 250g",        price: 2.99,                                    unit: "250g",    emoji: "🍅", categoryId: "vegetables" },
-  { id: "p4",  name: "Carrots 1kg Bag",             price: 1.99,                                    unit: "1kg",     emoji: "🥕", categoryId: "vegetables" },
-  { id: "p5",  name: "Bell Peppers Mixed",          price: 3.00, priceMax: 5.00,                    unit: "1 each",  emoji: "🫑", categoryId: "vegetables", hasVariants: true },
-  { id: "p6",  name: "Cucumber Long",               price: 1.49,                                    unit: "1 each",  emoji: "🥒", categoryId: "vegetables" },
-  { id: "p7",  name: "Red Onions 1kg",              price: 1.79,                                    unit: "1kg",     emoji: "🧅", categoryId: "vegetables" },
-  { id: "p8",  name: "Garlic Bulb 3pk",             price: 1.99,                                    unit: "3 pack",  emoji: "🧄", categoryId: "vegetables" },
-  { id: "p9",  name: "Kale Bunch",                  price: 2.49, originalPrice: 3.49, onSale: true, unit: "1 bunch", emoji: "🥬", categoryId: "vegetables" },
-  { id: "p10", name: "Sweet Potato 1kg",            price: 2.99,                                    unit: "1kg",     emoji: "🍠", categoryId: "vegetables" },
-
-  // fruits
-  { id: "p11", name: "Banana Bunch 6pk",            price: 1.99,                                    unit: "6 pack",  emoji: "🍌", categoryId: "fruits" },
-  { id: "p12", name: "Strawberries 400g",           price: 4.49, originalPrice: 5.99, onSale: true, unit: "400g",    emoji: "🍓", categoryId: "fruits" },
-  { id: "p13", name: "Blueberries 150g",            price: 3.99,                                    unit: "150g",    emoji: "🫐", categoryId: "fruits" },
-  { id: "p14", name: "Avocado Ripe 2pk",            price: 3.49,                                    unit: "2 pack",  emoji: "🥑", categoryId: "fruits" },
-  { id: "p15", name: "Mango Large",                 price: 2.49,                                    unit: "1 each",  emoji: "🥭", categoryId: "fruits" },
-  { id: "p16", name: "Green Grapes 500g",           price: 3.79,                                    unit: "500g",    emoji: "🍇", categoryId: "fruits" },
-  { id: "p17", name: "Watermelon Mini",             price: 5.99,                                    unit: "1 each",  emoji: "🍉", categoryId: "fruits" },
-  { id: "p18", name: "Pineapple Whole",             price: 3.99, originalPrice: 4.99, onSale: true, unit: "1 each",  emoji: "🍍", categoryId: "fruits" },
-
-  // dairy
-  { id: "p19", name: "Organic Whole Milk 1L",       price: 3.99, originalPrice: 4.99, onSale: true, unit: "1 bottle",emoji: "🥛", categoryId: "dairy" },
-  { id: "p20", name: "Free Range Eggs 12pk",        price: 5.49,                                    unit: "12 pack", emoji: "🥚", categoryId: "dairy" },
-  { id: "p21", name: "Greek Yogurt Plain 500g",     price: 3.49,                                    unit: "500g",    emoji: "🥣", categoryId: "dairy" },
-  { id: "p22", name: "Cheddar Cheese Block 400g",   price: 6.99, originalPrice: 8.49, onSale: true, unit: "400g",    emoji: "🧀", categoryId: "dairy" },
-  { id: "p23", name: "Butter Unsalted 250g",        price: 4.79,                                    unit: "250g",    emoji: "🧈", categoryId: "dairy" },
-  { id: "p24", name: "Brie Cheese 200g",            price: 5.99, originalPrice: 7.49, onSale: true, unit: "200g",    emoji: "🧀", categoryId: "dairy" },
-
-  // drinks
-  { id: "p25", name: "Orange Juice 1.75L",          price: 4.99, originalPrice: 6.29, onSale: true, unit: "1.75L",   emoji: "🍊", categoryId: "drinks" },
-  { id: "p26", name: "Sparkling Water 6pk",         price: 3.79,                                    unit: "6 pack",  emoji: "💧", categoryId: "drinks" },
-  { id: "p27", name: "Kombucha Ginger Lemon 330ml", price: 3.99,                                    unit: "330ml",   emoji: "🧃", categoryId: "drinks" },
-  { id: "p28", name: "Cold Brew Coffee 500ml",      price: 6.99,                                    unit: "500ml",   emoji: "☕", categoryId: "drinks" },
-  { id: "p29", name: "Coconut Water 1L",            price: 3.49,                                    unit: "1L",      emoji: "🥥", categoryId: "drinks" },
-
-  // grocery
-  { id: "p30", name: "Basmati Rice 2kg",            price: 7.99,                                    unit: "2kg",     emoji: "🍚", categoryId: "grocery" },
-  { id: "p31", name: "Pasta Penne 500g",            price: 2.29,                                    unit: "500g",    emoji: "🍝", categoryId: "grocery" },
-  { id: "p32", name: "Tomato Passata 680ml",        price: 2.99,                                    unit: "680ml",   emoji: "🍅", categoryId: "grocery" },
-  { id: "p33", name: "Extra Virgin Olive Oil 500ml",price: 8.99,                                    unit: "500ml",   emoji: "🫙", categoryId: "grocery" },
-  { id: "p34", name: "Soy Sauce 250ml",             price: 2.29,                                    unit: "250ml",   emoji: "🫙", categoryId: "grocery" },
-  { id: "p35", name: "Canned Tuna 3pk",             price: 4.49,                                    unit: "3 pack",  emoji: "🐟", categoryId: "grocery" },
-  { id: "p36", name: "Honey Raw 340g",              price: 6.99,                                    unit: "340g",    emoji: "🍯", categoryId: "grocery" },
-
-  // beef
-  { id: "p37", name: "Minced Beef 500g",            price: 6.49,                                    unit: "500g",    emoji: "🥩", categoryId: "beef" },
-  { id: "p38", name: "Ribeye Steak 300g",           price: 12.99, originalPrice: 15.99, onSale: true, unit: "300g",  emoji: "🥩", categoryId: "beef" },
-  { id: "p39", name: "Beef Sirloin 400g",           price: 9.99,                                    unit: "400g",    emoji: "🥩", categoryId: "beef" },
-
-  // chicken
-  { id: "p40", name: "Chicken Breast",              price: 5.00, priceMax: 12.00,                   unit: "1 each",  emoji: "🍗", categoryId: "chicken", hasVariants: true },
-  { id: "p41", name: "Chicken Thighs 600g",         price: 5.49,                                    unit: "600g",    emoji: "🍗", categoryId: "chicken" },
-  { id: "p42", name: "Whole Chicken 1.5kg",         price: 8.99, originalPrice: 10.99, onSale: true, unit: "1.5kg",  emoji: "🍗", categoryId: "chicken" },
-
-  // fish
-  { id: "p43", name: "Atlantic Salmon Fillet 400g", price: 9.99,                                    unit: "400g",    emoji: "🐟", categoryId: "fish" },
-  { id: "p44", name: "Cod Fillet 300g",             price: 7.49, originalPrice: 8.99, onSale: true, unit: "300g",    emoji: "🐟", categoryId: "fish" },
-  { id: "p45", name: "Tiger Prawns 400g",           price: 11.99,                                   unit: "400g",    emoji: "🦐", categoryId: "fish" },
-
-  // snacks
-  { id: "p46", name: "Dark Chocolate 85% 100g",     price: 2.99,                                    unit: "100g",    emoji: "🍫", categoryId: "snacks" },
-  { id: "p47", name: "Peanut Butter Smooth 400g",   price: 4.29,                                    unit: "400g",    emoji: "🥜", categoryId: "snacks" },
-  { id: "p48", name: "Granola Oat & Honey 500g",    price: 4.99, originalPrice: 6.49, onSale: true, unit: "500g",    emoji: "🥣", categoryId: "snacks" },
-  { id: "p49", name: "Mixed Berry Jam 370g",        price: 3.99,                                    unit: "370g",    emoji: "🫐", categoryId: "snacks" },
-  { id: "p50", name: "Hummus Classic 250g",         price: 3.49,                                    unit: "250g",    emoji: "🫘", categoryId: "snacks" },
-
-  // diet
-  { id: "p51", name: "Oat Milk Barista 1L",         price: 4.49, originalPrice: 5.49, onSale: true, unit: "1L",      emoji: "🥛", categoryId: "diet" },
-  { id: "p52", name: "Plant-Based Burger Patties 2pk", price: 7.99,                                 unit: "2 pack",  emoji: "🍔", categoryId: "diet" },
-  { id: "p53", name: "Cauliflower Pizza Base",      price: 6.49, originalPrice: 7.99, onSale: true, unit: "1 each",  emoji: "🍕", categoryId: "diet" },
-  { id: "p54", name: "Chickpea Pasta 400g",         price: 3.99,                                    unit: "400g",    emoji: "🍝", categoryId: "diet" },
-  { id: "p55", name: "Vegan Cheese Shreds",         price: 4.00, priceMax: 8.00,                    unit: "1 each",  emoji: "🧀", categoryId: "diet", hasVariants: true },
-
-  // nutrition
-  { id: "p56", name: "Spirulina Powder 200g",       price: 9.99,                                    unit: "200g",    emoji: "🌿", categoryId: "nutrition" },
-  { id: "p57", name: "Pea Protein Powder 500g",     price: 19.99,                                   unit: "500g",    emoji: "💪", categoryId: "nutrition" },
-  { id: "p58", name: "Hemp Seeds 250g",             price: 7.49,                                    unit: "250g",    emoji: "🌿", categoryId: "nutrition" },
-
-  // healthy
-  { id: "p59", name: "Quinoa Tri-Colour 500g",      price: 5.79,                                    unit: "500g",    emoji: "🌾", categoryId: "healthy" },
-  { id: "p60", name: "Matcha Latte Powder 100g",    price: 12.99,                                   unit: "100g",    emoji: "🍵", categoryId: "healthy" },
-  { id: "p61", name: "Kimchi Traditional 400g",     price: 5.99,                                    unit: "400g",    emoji: "🥬", categoryId: "healthy" },
-  { id: "p62", name: "Tempeh Original 200g",        price: 3.99,                                    unit: "200g",    emoji: "🫘", categoryId: "healthy" },
-
-  // breakfast
-  { id: "p63", name: "Sourdough Bread Loaf",        price: 4.29, originalPrice: 5.50, onSale: true, unit: "1 loaf",  emoji: "🍞", categoryId: "breakfast" },
-  { id: "p64", name: "Almond Butter 250g",          price: 8.99,                                    unit: "250g",    emoji: "🥜", categoryId: "breakfast" },
-  { id: "p65", name: "Date Syrup 330g",             price: 6.49, originalPrice: 8.49, onSale: true, unit: "330g",    emoji: "🍯", categoryId: "breakfast" },
-
-  // fastfood
-  { id: "p66", name: "Frozen Pizza Margherita",     price: 5.99,                                    unit: "1 each",  emoji: "🍕", categoryId: "fastfood" },
-  { id: "p67", name: "Chicken Nuggets 500g",        price: 4.99, originalPrice: 6.49, onSale: true, unit: "500g",    emoji: "🍗", categoryId: "fastfood" },
-  { id: "p68", name: "Fish Fingers 10pk",           price: 3.99,                                    unit: "10 pack", emoji: "🐟", categoryId: "fastfood" },
-
-  // greens
-  { id: "p69", name: "Organic Rocket 80g",          price: 3.49,                                    unit: "80g",     emoji: "🥬", categoryId: "greens" },
-  { id: "p70", name: "Iceberg Lettuce",             price: 1.79,                                    unit: "1 each",  emoji: "🥬", categoryId: "greens" },
-  { id: "p71", name: "Green Beans 300g",            price: 2.79, originalPrice: 3.29, onSale: true, unit: "300g",    emoji: "🫛", categoryId: "greens" },
-
-  // vitamins
-  { id: "p72", name: "Açaí Frozen Puree 100g",     price: 3.49,                                    unit: "100g",    emoji: "🍇", categoryId: "vitamins" },
-  { id: "p73", name: "Coconut Yogurt 400g",         price: 5.29, originalPrice: 6.99, onSale: true, unit: "400g",    emoji: "🥥", categoryId: "vitamins" },
-  { id: "p74", name: "Kefir Plain 750ml",           price: 4.99,                                    unit: "750ml",   emoji: "🥛", categoryId: "vitamins" },
-];
-
-/* ------------------------------------------------------------------ */
-/*  Sort options                                                       */
-/* ------------------------------------------------------------------ */
+const PAGE_SIZE = 12;
+const MIN_PRICE = 0;
+const MAX_PRICE = 50;
 
 const SORT_OPTIONS = [
   { value: "price-asc",  label: "Lowest Price" },
@@ -159,22 +23,264 @@ const SORT_OPTIONS = [
   { value: "sale",       label: "On Sale First" },
 ];
 
-function sortProducts(products: (Product & { categoryId: string })[], sortBy: string) {
+const RATING_OPTIONS = [
+  { value: 4, label: "4 & above" },
+  { value: 3, label: "3 & above" },
+  { value: 2, label: "2 & above" },
+];
+
+function sortProducts(products: StoreProduct[], sortBy: string) {
   const sorted = [...products];
   switch (sortBy) {
-    case "price-asc":
-      return sorted.sort((a, b) => a.price - b.price);
-    case "price-desc":
-      return sorted.sort((a, b) => b.price - a.price);
-    case "name-asc":
-      return sorted.sort((a, b) => a.name.localeCompare(b.name));
-    case "name-desc":
-      return sorted.sort((a, b) => b.name.localeCompare(a.name));
-    case "sale":
-      return sorted.sort((a, b) => (b.onSale ? 1 : 0) - (a.onSale ? 1 : 0));
-    default:
-      return sorted;
+    case "price-asc":  return sorted.sort((a, b) => a.price - b.price);
+    case "price-desc": return sorted.sort((a, b) => b.price - a.price);
+    case "name-asc":   return sorted.sort((a, b) => a.name.localeCompare(b.name));
+    case "name-desc":  return sorted.sort((a, b) => b.name.localeCompare(a.name));
+    case "sale":       return sorted.sort((a, b) => (b.onSale ? 1 : 0) - (a.onSale ? 1 : 0));
+    default:           return sorted;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Filter Drawer                                                      */
+/* ------------------------------------------------------------------ */
+
+interface Filters {
+  category: string | null;
+  minPrice: number;
+  maxPrice: number;
+  onSaleOnly: boolean;
+  minRating: number | null;
+}
+
+const DEFAULT_FILTERS: Filters = {
+  category: null,
+  minPrice: MIN_PRICE,
+  maxPrice: MAX_PRICE,
+  onSaleOnly: false,
+  minRating: null,
+};
+
+function countActiveFilters(f: Filters): number {
+  let n = 0;
+  if (f.category)    n++;
+  if (f.onSaleOnly)  n++;
+  if (f.minRating)   n++;
+  if (f.minPrice > MIN_PRICE || f.maxPrice < MAX_PRICE) n++;
+  return n;
+}
+
+interface FilterDrawerProps {
+  open: boolean;
+  onClose: () => void;
+  filters: Filters;
+  draft: Filters;
+  setDraft: (f: Filters) => void;
+  onApply: () => void;
+  onClear: () => void;
+}
+
+function FilterDrawer({ open, onClose, draft, setDraft, onApply, onClear }: FilterDrawerProps) {
+  return (
+    <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
+      <SheetContent side="right" className="w-full sm:w-80 p-0 flex flex-col">
+        <SheetTitle className="sr-only">Product Filters</SheetTitle>
+
+        {/* Header */}
+        <div className="flex items-center justify-between border-b px-5 py-4 pr-12">
+          <div className="flex items-center gap-2">
+            <SlidersHorizontal className="h-4 w-4 text-primary" />
+            <span className="text-sm font-semibold">Filters</span>
+          </div>
+          <button
+            onClick={onClear}
+            className="text-xs font-medium text-primary hover:underline"
+          >
+            Clear all
+          </button>
+        </div>
+
+        {/* Scrollable body */}
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-6">
+
+          {/* Category */}
+          <section>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
+              Category
+            </h3>
+            <div className="space-y-1">
+              {/* All */}
+              <button
+                onClick={() => setDraft({ ...draft, category: null })}
+                className={`w-full flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors ${
+                  draft.category === null
+                    ? "bg-primary/10 text-primary font-semibold"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+              >
+                <span className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-sm shrink-0">🛍️</span>
+                <span className="flex-1 text-left">All Items</span>
+                {draft.category === null && <Check className="h-3.5 w-3.5 shrink-0" />}
+              </button>
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setDraft({ ...draft, category: cat.id })}
+                  className={`w-full flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors ${
+                    draft.category === cat.id
+                      ? "bg-primary/10 text-primary font-semibold"
+                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  }`}
+                >
+                  <span className="h-7 w-7 rounded-full bg-muted flex items-center justify-center text-sm shrink-0">
+                    {cat.emoji}
+                  </span>
+                  <span className="flex-1 text-left">{cat.label}</span>
+                  <span className="text-xs text-muted-foreground shrink-0">{cat.count}</span>
+                  {draft.category === cat.id && <Check className="h-3.5 w-3.5 text-primary shrink-0" />}
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* Price Range */}
+          <section>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
+              Price Range
+            </h3>
+            <div className="space-y-3">
+              {/* Track */}
+              <div className="relative h-1.5 bg-muted rounded-full mx-1">
+                <div
+                  className="absolute h-full bg-primary rounded-full"
+                  style={{
+                    left:  `${((draft.minPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%`,
+                    right: `${100 - ((draft.maxPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%`,
+                  }}
+                />
+                <input
+                  type="range" min={MIN_PRICE} max={MAX_PRICE} step={1}
+                  value={draft.minPrice}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    if (v <= draft.maxPrice) setDraft({ ...draft, minPrice: v });
+                  }}
+                  className="absolute inset-0 w-full opacity-0 cursor-pointer h-full"
+                />
+                <input
+                  type="range" min={MIN_PRICE} max={MAX_PRICE} step={1}
+                  value={draft.maxPrice}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    if (v >= draft.minPrice) setDraft({ ...draft, maxPrice: v });
+                  }}
+                  className="absolute inset-0 w-full opacity-0 cursor-pointer h-full"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
+                  <input
+                    type="number" min={MIN_PRICE} max={draft.maxPrice} step={1}
+                    value={draft.minPrice}
+                    onChange={(e) => {
+                      const v = Math.max(MIN_PRICE, Math.min(Number(e.target.value), draft.maxPrice));
+                      setDraft({ ...draft, minPrice: v });
+                    }}
+                    className="w-full pl-6 pr-3 py-2 text-sm border border-border rounded-xl bg-background outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+                <span className="text-muted-foreground text-sm shrink-0">–</span>
+                <div className="flex-1 relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
+                  <input
+                    type="number" min={draft.minPrice} max={MAX_PRICE} step={1}
+                    value={draft.maxPrice}
+                    onChange={(e) => {
+                      const v = Math.min(MAX_PRICE, Math.max(Number(e.target.value), draft.minPrice));
+                      setDraft({ ...draft, maxPrice: v });
+                    }}
+                    className="w-full pl-6 pr-3 py-2 text-sm border border-border rounded-xl bg-background outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* On Sale */}
+          <section>
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">On Sale</h3>
+                <p className="text-xs text-muted-foreground mt-0.5">Show discounted items only</p>
+              </div>
+              <Switch
+                checked={draft.onSaleOnly}
+                onCheckedChange={(v) => setDraft({ ...draft, onSaleOnly: v })}
+              />
+            </div>
+          </section>
+
+          {/* Minimum Rating */}
+          <section>
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">
+              Minimum Rating
+            </h3>
+            <div className="space-y-1">
+              {RATING_OPTIONS.map((opt) => (
+                <button
+                  key={opt.value}
+                  onClick={() =>
+                    setDraft({ ...draft, minRating: draft.minRating === opt.value ? null : opt.value })
+                  }
+                  className={`w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
+                    draft.minRating === opt.value
+                      ? "bg-primary/10 text-primary font-semibold"
+                      : "hover:bg-muted text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  <div className="flex items-center gap-0.5">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        className={`h-3.5 w-3.5 ${
+                          s <= opt.value ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <span className="flex-1 text-left">{opt.label}</span>
+                  {draft.minRating === opt.value && <Check className="h-3.5 w-3.5 shrink-0" />}
+                </button>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        {/* Footer */}
+        <div className="border-t px-5 py-4">
+          <Button className="w-full h-11 rounded-xl font-semibold" onClick={onApply}>
+            Show Results
+          </Button>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Active filter chip                                                  */
+/* ------------------------------------------------------------------ */
+
+function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-medium px-3 py-1.5 rounded-full border border-primary/20">
+      {label}
+      <button onClick={onRemove} className="hover:opacity-70 transition-opacity" aria-label={`Remove ${label} filter`}>
+        <X className="h-3 w-3" />
+      </button>
+    </span>
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -185,139 +291,207 @@ export default function ProductsPage() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
 
-  const [activeCategory, setActiveCategory] = useState<string | null>(categoryParam);
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(categoryParam);
   const [sortBy, setSortBy] = useState("price-asc");
+  const [page, setPage] = useState(1);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Applied filters (what the grid actually uses)
+  const [filters, setFilters] = useState<Filters>({
+    ...DEFAULT_FILTERS,
+    category: categoryParam,
+  });
+
+  // Draft state (inside drawer before applying)
+  const [draft, setDraft] = useState<Filters>({ ...DEFAULT_FILTERS, category: categoryParam });
+
+  function openDrawer() {
+    setDraft({ ...filters }); // sync draft to current applied
+    setDrawerOpen(true);
+  }
+
+  function applyFilters() {
+    setFilters({ ...draft });
+    setPage(1);
+    setDrawerOpen(false);
+  }
+
+  function clearFilters() {
+    setDraft({ ...DEFAULT_FILTERS });
+  }
+
+  function removeFilter(key: keyof Filters) {
+    const updated = { ...filters, [key]: DEFAULT_FILTERS[key] };
+    setFilters(updated);
+    setPage(1);
+  }
+
+  function changeSort(value: string) {
+    setSortBy(value);
+    setPage(1);
+  }
 
   const filtered = useMemo(() => {
-    const base = activeCategory
-      ? ALL_PRODUCTS.filter((p) => p.categoryId === activeCategory)
-      : ALL_PRODUCTS;
+    let base = ALL_PRODUCTS;
+    if (filters.category)   base = base.filter((p) => p.categoryId === filters.category);
+    if (filters.onSaleOnly) base = base.filter((p) => p.onSale);
+    if (filters.minRating)  base = base.filter((p) => (p.rating ?? 0) >= filters.minRating!);
+    base = base.filter((p) => p.price >= filters.minPrice && p.price <= filters.maxPrice);
     return sortProducts(base, sortBy);
-  }, [activeCategory, sortBy]);
+  }, [filters, sortBy]);
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const activeCount = countActiveFilters(filters);
+
+  const categoryLabel = filters.category
+    ? CATEGORIES.find((c) => c.id === filters.category)?.label
+    : null;
 
   return (
-    <div className="flex gap-8">
-      {/* ---- Category sidebar ---- */}
-      <aside className="hidden lg:block w-64 shrink-0">
-        <h2 className="text-lg font-bold mb-4">Categories</h2>
-        <nav className="space-y-0.5">
-          {/* All items */}
-          <button
-            onClick={() => { setActiveCategory(null); setExpandedCategory(null); }}
-            className={`w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
-              activeCategory === null
-                ? "bg-primary/10 text-primary font-semibold"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            }`}
-          >
-            <span className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-base shrink-0">
-              🛍️
+    <div>
+      <FilterDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        filters={filters}
+        draft={draft}
+        setDraft={setDraft}
+        onApply={applyFilters}
+        onClear={clearFilters}
+      />
+
+      {/* Toolbar */}
+      <div className="flex items-center gap-3 mb-5 flex-wrap">
+        {/* Filter button */}
+        <button
+          onClick={openDrawer}
+          className={`inline-flex items-center gap-2 h-9 px-4 rounded-xl border text-sm font-medium transition-colors ${
+            activeCount > 0
+              ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90"
+              : "bg-background border-border text-foreground hover:bg-muted"
+          }`}
+        >
+          <SlidersHorizontal className="h-4 w-4" />
+          Filters
+          {activeCount > 0 && (
+            <span className="h-5 w-5 rounded-full bg-white/20 text-[11px] font-bold flex items-center justify-center">
+              {activeCount}
             </span>
-            <span className="flex-1 text-left">All Items</span>
-          </button>
+          )}
+        </button>
 
-          {CATEGORIES.map((cat) => (
-            <div key={cat.id}>
-              <button
-                onClick={() => {
-                  setActiveCategory(cat.id);
-                  setExpandedCategory(expandedCategory === cat.id ? null : cat.id);
-                }}
-                className={`w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors ${
-                  activeCategory === cat.id
-                    ? "bg-primary/10 text-primary font-semibold"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
-              >
-                <span className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-base shrink-0">
-                  {cat.emoji}
-                </span>
-                <span className="flex-1 text-left">{cat.label}</span>
-                {expandedCategory === cat.id ? (
-                  <ChevronDown className="h-4 w-4 shrink-0" />
-                ) : (
-                  <ChevronRight className="h-4 w-4 shrink-0" />
-                )}
-              </button>
-              {/* Expanded sub-info */}
-              {expandedCategory === cat.id && (
-                <div className="ml-14 mt-1 mb-2 text-xs text-muted-foreground">
-                  {cat.count} products
-                </div>
-              )}
-            </div>
-          ))}
-        </nav>
-      </aside>
+        {/* Active filter chips */}
+        {categoryLabel && (
+          <FilterChip label={categoryLabel} onRemove={() => removeFilter("category")} />
+        )}
+        {filters.onSaleOnly && (
+          <FilterChip label="On Sale" onRemove={() => removeFilter("onSaleOnly")} />
+        )}
+        {filters.minRating && (
+          <FilterChip label={`${filters.minRating}★ & above`} onRemove={() => removeFilter("minRating")} />
+        )}
+        {(filters.minPrice > MIN_PRICE || filters.maxPrice < MAX_PRICE) && (
+          <FilterChip
+            label={`$${filters.minPrice} – $${filters.maxPrice}`}
+            onRemove={() => { removeFilter("minPrice"); removeFilter("maxPrice"); }}
+          />
+        )}
 
-      {/* ---- Main content ---- */}
-      <div className="flex-1 min-w-0">
-        {/* Toolbar */}
-        <div className="flex items-center justify-between mb-6">
-          <p className="text-sm text-muted-foreground">
-            <span className="font-semibold text-foreground">{filtered.length}</span> Items Found
-          </p>
+        {/* Spacer + count + sort */}
+        <div className="flex-1" />
+        <p className="text-sm text-muted-foreground hidden sm:block">
+          <span className="font-semibold text-foreground">{filtered.length}</span> items
+        </p>
+        <Select value={sortBy} onValueChange={changeSort}>
+          <SelectTrigger className="w-[160px] h-9 text-sm rounded-xl">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {SORT_OPTIONS.map((opt) => (
+              <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground hidden sm:block">Sort by:</span>
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-[160px] h-9 text-sm rounded-lg">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {SORT_OPTIONS.map((opt) => (
-                  <SelectItem key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Mobile category pills */}
-        <div className="flex gap-2 overflow-x-auto pb-4 lg:hidden mb-4">
+      {/* Product grid */}
+      {filtered.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-24 text-muted-foreground">
+          <span className="text-5xl mb-4">🔍</span>
+          <p className="text-lg font-medium">No products found</p>
+          <p className="text-sm mt-1">Try adjusting your filters</p>
           <button
-            onClick={() => setActiveCategory(null)}
-            className={`shrink-0 px-4 py-1.5 rounded-full text-sm border transition-colors ${
-              activeCategory === null
-                ? "bg-primary text-primary-foreground border-primary"
-                : "bg-card border-border text-muted-foreground hover:bg-muted"
-            }`}
+            onClick={() => { setFilters({ ...DEFAULT_FILTERS }); setPage(1); }}
+            className="mt-4 text-sm text-primary font-medium hover:underline"
           >
-            All
+            Clear all filters
           </button>
-          {CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`shrink-0 px-4 py-1.5 rounded-full text-sm border transition-colors ${
-                activeCategory === cat.id
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-card border-border text-muted-foreground hover:bg-muted"
-              }`}
-            >
-              {cat.emoji} {cat.label}
-            </button>
-          ))}
         </div>
-
-        {/* Product grid */}
-        {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
-            <span className="text-5xl mb-4">🔍</span>
-            <p className="text-lg font-medium">No products found</p>
-            <p className="text-sm mt-1">Try selecting a different category</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4">
-            {filtered.map((product) => (
+      ) : (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {paged.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-1 mt-10">
+              <Button
+                variant="outline" size="sm"
+                onClick={() => setPage((p) => p - 1)}
+                disabled={page === 1}
+                className="h-9 w-9 p-0"
+                aria-label="Previous page"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
+                const isNearby = p === 1 || p === totalPages || Math.abs(p - page) <= 1;
+                const isEllipsis = !isNearby && (p === 2 || p === totalPages - 1);
+                if (!isNearby && !isEllipsis) return null;
+                if (isEllipsis) return <span key={p} className="px-1 text-muted-foreground text-sm">…</span>;
+                return (
+                  <Button
+                    key={p}
+                    variant={p === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setPage(p)}
+                    className="h-9 w-9 p-0 text-sm"
+                  >
+                    {p}
+                  </Button>
+                );
+              })}
+
+              <Button
+                variant="outline" size="sm"
+                onClick={() => setPage((p) => p + 1)}
+                disabled={page === totalPages}
+                className="h-9 w-9 p-0"
+                aria-label="Next page"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Sticky filter FAB */}
+      <button
+        onClick={openDrawer}
+        className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:scale-105 active:scale-95"
+        aria-label="Open filters"
+      >
+        <SlidersHorizontal className="h-5 w-5" />
+        {activeCount > 0 && (
+          <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-[10px] font-bold text-white">
+            {activeCount}
+          </span>
         )}
-      </div>
+      </button>
     </div>
   );
 }

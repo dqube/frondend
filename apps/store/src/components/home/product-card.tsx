@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { Plus, Minus, Eye } from "lucide-react";
+import Link from "next/link";
+import { motion } from "motion/react";
 
 export interface Product {
   id: string;
@@ -19,9 +21,10 @@ export interface Product {
 interface ProductCardProps {
   product: Product;
   onAddToCart?: (id: string, qty: number) => void;
+  className?: string;
 }
 
-export function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export function ProductCard({ product, onAddToCart, className = "" }: ProductCardProps) {
   const [qty, setQty] = useState(0);
 
   function increment() {
@@ -41,8 +44,15 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
     : `$${product.price.toFixed(2)}`;
 
   return (
-    <div className="group flex flex-col min-w-[160px] w-[160px] md:min-w-[180px] md:w-auto shrink-0 rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-shadow overflow-visible pb-4">
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+      whileHover={{ y: -4 }}
+      className={`group flex flex-col w-full rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-shadow overflow-visible pb-4 ${className}`}
+    >
       {/* Image area */}
+      <Link href={`/products/${product.id}`} className="block">
       <div className="relative aspect-square rounded-t-2xl overflow-visible mb-3">
         <div className="w-full h-full flex items-center justify-center rounded-t-2xl bg-muted/40">
           {product.image ? (
@@ -52,7 +62,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
               className="w-full h-full object-contain"
             />
           ) : (
-            <span className="text-6xl select-none">{product.emoji ?? "🛒"}</span>
+            <span className="text-5xl sm:text-6xl select-none">{product.emoji ?? "🛒"}</span>
           )}
         </div>
 
@@ -104,9 +114,10 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
           )}
         </div>
       </div>
+      </Link>
 
       {/* Info area */}
-      <div className="pt-2 px-3 flex flex-col gap-0.5">
+      <Link href={`/products/${product.id}`} className="pt-2 px-3 flex flex-col gap-0.5">
         <div className="flex items-baseline gap-1.5 flex-wrap">
           <span className="text-sm font-bold text-foreground">{priceDisplay}</span>
           {product.originalPrice && !product.priceMax && (
@@ -119,7 +130,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         {product.unit && (
           <p className="text-xs text-muted-foreground">{product.unit}</p>
         )}
-      </div>
-    </div>
+      </Link>
+    </motion.div>
   );
 }

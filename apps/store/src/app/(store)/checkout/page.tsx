@@ -96,7 +96,7 @@ function DeliveryScheduleStep({ onNext }: { onNext: () => void }) {
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {slots.map((s) => (
           <button
             key={s.id}
@@ -215,7 +215,7 @@ function OrderSummary() {
         </div>
         <div className="flex justify-between text-sm">
           <span className="font-semibold">Shipping</span>
-          <span className="font-medium">${shipping === 0 ? "0" : shipping.toFixed(2)}</span>
+          <span className="font-medium">{shipping === 0 ? "$0.00" : `$${(shipping as number).toFixed(2)}`}</span>
         </div>
         <div className="flex justify-between text-sm font-bold border-t border-border/50 pt-3">
           <span>Total</span>
@@ -256,38 +256,43 @@ export default function CheckoutPage() {
         {/* Steps — left column */}
         <div className="flex-1">
           <Stepper
-            className="flex flex-col gap-6"
+            orientation="vertical"
+            className="flex flex-row gap-6"
             value={activeStep}
             onValueChange={setActiveStep}
             indicators={{
               completed: <Check className="size-3.5" />,
             }}
           >
-            <StepperNav>
+            {/* Vertical nav — step indicators + titles */}
+            <StepperNav className="shrink-0">
               {STEPS.map((step, index) => (
                 <StepperItem
                   key={step.id}
                   step={step.id}
-                  className="relative items-start not-last:flex-1"
+                  className="items-start"
                 >
-                  <StepperTrigger className="items-start gap-3 pb-12 last:pb-0">
-                    <StepperIndicator className="size-8 text-sm">
+                  <StepperTrigger className="gap-3 w-full">
+                    <StepperIndicator className="size-8 text-sm shrink-0">
                       {step.id}
                     </StepperIndicator>
-                    <div className="mt-0.5 text-left">
+                    <div className="text-left">
                       <StepperTitle className="text-sm font-semibold">
                         {step.label}
                       </StepperTitle>
                     </div>
                   </StepperTrigger>
                   {index < STEPS.length - 1 && (
-                    <StepperSeparator />
+                    <div className="pl-[15px]">
+                      <StepperSeparator />
+                    </div>
                   )}
                 </StepperItem>
               ))}
             </StepperNav>
 
-            <StepperPanel>
+            {/* Step content panel — right of the nav */}
+            <StepperPanel className="flex-1 min-w-0">
               {STEPS.map((step) => (
                 <StepperContent key={step.id} value={step.id}>
                   <div className="rounded-2xl border border-white/80 bg-white/60 backdrop-blur-sm shadow-sm p-6">

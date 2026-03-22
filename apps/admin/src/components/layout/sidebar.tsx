@@ -8,7 +8,7 @@ import {
   LogOut, User, ChevronUp
 } from "lucide-react";
 import {
-  cn, Button, Sheet, SheetContent, SheetTrigger,
+  cn, Button, Sheet, SheetContent, SheetTitle, SheetTrigger,
   Avatar, AvatarFallback,
   DropdownMenu, DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator, DropdownMenuTrigger,
@@ -166,6 +166,7 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-64 p-0">
+          <SheetTitle className="sr-only">Navigation</SheetTitle>
           <div className="flex h-16 items-center border-b px-6">
             <span className="text-lg font-bold text-primary">ModernStores</span>
             <span className="ml-2 text-xs text-muted-foreground">Admin</span>
