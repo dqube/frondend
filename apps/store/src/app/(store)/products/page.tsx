@@ -187,7 +187,7 @@ function FilterDrawer({ open, onClose, draft, setDraft, onApply, onClear }: Filt
                       const v = Math.max(MIN_PRICE, Math.min(Number(e.target.value), draft.maxPrice));
                       setDraft({ ...draft, minPrice: v });
                     }}
-                    className="w-full pl-6 pr-3 py-2 text-sm border border-border rounded-xl bg-background outline-none focus:border-primary transition-colors"
+                    className="w-full pl-6 pr-3 py-2 text-sm border border-border rounded-xl bg-background outline-none focus:border-primary focus:ring-[1px] focus:ring-primary/20 transition-colors"
                   />
                 </div>
                 <span className="text-muted-foreground text-sm shrink-0">–</span>
@@ -200,7 +200,7 @@ function FilterDrawer({ open, onClose, draft, setDraft, onApply, onClear }: Filt
                       const v = Math.min(MAX_PRICE, Math.max(Number(e.target.value), draft.minPrice));
                       setDraft({ ...draft, maxPrice: v });
                     }}
-                    className="w-full pl-6 pr-3 py-2 text-sm border border-border rounded-xl bg-background outline-none focus:border-primary transition-colors"
+                    className="w-full pl-6 pr-3 py-2 text-sm border border-border rounded-xl bg-background outline-none focus:border-primary focus:ring-[1px] focus:ring-primary/20 transition-colors"
                   />
                 </div>
               </div>

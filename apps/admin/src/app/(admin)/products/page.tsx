@@ -7,6 +7,7 @@ import type { Product } from "@modernstores/types";
 import {
   DataTable,
   type DataTableFilterConfig,
+  type DataTableRangeFilterConfig,
   Badge,
   Button,
   Checkbox,
@@ -324,6 +325,13 @@ const columns: ColumnDef<Product>[] = [
       const price = getValue() as number;
       return <span className="font-medium tabular-nums">${price.toFixed(2)}</span>;
     },
+    filterFn: (row, id, range: [number | undefined, number | undefined]) => {
+      const price = row.getValue(id) as number;
+      const [min, max] = range;
+      if (min !== undefined && price < min) return false;
+      if (max !== undefined && price > max) return false;
+      return true;
+    },
     size: 100,
   },
   {
@@ -454,6 +462,16 @@ const filters: DataTableFilterConfig[] = [
   },
 ];
 
+const rangeFilters: DataTableRangeFilterConfig[] = [
+  {
+    columnId: "price",
+    title: "Price",
+    prefix: "$",
+    min: 0,
+    step: 0.01,
+  },
+];
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function ProductsPage() {
@@ -483,6 +501,7 @@ export default function ProductsPage() {
         globalSearchColumn="name"
         globalSearchPlaceholder="Search products…"
         filters={filters}
+        rangeFilters={rangeFilters}
         pageSizes={[10, 25, 50]}
         stripped
       />

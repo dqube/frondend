@@ -32,6 +32,15 @@ export interface DataTableFilterConfig {
   options: DataGridColumnFilterProps<unknown, unknown>["options"]
 }
 
+export interface DataTableRangeFilterConfig {
+  columnId: string
+  title: string
+  prefix?: string
+  min?: number
+  max?: number
+  step?: number
+}
+
 export interface DataTableProps<TData, TValue> {
   title?: string
   columns: ColumnDef<TData, TValue>[]
@@ -40,6 +49,7 @@ export interface DataTableProps<TData, TValue> {
   globalSearchPlaceholder?: string
   globalSearchColumn?: string
   filters?: DataTableFilterConfig[]
+  rangeFilters?: DataTableRangeFilterConfig[]
   pageSizes?: number[]
   dense?: boolean
   stripped?: boolean
@@ -77,6 +87,7 @@ export function DataTable<TData extends object, TValue>({
   globalSearchPlaceholder = "Search…",
   globalSearchColumn,
   filters = [],
+  rangeFilters = [],
   pageSizes = [10, 25, 50],
   dense = false,
   stripped = false,
@@ -85,6 +96,11 @@ export function DataTable<TData extends object, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [mounted, setMounted] = React.useState(false)
   React.useEffect(() => { setMounted(true) }, [])
+
+  // Range filter local state: columnId → [min, max]
+  const [rangeValues, setRangeValues] = React.useState<Record<string, [string, string]>>(() =>
+    Object.fromEntries(rangeFilters.map((f) => [f.columnId, ["", ""]]))
+  )
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -110,15 +126,37 @@ export function DataTable<TData extends object, TValue>({
     autoResetAll: false,
   })
 
+  // Sync range inputs → column filter values
+  React.useEffect(() => {
+    rangeFilters.forEach((f) => {
+      const [minStr, maxStr] = rangeValues[f.columnId] ?? ["", ""]
+      const min = minStr !== "" ? Number(minStr) : undefined
+      const max = maxStr !== "" ? Number(maxStr) : undefined
+      const col = table.getColumn(f.columnId)
+      if (min === undefined && max === undefined) {
+        col?.setFilterValue(undefined)
+      } else {
+        col?.setFilterValue([min, max])
+      }
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rangeValues])
+
+  const hasActiveRangeFilter = rangeFilters.some(
+    (f) => rangeValues[f.columnId]?.[0] !== "" || rangeValues[f.columnId]?.[1] !== ""
+  )
+
   const hasActiveFilters =
     columnFilters.length > 0 ||
-    Boolean(globalSearchColumn && table.getColumn(globalSearchColumn)?.getFilterValue())
+    Boolean(globalSearchColumn && table.getColumn(globalSearchColumn)?.getFilterValue()) ||
+    hasActiveRangeFilter
 
   function resetFilters() {
     table.resetColumnFilters()
     if (globalSearchColumn) {
       table.getColumn(globalSearchColumn)?.setFilterValue("")
     }
+    setRangeValues(Object.fromEntries(rangeFilters.map((f) => [f.columnId, ["", ""]])))
   }
 
   if (!mounted) return null
@@ -168,6 +206,68 @@ export function DataTable<TData extends object, TValue>({
                     title={f.title}
                     options={f.options}
                   />
+                )
+              })}
+
+              {rangeFilters.map((f) => {
+                const [minVal, maxVal] = rangeValues[f.columnId] ?? ["", ""]
+                const prefix = f.prefix ?? ""
+                const isActive = minVal !== "" || maxVal !== ""
+                return (
+                  <div
+                    key={f.columnId}
+                    className={cn(
+                      "flex items-center gap-1 rounded-md border bg-background px-2 py-1 text-xs transition-colors",
+                      isActive ? "border-primary/50 bg-primary/5" : "border-border"
+                    )}
+                  >
+                    <span className="text-muted-foreground font-medium shrink-0">{f.title}:</span>
+                    <div className="flex items-center gap-1">
+                      <span className="text-muted-foreground">{prefix}</span>
+                      <input
+                        type="number"
+                        value={minVal}
+                        onChange={(e) =>
+                          setRangeValues((prev) => ({
+                            ...prev,
+                            [f.columnId]: [e.target.value, prev[f.columnId]?.[1] ?? ""],
+                          }))
+                        }
+                        placeholder={f.min !== undefined ? String(f.min) : "Min"}
+                        min={f.min}
+                        max={f.max}
+                        step={f.step ?? 0.01}
+                        className="w-14 bg-transparent outline-none placeholder:text-muted-foreground/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      />
+                      <span className="text-muted-foreground">–</span>
+                      <span className="text-muted-foreground">{prefix}</span>
+                      <input
+                        type="number"
+                        value={maxVal}
+                        onChange={(e) =>
+                          setRangeValues((prev) => ({
+                            ...prev,
+                            [f.columnId]: [prev[f.columnId]?.[0] ?? "", e.target.value],
+                          }))
+                        }
+                        placeholder={f.max !== undefined ? String(f.max) : "Max"}
+                        min={f.min}
+                        max={f.max}
+                        step={f.step ?? 0.01}
+                        className="w-14 bg-transparent outline-none placeholder:text-muted-foreground/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                      />
+                    </div>
+                    {isActive && (
+                      <button
+                        onClick={() =>
+                          setRangeValues((prev) => ({ ...prev, [f.columnId]: ["", ""] }))
+                        }
+                        className="ml-0.5 text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    )}
+                  </div>
                 )
               })}
 

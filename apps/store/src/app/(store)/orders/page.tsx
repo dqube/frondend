@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
+import { OrdersView } from "./_components/orders-view";
 
 export const metadata: Metadata = { title: "My Orders" };
 
 export default function OrdersPage() {
-  return (
-    <div>
-      <h1 className="text-3xl font-bold mb-8">My Orders</h1>
-    </div>
-  );
+  return <OrdersView />;
 }

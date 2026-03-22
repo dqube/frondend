@@ -44,7 +44,7 @@ function DateRangePicker({
           type="button"
           disabled={disabled}
           className={cn(
-            "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus:border-ring focus:ring-ring/50 focus:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20 focus:ring-[1px] disabled:cursor-not-allowed disabled:opacity-50",
             !value?.from && "text-muted-foreground",
             className
           )}

@@ -11,6 +11,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@modernstores/api-client": "workspace:*",
     "@modernstores/types": "workspace:*",
     "@modernstores/ui": "workspace:*",

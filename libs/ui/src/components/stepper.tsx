@@ -310,7 +310,7 @@ function StepperTrigger({
       data-state={state}
       data-loading={isLoading}
       className={cn(
-        "focus-visible:border-ring focus-visible:ring-ring/50 inline-flex cursor-pointer items-center outline-none focus-visible:z-10 focus-visible:ring-3 disabled:pointer-events-none disabled:opacity-60",
+        "focus-visible:border-primary focus-visible:ring-primary/20 inline-flex cursor-pointer items-center outline-none focus-visible:z-10 focus-visible:ring-[1px] disabled:pointer-events-none disabled:opacity-60",
         "gap-2.5 rounded-full",
         className
       )}
