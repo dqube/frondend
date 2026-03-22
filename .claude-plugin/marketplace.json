@@ -1,0 +1,15 @@
+{
+  "name": "modernstores-frontend",
+  "owner": {
+    "name": "ModernStores",
+    "email": "mdevendran@modernstores.dev"
+  },
+  "description": "Claude Code plugins for the ModernStores grocery e-commerce frontend monorepo",
+  "plugins": [
+    {
+      "name": "modernstores-frontend",
+      "source": "./plugins/modernstores-frontend",
+      "description": "Skills for scaffolding pages, components, API hooks, and reviewing code in the ModernStores Next.js/Turborepo project"
+    }
+  ]
+}

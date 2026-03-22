@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm *)",
+      "Bash(npx *)",
+      "Bash(node *)",
+      "Bash(turbo *)",
+      "Bash(git *)",
+      "Bash(ls *)",
+      "Bash(mkdir *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(rm -rf apps/*/node_modules packages/*/node_modules node_modules)",
+      "Bash(find . -name '*.ts' *)",
+      "Bash(find . -name '*.tsx' *)",
+      "Bash(lsof -ti:3000,3001,3002)",
+      "Bash(kill -9 *)",
+      "Read(/Users/mdevendran/modernstores/frondend/**)",
+      "Read(/Users/mdevendran/modernstores/modernstr/src/BFF/**)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(sudo *)"
+    ]
+  },
+  "env": {
+    "TURBO_TELEMETRY_DISABLED": "1",
+    "NEXT_TELEMETRY_DISABLED": "1"
+  },
+  "extraKnownMarketplaces": {
+    "modernstores-frontend": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/mdevendran/modernstores/frondend/.claude-plugin"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "modernstores-frontend@modernstores-frontend": true,
+    "skill-creator@claude-plugins-official": true,
+    "claude-mem@thedotmack": true
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@modernstores/config",
+  "version": "0.0.1",
+  "private": true,
+  "exports": {
+    "./eslint": "./eslint.js",
+    "./typescript/base": "./typescript/base.json",
+    "./typescript/nextjs": "./typescript/nextjs.json",
+    "./tailwind": "./tailwind.js"
+  }
+}

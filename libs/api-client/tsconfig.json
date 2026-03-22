@@ -1,0 +1,5 @@
+{
+  "extends": "@modernstores/config/typescript/nextjs",
+  "compilerOptions": { "outDir": "dist", "rootDir": "src" },
+  "include": ["src"]
+}

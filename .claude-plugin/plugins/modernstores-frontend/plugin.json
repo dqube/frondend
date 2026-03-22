@@ -1,0 +1,40 @@
+{
+  "name": "modernstores-frontend",
+  "version": "1.0.0",
+  "description": "Claude Code skills for the ModernStores grocery e-commerce frontend (Next.js 15, Turborepo, shadcn/ui, reui)",
+  "author": "mdevendran",
+  "skills": [
+    {
+      "name": "new-page",
+      "source": "./skills/new-page"
+    },
+    {
+      "name": "new-component",
+      "source": "./skills/new-component"
+    },
+    {
+      "name": "new-api-hook",
+      "source": "./skills/new-api-hook"
+    },
+    {
+      "name": "check-responsive",
+      "source": "./skills/check-responsive"
+    },
+    {
+      "name": "sync-types",
+      "source": "./skills/sync-types"
+    },
+    {
+      "name": "add-shadcn",
+      "source": "./skills/add-shadcn"
+    },
+    {
+      "name": "dev",
+      "source": "./skills/dev"
+    },
+    {
+      "name": "review-pr",
+      "source": "./skills/review-pr"
+    }
+  ]
+}
