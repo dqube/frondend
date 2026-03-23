@@ -15,6 +15,10 @@ export * from "./components/popover";
 export * from "./components/dropdown-menu";
 export * from "./components/sheet";
 export * from "./components/tooltip";
+export * from "./components/drawer";
+
+// Command palette
+export * from "./components/command";
 
 // Toast (sonner)
 export * from "./components/toast";

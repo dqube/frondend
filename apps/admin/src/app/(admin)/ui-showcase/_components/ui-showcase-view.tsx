@@ -89,9 +89,25 @@ import {
   type DateRange,
 } from "@modernstores/ui";
 import { Toolbar } from "@/components/ui/toolbar";
+import { RichTextEditorDemo } from "@/components/tiptap/rich-text-editor";
 import { BentoGrid } from "@/components/ui/bento-grid";
 import { SpotlightCards } from "@/components/ui/spotlight-cards";
 import { ProfileDropdown } from "@/components/ui/profile-dropdown";
+import {
+  Timeline,
+  TimelineContent,
+  TimelineDate,
+  TimelineHeader,
+  TimelineIndicator,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineTitle,
+} from "@/components/ui/reui-timeline";
+import { DateSelector } from "@/components/ui/reui-date-selector";
+import type { DateSelectorValue } from "@/components/ui/reui-date-selector";
+import { Tree, TreeItem, TreeItemLabel } from "@/components/ui/reui-tree";
+import { useTree } from "@headless-tree/react";
+import { syncDataLoaderFeature } from "@headless-tree/core";
 import {
   Bell,
   Check,
@@ -102,6 +118,7 @@ import {
   Info,
   Layers,
   Mail,
+  Minus,
   MoreHorizontal,
   Pencil,
   Plus,
@@ -244,6 +261,24 @@ const FRUIT_OPTIONS = [
   { value: "strawberry", label: "Strawberry" },
 ];
 
+// ─── Tree data ───────────────────────────────────────────────────────────────
+
+type FileNodeData = { name: string; isFolder: boolean; children?: string[] };
+
+const TREE_ITEMS: Record<string, FileNodeData> = {
+  root: { name: "src", isFolder: true, children: ["components", "hooks", "lib"] },
+  components: { name: "components", isFolder: true, children: ["ui-dir", "layout-dir"] },
+  "ui-dir": { name: "ui", isFolder: true, children: ["button-file", "input-file"] },
+  "layout-dir": { name: "layout", isFolder: true, children: ["sidebar-file"] },
+  hooks: { name: "hooks", isFolder: true, children: ["use-auth-file"] },
+  lib: { name: "lib", isFolder: true, children: ["utils-file"] },
+  "button-file": { name: "button.tsx", isFolder: false },
+  "input-file": { name: "input.tsx", isFolder: false },
+  "sidebar-file": { name: "sidebar.tsx", isFolder: false },
+  "use-auth-file": { name: "use-auth.ts", isFolder: false },
+  "utils-file": { name: "utils.ts", isFolder: false },
+};
+
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function UIShowcaseView() {
@@ -256,6 +291,26 @@ export function UIShowcaseView() {
   const [dateTimeValue, setDateTimeValue] = useState<Date>();
   const [autocompleteValue, setAutocompleteValue] = useState("");
   const [stepperValue, setStepperValue] = useState(2);
+  const [dateSelectorValue, setDateSelectorValue] = useState<DateSelectorValue | undefined>();
+  const [treeExpandedItems, setTreeExpandedItems] = useState<string[]>(["root", "components"]);
+  const [treeFocusedItem, setTreeFocusedItem] = useState<string | null>(null);
+
+  const tree = useTree<FileNodeData>({
+    rootItemId: "root",
+    getItemName: (item) => item.getItemData().name,
+    isItemFolder: (item) => item.getItemData().isFolder,
+    features: [syncDataLoaderFeature],
+    dataLoader: {
+      getItem: (itemId) => TREE_ITEMS[itemId]!,
+      getChildren: (itemId) => TREE_ITEMS[itemId]?.children ?? [],
+    },
+    setExpandedItems: setTreeExpandedItems,
+    setFocusedItem: setTreeFocusedItem,
+    initialState: {
+      expandedItems: treeExpandedItems,
+      focusedItem: treeFocusedItem,
+    },
+  });
 
   return (
     <div className="space-y-10 pb-12 min-w-0 overflow-x-hidden">
@@ -1069,6 +1124,14 @@ export function UIShowcaseView() {
         </div>
       </Section>
 
+      {/* ── Rich Text Editor ── */}
+      <Section
+        title="Rich Text Editor"
+        description="Full-featured Tiptap editor with toolbar, floating menu, image upload, search & replace, and more."
+      >
+        <RichTextEditorDemo />
+      </Section>
+
       {/* ── Spotlight Cards ── */}
       <Section
         title="Spotlight Cards"
@@ -1093,6 +1156,93 @@ export function UIShowcaseView() {
         <div className="flex justify-center py-6">
           <ProfileDropdown />
         </div>
+      </Section>
+
+      {/* ── Timeline ── */}
+      <Section
+        title="Timeline"
+        description="Step-by-step process tracker with vertical and horizontal orientations."
+      >
+        <Card>
+          <CardContent className="pt-6 grid gap-10 sm:grid-cols-2">
+            <div>
+              <Label className="text-xs text-muted-foreground mb-4 block">Vertical (default)</Label>
+              <Timeline defaultValue={3}>
+                {([
+                  { step: 1, date: "Jan 2024", title: "Order Placed", content: "Your order #4521 was received." },
+                  { step: 2, date: "Jan 2024", title: "Processing", content: "Payment confirmed and items packed." },
+                  { step: 3, date: "Feb 2024", title: "Shipped", content: "Package dispatched via express courier." },
+                  { step: 4, date: "Feb 2024", title: "Delivered", content: "Awaiting delivery to your address." },
+                ] as const).map(({ step, date, title, content }) => (
+                  <TimelineItem key={step} step={step}>
+                    <TimelineIndicator />
+                    <TimelineSeparator />
+                    <TimelineHeader>
+                      <TimelineDate>{date}</TimelineDate>
+                      <TimelineTitle>{title}</TimelineTitle>
+                    </TimelineHeader>
+                    <TimelineContent>{content}</TimelineContent>
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            </div>
+            <div>
+              <Label className="text-xs text-muted-foreground mb-4 block">Horizontal</Label>
+              <Timeline defaultValue={2} orientation="horizontal">
+                {["Cart", "Shipping", "Payment", "Review"].map((label, i) => (
+                  <TimelineItem key={label} step={i + 1}>
+                    <TimelineIndicator />
+                    <TimelineSeparator />
+                    <TimelineTitle>{label}</TimelineTitle>
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            </div>
+          </CardContent>
+        </Card>
+      </Section>
+
+      {/* ── Date Selector ── */}
+      <Section
+        title="Date Selector"
+        description="Advanced date picker with day / month / quarter / half-year / year modes and range support."
+      >
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex flex-col gap-4">
+              <Label className="text-xs text-muted-foreground">
+                Selected:{" "}
+                {dateSelectorValue
+                  ? `${dateSelectorValue.period} · ${dateSelectorValue.operator}`
+                  : "none"}
+              </Label>
+              <DateSelector
+                label="Filter date"
+                value={dateSelectorValue}
+                onChange={setDateSelectorValue}
+                allowRange
+              />
+            </div>
+          </CardContent>
+        </Card>
+      </Section>
+
+      {/* ── Tree ── */}
+      <Section
+        title="Tree"
+        description="Keyboard-navigable file/folder tree powered by headless-tree with expand/collapse."
+      >
+        <Card>
+          <CardContent className="pt-6">
+            <Tree tree={tree} className="max-w-xs border rounded-md p-2">
+              {tree.getItems().map((item) => (
+                <TreeItem key={item.getId()} item={item}>
+                  <TreeItemLabel />
+                </TreeItem>
+              ))}
+            </Tree>
+          </CardContent>
+        </Card>
       </Section>
     </div>
   );
