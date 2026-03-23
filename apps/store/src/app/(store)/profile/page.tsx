@@ -678,7 +678,7 @@ export default function ProfilePage() {
     }
   }
 
-  const allItems = NAV_SECTIONS.flatMap((s) => s.items);
+  const allItems = NAV_SECTIONS.flatMap((s) => [...s.items]);
   const activeItem = allItems.find((i) => i.id === active);
   const ActiveIcon = activeItem?.icon ?? User;
   const activeLabel = active === "logout" ? "Log Out" : activeItem?.label ?? "";

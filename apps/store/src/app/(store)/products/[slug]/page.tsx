@@ -102,6 +102,8 @@ export default function ProductDetailPage({ params }: Props) {
     },
   ] as const;
 
+  const currentGalleryItem = GALLERY[selectedImg] ?? GALLERY[0];
+
   const totalReviews = MOCK_REVIEWS.length;
   const avgRating = product.rating ?? (MOCK_REVIEWS.reduce((s, r) => s + r.rating, 0) / totalReviews);
   const ratingCounts = [5, 4, 3, 2, 1].map((star) => ({
@@ -129,7 +131,7 @@ export default function ProductDetailPage({ params }: Props) {
         {/* Image panel */}
         <div className="space-y-3">
           {/* Main image */}
-          <div className={`relative rounded-3xl bg-gradient-to-br ${GALLERY[selectedImg].bg} border border-border/30 aspect-square flex items-center justify-center overflow-hidden transition-colors duration-300`}>
+          <div className={`relative rounded-3xl bg-gradient-to-br ${currentGalleryItem.bg} border border-border/30 aspect-square flex items-center justify-center overflow-hidden transition-colors duration-300`}>
             {product.onSale && (
               <span className="absolute top-4 left-4 z-10 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
                 On Sale
@@ -138,7 +140,7 @@ export default function ProductDetailPage({ params }: Props) {
 
             {/* View label */}
             <span className="absolute bottom-4 left-4 z-10 bg-background/80 backdrop-blur border border-border/40 rounded-full px-2.5 py-1 text-xs font-medium text-foreground">
-              {GALLERY[selectedImg].label}
+              {currentGalleryItem.label}
             </span>
 
             {/* Image counter */}
@@ -147,13 +149,13 @@ export default function ProductDetailPage({ params }: Props) {
             </span>
 
             <span className="text-[9rem] md:text-[11rem] select-none drop-shadow-sm">
-              {GALLERY[selectedImg].emoji}
+              {currentGalleryItem.emoji}
             </span>
 
             {/* Context overlay emoji */}
-            {GALLERY[selectedImg].overlay && (
+            {currentGalleryItem.overlay && (
               <span className="absolute bottom-14 right-6 text-4xl select-none opacity-50 pointer-events-none">
-                {GALLERY[selectedImg].overlay}
+                {currentGalleryItem.overlay}
               </span>
             )}
 

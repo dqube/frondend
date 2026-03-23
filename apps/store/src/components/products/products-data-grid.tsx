@@ -153,7 +153,7 @@ export function ProductsDataGrid() {
   });
 
   return (
-    <DataGrid table={table} recordCount={total} loading={isLoading} stripped>
+    <DataGrid table={table} recordCount={total} isLoading={isLoading} tableLayout={{ stripped: true }}>
       <div className="flex items-center gap-2">
         <Input
           placeholder="Search products..."

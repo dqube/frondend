@@ -95,9 +95,14 @@ export function PromotionsCarousel() {
       <motion.div
         key={promo.id}
         custom={direction}
-        initial={(d: number) => ({ opacity: 0, x: d * 60 })}
-        animate={{ opacity: 1, x: 0 }}
-        exit={(d: number) => ({ opacity: 0, x: d * -60 })}
+        variants={{
+          enter: (d: number) => ({ opacity: 0, x: d * 60 }),
+          center: { opacity: 1, x: 0 },
+          exit: (d: number) => ({ opacity: 0, x: d * -60 }),
+        }}
+        initial="enter"
+        animate="center"
+        exit="exit"
         transition={{ duration: 0.35, ease: "easeOut" }}
         className={`absolute inset-0 bg-gradient-to-br ${promo.gradient} ${promo.dark ? "text-gray-800" : "text-white"} p-8 md:p-12 flex flex-col justify-between`}>
         <div className="flex items-start justify-between gap-4">
