@@ -15,15 +15,24 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { Search, X } from "lucide-react"
+import { Check, Search, SlidersHorizontal, X } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { Button } from "../button"
 import { Input } from "../input"
+import { Label } from "../label"
+import { Checkbox } from "../checkbox"
 import { Card, CardContent, CardHeader, CardTitle } from "../card"
-import { DataGrid, DataGridContainer } from "./data-grid"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetClose,
+} from "../sheet"
+import { DataGrid, getColumnHeaderLabel } from "./data-grid"
 import { DataGridTable } from "./data-grid-table"
 import { DataGridPagination } from "./data-grid-pagination"
-import { DataGridColumnVisibility } from "./data-grid-column-visibility"
 import { DataGridColumnFilter, type DataGridColumnFilterProps } from "./data-grid-column-filter"
 
 export interface DataTableFilterConfig {
@@ -43,6 +52,7 @@ export interface DataTableRangeFilterConfig {
 
 export interface DataTableProps<TData, TValue> {
   title?: string
+  actions?: React.ReactNode
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   loading?: boolean
@@ -57,30 +67,9 @@ export interface DataTableProps<TData, TValue> {
   className?: string
 }
 
-function GlobalSearch<TData>({
-  table,
-  column,
-  placeholder,
-}: {
-  table: ReturnType<typeof useReactTable<TData>>
-  column: string
-  placeholder: string
-}) {
-  return (
-    <div className="relative flex-1 sm:flex-none">
-      <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-      <Input
-        placeholder={placeholder}
-        value={(table.getColumn(column)?.getFilterValue() as string) ?? ""}
-        onChange={(e) => table.getColumn(column)?.setFilterValue(e.target.value)}
-        className="h-8 w-full pl-8 text-xs sm:w-48 lg:w-64"
-      />
-    </div>
-  )
-}
-
 export function DataTable<TData extends object, TValue>({
   title,
+  actions,
   columns,
   data,
   loading = false,
@@ -95,6 +84,7 @@ export function DataTable<TData extends object, TValue>({
   className,
 }: DataTableProps<TData, TValue>) {
   const [mounted, setMounted] = React.useState(false)
+  const [filterOpen, setFilterOpen] = React.useState(false)
   React.useEffect(() => { setMounted(true) }, [])
 
   // Range filter local state: columnId → [min, max]
@@ -151,6 +141,10 @@ export function DataTable<TData extends object, TValue>({
     Boolean(globalSearchColumn && table.getColumn(globalSearchColumn)?.getFilterValue()) ||
     hasActiveRangeFilter
 
+  const activeFilterCount =
+    columnFilters.filter((cf) => cf.id !== globalSearchColumn).length +
+    rangeFilters.filter((f) => rangeValues[f.columnId]?.[0] !== "" || rangeValues[f.columnId]?.[1] !== "").length
+
   function resetFilters() {
     table.resetColumnFilters()
     if (globalSearchColumn) {
@@ -163,9 +157,12 @@ export function DataTable<TData extends object, TValue>({
 
   return (
     <Card className={cn("flex flex-col gap-0", className)}>
-      {title && (
-        <CardHeader className="border-b pb-4">
-          <CardTitle className="text-lg">{title}</CardTitle>
+      {(title || actions) && (
+        <CardHeader className="border-b py-3">
+          <div className="flex items-center justify-between gap-3">
+            {title && <CardTitle className="text-base font-semibold">{title}</CardTitle>}
+            {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
+          </div>
         </CardHeader>
       )}
 
@@ -186,130 +183,189 @@ export function DataTable<TData extends object, TValue>({
             width: "fixed",
           }}
         >
-          {/* Toolbar */}
-          <div className="flex min-w-0 flex-col gap-2 p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-            {/* Mobile top row: search + columns toggle */}
-            <div className="flex min-w-0 items-center gap-2">
-              {globalSearchColumn && (
-                <GlobalSearch
-                  table={table}
-                  column={globalSearchColumn}
+          {/* Toolbar: search + filters button */}
+          <div className="flex flex-col gap-2 border-b px-4 py-3 sm:flex-row sm:items-center">
+            {globalSearchColumn && (
+              <div className="relative flex-1">
+                <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+                <Input
                   placeholder={globalSearchPlaceholder}
+                  value={(table.getColumn(globalSearchColumn)?.getFilterValue() as string) ?? ""}
+                  onChange={(e) => table.getColumn(globalSearchColumn)?.setFilterValue(e.target.value)}
+                  className="h-8 pl-8 text-sm"
                 />
-              )}
-              <div className="ml-auto shrink-0 sm:hidden">
-                <DataGridColumnVisibility table={table} />
               </div>
-            </div>
-            {/* Filter pills row */}
-            <div className="flex min-w-0 flex-wrap items-center gap-2">
-              {filters.map((f) => {
-                const col = table.getColumn(f.columnId)
-                if (!col) return null
-                return (
-                  <DataGridColumnFilter
-                    key={f.columnId}
-                    column={col}
-                    title={f.title}
-                    options={f.options}
-                  />
-                )
-              })}
-
-              {rangeFilters.map((f) => {
-                const [minVal, maxVal] = rangeValues[f.columnId] ?? ["", ""]
-                const prefix = f.prefix ?? ""
-                const isActive = minVal !== "" || maxVal !== ""
-                return (
-                  <div
-                    key={f.columnId}
-                    className={cn(
-                      "flex items-center gap-1 rounded-md border bg-background px-2 py-1 text-xs transition-colors",
-                      isActive ? "border-primary/50 bg-primary/5" : "border-border"
-                    )}
-                  >
-                    <span className="text-muted-foreground font-medium shrink-0">{f.title}:</span>
-                    <div className="flex items-center gap-1">
-                      <span className="text-muted-foreground">{prefix}</span>
-                      <input
-                        type="number"
-                        value={minVal}
-                        onChange={(e) =>
-                          setRangeValues((prev) => ({
-                            ...prev,
-                            [f.columnId]: [e.target.value, prev[f.columnId]?.[1] ?? ""],
-                          }))
-                        }
-                        placeholder={f.min !== undefined ? String(f.min) : "Min"}
-                        min={f.min}
-                        max={f.max}
-                        step={f.step ?? 0.01}
-                        className="w-14 bg-transparent outline-none placeholder:text-muted-foreground/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                      />
-                      <span className="text-muted-foreground">–</span>
-                      <span className="text-muted-foreground">{prefix}</span>
-                      <input
-                        type="number"
-                        value={maxVal}
-                        onChange={(e) =>
-                          setRangeValues((prev) => ({
-                            ...prev,
-                            [f.columnId]: [prev[f.columnId]?.[0] ?? "", e.target.value],
-                          }))
-                        }
-                        placeholder={f.max !== undefined ? String(f.max) : "Max"}
-                        min={f.min}
-                        max={f.max}
-                        step={f.step ?? 0.01}
-                        className="w-14 bg-transparent outline-none placeholder:text-muted-foreground/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                      />
-                    </div>
-                    {isActive && (
-                      <button
-                        onClick={() =>
-                          setRangeValues((prev) => ({ ...prev, [f.columnId]: ["", ""] }))
-                        }
-                        className="ml-0.5 flex items-center justify-center rounded-full w-5 h-5 bg-accent text-accent-foreground transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:rotate-90 hover:scale-110 active:bg-primary active:text-primary-foreground active:scale-95"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    )}
-                  </div>
-                )
-              })}
-
-              {hasActiveFilters && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={resetFilters}
-                  className="h-8 gap-1 px-2 text-xs text-muted-foreground"
-                >
-                  <X className="h-3 w-3" />
-                  Reset
-                </Button>
+            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setFilterOpen(true)}
+              className="h-8 w-full shrink-0 gap-1.5 rounded-full sm:w-auto"
+            >
+              <SlidersHorizontal className="size-3.5" />
+              Filters
+              {activeFilterCount > 0 && (
+                <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-semibold text-primary-foreground">
+                  {activeFilterCount}
+                </span>
               )}
-            </div>
-
-            {/* Columns toggle — desktop only */}
-            <div className="hidden shrink-0 sm:block">
-              <DataGridColumnVisibility table={table} />
-            </div>
+            </Button>
           </div>
 
-          {/* Table */}
-          <div className="px-4">
-            <DataGridContainer className="rounded-md border" border={false}>
-              <div className="overflow-x-auto">
-                <div className="overflow-y-auto max-h-[460px]">
-                  <DataGridTable />
+          {/* Filter & columns sheet */}
+          <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
+            <SheetContent side="right" className="flex w-[min(90vw,340px)] flex-col gap-0 p-0 sm:w-[400px]">
+              <SheetHeader className="border-b px-6 py-5 text-left">
+                <SheetTitle>Filters &amp; Columns</SheetTitle>
+                <SheetDescription>Refine results and customise visible columns</SheetDescription>
+              </SheetHeader>
+
+              <div className="flex-1 overflow-y-auto">
+                {/* Faceted column filters */}
+                {filters.length > 0 && (
+                  <div className="px-6 py-5">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Filters</p>
+                    <div className="space-y-3">
+                      {filters.map((f) => {
+                        const col = table.getColumn(f.columnId)
+                        if (!col) return null
+                        return (
+                          <div key={f.columnId}>
+                            <Label className="mb-1.5 block text-sm font-medium">{f.title}</Label>
+                            <div className="[&>button]:w-full [&>button]:justify-start">
+                              <DataGridColumnFilter column={col} title={f.title} options={f.options} />
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Range filters */}
+                {rangeFilters.length > 0 && (
+                  <div className={filters.length > 0 ? "border-t px-6 py-5" : "px-6 py-5"}>
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Range Filters</p>
+                    <div className="space-y-3">
+                      {rangeFilters.map((f) => {
+                        const [minVal, maxVal] = rangeValues[f.columnId] ?? ["", ""]
+                        const prefix = f.prefix ?? ""
+                        const isActive = minVal !== "" || maxVal !== ""
+                        return (
+                          <div key={f.columnId}>
+                            <div className="mb-1.5 flex items-center justify-between">
+                              <Label className="text-sm font-medium">{f.title}</Label>
+                              {isActive && (
+                                <button
+                                  onClick={() => setRangeValues((prev) => ({ ...prev, [f.columnId]: ["", ""] }))}
+                                  className="flex items-center justify-center rounded-full w-5 h-5 bg-accent text-accent-foreground transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:rotate-90 hover:scale-110 active:bg-primary active:text-primary-foreground active:scale-95"
+                                >
+                                  <X className="h-3 w-3" />
+                                </button>
+                              )}
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                              <div className="flex items-center gap-1.5 rounded-md border bg-background px-3 py-2">
+                                <span className="shrink-0 text-xs text-muted-foreground">{prefix}Min</span>
+                                <input
+                                  type="number"
+                                  value={minVal}
+                                  onChange={(e) =>
+                                    setRangeValues((prev) => ({
+                                      ...prev,
+                                      [f.columnId]: [e.target.value, prev[f.columnId]?.[1] ?? ""],
+                                    }))
+                                  }
+                                  placeholder={f.min !== undefined ? String(f.min) : "0"}
+                                  min={f.min}
+                                  max={f.max}
+                                  step={f.step ?? 0.01}
+                                  className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                />
+                              </div>
+                              <div className="flex items-center gap-1.5 rounded-md border bg-background px-3 py-2">
+                                <span className="shrink-0 text-xs text-muted-foreground">{prefix}Max</span>
+                                <input
+                                  type="number"
+                                  value={maxVal}
+                                  onChange={(e) =>
+                                    setRangeValues((prev) => ({
+                                      ...prev,
+                                      [f.columnId]: [prev[f.columnId]?.[0] ?? "", e.target.value],
+                                    }))
+                                  }
+                                  placeholder={f.max !== undefined ? String(f.max) : "∞"}
+                                  min={f.min}
+                                  max={f.max}
+                                  step={f.step ?? 0.01}
+                                  className="w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground/50 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Column visibility — pill toggles in a card */}
+                <div className={filters.length > 0 || rangeFilters.length > 0 ? "border-t px-6 py-5" : "px-6 py-5"}>
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Columns</p>
+                  <div className="rounded-xl border bg-muted/30 p-3">
+                    <div className="flex flex-wrap gap-2">
+                      {table
+                        .getAllColumns()
+                        .filter((col) => col.getCanHide())
+                        .map((col) => (
+                          <button
+                            key={col.id}
+                            type="button"
+                            onClick={() => col.toggleVisibility(!col.getIsVisible())}
+                            className={cn(
+                              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-all",
+                              col.getIsVisible()
+                                ? "border-primary bg-primary text-primary-foreground"
+                                : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                            )}
+                          >
+                            {col.getIsVisible() && <Check className="size-3" />}
+                            {getColumnHeaderLabel(col)}
+                          </button>
+                        ))}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </DataGridContainer>
+
+              <div className="flex items-center justify-between border-t px-6 py-4">
+                {hasActiveFilters ? (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={resetFilters}
+                    className="gap-1.5 text-muted-foreground"
+                  >
+                    <X className="size-3" />
+                    Reset all
+                  </Button>
+                ) : (
+                  <span />
+                )}
+                <SheetClose asChild>
+                  <Button size="sm">Done</Button>
+                </SheetClose>
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          {/* Table — horizontal scroll on narrow screens */}
+          <div className="overflow-x-auto">
+            <DataGridTable />
           </div>
 
           {/* Pagination */}
-          <div className="px-4 py-4">
+          <div className="border-t px-4 py-4">
             <DataGridPagination sizes={pageSizes} />
           </div>
         </DataGrid>

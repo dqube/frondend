@@ -18,6 +18,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DataGridColumnHeader,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
 } from "@modernstores/ui";
 import {
   Plus,
@@ -33,6 +38,7 @@ import {
   AlertTriangle,
   CheckCircle2,
   LayoutGrid,
+  ExternalLink,
 } from "lucide-react";
 
 // ─── Mock data ────────────────────────────────────────────────────────────────
@@ -327,9 +333,248 @@ function StatCard({ icon, label, value, iconBg }: StatCardProps) {
   );
 }
 
+// ─── Product View Sheet ───────────────────────────────────────────────────────
+
+function ProductViewSheet({ product, onClose }: { product: Product | null; onClose: () => void }) {
+  if (!product) return null;
+  const cat = product.category?.name ?? "";
+  const cfg = CATEGORY_CONFIG[cat] ?? DEFAULT_CATEGORY_CONFIG;
+  const stockStatus = getStockStatus(product);
+  return (
+    <Sheet open={!!product} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <SheetContent side="right" className="flex w-[min(90vw,480px)] flex-col gap-0 p-0 sm:w-[480px]">
+        <SheetHeader className="border-b px-6 py-5 text-left">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg border ${cfg.bg} ${cfg.border}`}>
+                {cfg.emoji}
+              </div>
+              <div>
+                <SheetTitle className="text-base font-semibold leading-tight">{product.name}</SheetTitle>
+                <SheetDescription className="font-mono text-xs">{product.sku}</SheetDescription>
+              </div>
+            </div>
+          </div>
+        </SheetHeader>
+
+        <div className="flex-1 overflow-y-auto">
+          {/* Status row */}
+          <div className="flex items-center gap-3 border-b px-6 py-4">
+            <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${stockStatus.bg}`}>
+              <span className={`h-1.5 w-1.5 rounded-full ${stockStatus.dot}`} />
+              {stockStatus.label}
+            </span>
+            {product.isActive ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                Active
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
+                Draft
+              </span>
+            )}
+          </div>
+
+          {/* Details */}
+          <div className="space-y-5 px-6 py-5">
+            {product.description && (
+              <div>
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Description</p>
+                <p className="text-sm text-foreground">{product.description}</p>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Category</p>
+                <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-xs font-medium ${cfg.bg} ${cfg.text} ${cfg.border}`}>
+                  {cfg.emoji} {cat}
+                </span>
+              </div>
+              <div>
+                <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Price</p>
+                <p className="text-sm font-semibold tabular-nums">{getPriceDisplay(product)}</p>
+              </div>
+            </div>
+
+            {/* Variants */}
+            <div>
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Variants ({product.variants.length})</p>
+              <div className="space-y-2">
+                {product.variants.map((v) => (
+                  <div key={v.id} className="flex items-center justify-between rounded-lg border bg-muted/30 px-3 py-2">
+                    <div>
+                      <p className="text-sm font-medium">{v.name}</p>
+                      <p className="font-mono text-[11px] text-muted-foreground">{v.sku}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-semibold tabular-nums">RM {v.price.toFixed(2)}</p>
+                      <p className="text-[11px] text-muted-foreground">{v.stockQuantity} units</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {product.tags.length > 0 && (
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Tags</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {product.tags.map((tag) => (
+                    <span key={tag} className="rounded-full border bg-muted/60 px-2.5 py-0.5 text-xs text-muted-foreground">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-4 text-xs text-muted-foreground">
+              <div>
+                <p className="mb-0.5 font-semibold uppercase tracking-wider">Created</p>
+                <p>{new Date(product.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
+              </div>
+              <div>
+                <p className="mb-0.5 font-semibold uppercase tracking-wider">Updated</p>
+                <p>{new Date(product.updatedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between border-t px-6 py-4">
+          <Button variant="ghost" size="sm" onClick={onClose}>Close</Button>
+          <Button asChild size="sm" className="gap-1.5">
+            <Link href={`/products/${product.id}`}>
+              <ExternalLink className="h-3.5 w-3.5" />
+              Full details
+            </Link>
+          </Button>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+// ─── Product Edit Sheet ───────────────────────────────────────────────────────
+
+function ProductEditSheet({ product, onClose }: { product: Product | null; onClose: () => void }) {
+  const [name, setName] = useState(product?.name ?? "");
+  const [active, setActive] = useState(product?.isActive ?? true);
+
+  // Reset local state when product changes
+  if (!product) return null;
+
+  return (
+    <Sheet open={!!product} onOpenChange={(open) => { if (!open) onClose(); }}>
+      <SheetContent side="right" className="flex w-[min(90vw,480px)] flex-col gap-0 p-0 sm:w-[480px]">
+        <SheetHeader className="border-b px-6 py-5 text-left">
+          <SheetTitle className="text-base font-semibold">Edit Product</SheetTitle>
+          <SheetDescription className="font-mono text-xs">{product.sku}</SheetDescription>
+        </SheetHeader>
+
+        <div className="flex-1 overflow-y-auto">
+          <div className="space-y-5 px-6 py-5">
+            <div>
+              <label className="mb-1.5 block text-sm font-medium" htmlFor="edit-name">Product name</label>
+              <input
+                id="edit-name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              />
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-sm font-medium" htmlFor="edit-sku">SKU</label>
+              <input
+                id="edit-sku"
+                type="text"
+                defaultValue={product.sku}
+                disabled
+                className="w-full rounded-md border bg-muted px-3 py-2 font-mono text-sm text-muted-foreground outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-sm font-medium" htmlFor="edit-desc">Description</label>
+              <textarea
+                id="edit-desc"
+                defaultValue={product.description}
+                rows={3}
+                className="w-full rounded-md border bg-background px-3 py-2 text-sm outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2 resize-none"
+              />
+            </div>
+
+            <div className="flex items-center justify-between rounded-lg border bg-muted/30 px-4 py-3">
+              <div>
+                <p className="text-sm font-medium">Active listing</p>
+                <p className="text-xs text-muted-foreground">Visible to customers in the store</p>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={active}
+                onClick={() => setActive((v) => !v)}
+                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                  active ? "bg-primary" : "bg-input"
+                }`}
+              >
+                <span className={`pointer-events-none inline-block h-5 w-5 rounded-full bg-background shadow-lg ring-0 transition-transform ${
+                  active ? "translate-x-5" : "translate-x-0"
+                }`} />
+              </button>
+            </div>
+
+            {/* Variants — read-only summary */}
+            <div>
+              <p className="mb-2 text-sm font-medium">Variants</p>
+              <div className="space-y-2">
+                {product.variants.map((v) => (
+                  <div key={v.id} className="flex items-center justify-between rounded-lg border bg-muted/30 px-3 py-2">
+                    <div>
+                      <p className="text-sm font-medium">{v.name}</p>
+                      <p className="font-mono text-[11px] text-muted-foreground">{v.sku}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-semibold tabular-nums">RM {v.price.toFixed(2)}</p>
+                      <p className="text-[11px] text-muted-foreground">{v.stockQuantity} units</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-2 text-xs text-muted-foreground">To edit variants, use the full edit page.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between border-t px-6 py-4">
+          <Button variant="ghost" size="sm" onClick={onClose}>Cancel</Button>
+          <div className="flex gap-2">
+            <Button asChild variant="outline" size="sm" className="gap-1.5">
+              <Link href={`/products/${product.id}/edit`}>
+                <ExternalLink className="h-3.5 w-3.5" />
+                Full edit
+              </Link>
+            </Button>
+            <Button size="sm" onClick={onClose}>Save changes</Button>
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
 // ─── Columns ──────────────────────────────────────────────────────────────────
 
-const columns: ColumnDef<Product>[] = [
+function makeColumns(
+  onView: (p: Product) => void,
+  onEdit: (p: Product) => void
+): ColumnDef<Product>[] {
+  return [
   {
     id: "select",
     meta: {
@@ -506,17 +751,28 @@ const columns: ColumnDef<Product>[] = [
                 <span className="sr-only">Actions</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onClick={() => onView(product)}>
+                <Eye className="mr-2 h-3.5 w-3.5" />
+                Quick view
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => onEdit(product)}>
+                <Pencil className="mr-2 h-3.5 w-3.5" />
+                Quick edit
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href={`/products/${product.id}`}>
                   <Eye className="mr-2 h-3.5 w-3.5" />
                   View details
+                  <ExternalLink className="ml-auto h-3 w-3 text-muted-foreground" />
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href={`/products/${product.id}/edit`}>
                   <Pencil className="mr-2 h-3.5 w-3.5" />
                   Edit product
+                  <ExternalLink className="ml-auto h-3 w-3 text-muted-foreground" />
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => navigator.clipboard.writeText(product.sku)}>
@@ -537,7 +793,8 @@ const columns: ColumnDef<Product>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-];
+  ];
+}
 
 // ─── Filters ──────────────────────────────────────────────────────────────────
 
@@ -581,25 +838,16 @@ const rangeFilters: DataTableRangeFilterConfig[] = [
 export default function ProductsPage() {
   const [data] = useState(MOCK_PRODUCTS);
   const stats = computeStats(data);
+  const [viewProduct, setViewProduct] = useState<Product | null>(null);
+  const [editProduct, setEditProduct] = useState<Product | null>(null);
+  const columns = makeColumns(
+    (p) => setViewProduct(p),
+    (p) => setEditProduct(p),
+  );
 
   return (
     <>
-      <PageHeader title="Product Catalog" description="Manage inventory, pricing, and product listings">
-        <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs">
-          <Upload className="h-3.5 w-3.5" />
-          Import
-        </Button>
-        <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs">
-          <Download className="h-3.5 w-3.5" />
-          Export
-        </Button>
-        <Button asChild size="sm" className="h-9 gap-1.5">
-          <Link href="/products/new">
-            <Plus className="h-3.5 w-3.5" />
-            Add Product
-          </Link>
-        </Button>
-      </PageHeader>
+      <PageHeader title="Product Catalog" description="Manage inventory, pricing and listings" />
 
       <div className="space-y-6 p-4 md:p-6">
       {/* Summary stats */}
@@ -634,6 +882,25 @@ export default function ProductsPage() {
       <DataTable
         columns={columns}
         data={data}
+        title="Products"
+        actions={
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" className="h-8 gap-1.5 rounded-full text-xs">
+              <Upload className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Import</span>
+            </Button>
+            <Button variant="outline" size="sm" className="h-8 gap-1.5 rounded-full text-xs">
+              <Download className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Export</span>
+            </Button>
+            <Button asChild size="sm" className="h-8 gap-1.5 rounded-full">
+              <Link href="/products/new">
+                <Plus className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Add Product</span>
+              </Link>
+            </Button>
+          </div>
+        }
         globalSearchColumn="name"
         globalSearchPlaceholder="Search products…"
         filters={filters}
@@ -641,6 +908,9 @@ export default function ProductsPage() {
         pageSizes={[10, 25, 50]}
       />
       </div>
+
+      <ProductViewSheet product={viewProduct} onClose={() => setViewProduct(null)} />
+      <ProductEditSheet product={editProduct} onClose={() => setEditProduct(null)} />
     </>
   );
 }
