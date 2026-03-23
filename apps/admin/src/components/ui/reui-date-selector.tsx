@@ -2,7 +2,6 @@
 
 import {
   ChangeEvent,
-  ComponentProps,
   createContext,
   useCallback,
   useContext,
@@ -18,20 +17,16 @@ import {
   parse,
   subMonths,
 } from "date-fns";
-import { DayButton } from "react-day-picker";
 import type { DateRange } from "react-day-picker";
 import {
   ChevronLeft,
   ChevronRight,
   CornerUpLeft,
   CornerUpRight,
-  Minus,
-  Plus,
   X,
 } from "lucide-react";
 import {
   Button,
-  buttonVariants,
   Calendar,
   Input,
   Popover,
@@ -55,24 +50,6 @@ function useIsMobile(breakpoint = 768) {
     return () => window.removeEventListener("resize", check);
   }, [breakpoint]);
   return isMobile;
-}
-
-// ─── CalendarDayButton ────────────────────────────────────────────────────────
-
-function CalendarDayButton({
-  className,
-  ...props
-}: ComponentProps<typeof DayButton>) {
-  return (
-    <DayButton
-      className={cn(
-        buttonVariants({ variant: "ghost" }),
-        "h-9 w-9 p-0 font-normal aria-selected:opacity-100",
-        className
-      )}
-      {...props}
-    />
-  );
 }
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -680,27 +657,6 @@ function DateSelectorDayPicker({
     }
   };
 
-  const CustomDayButton = useCallback(
-    (props: ComponentProps<typeof DayButton>) => {
-      return (
-        <CalendarDayButton
-          {...props}
-          onMouseEnter={() => {
-            if (isRange && onDayHover && props.day) {
-              onDayHover(props.day.date);
-            }
-          }}
-          onMouseLeave={() => {
-            if (isRange && onDayHover) {
-              onDayHover(undefined);
-            }
-          }}
-        />
-      );
-    },
-    [isRange, onDayHover]
-  );
-
   const formatters = {
     formatWeekdayName: (date: Date) => {
       const dayIndex = date.getDay();
@@ -713,43 +669,49 @@ function DateSelectorDayPicker({
     },
   };
 
+  const sharedCalendarProps = {
+    month: currentMonth,
+    numberOfMonths: isMobile ? 1 : showTwoMonths ? 2 : 1,
+    showOutsideDays: true,
+    weekStartsOn,
+    formatters,
+    className: "p-0",
+    classNames: {
+      months: "flex flex-row gap-4",
+      nav: "hidden",
+      // start/end dates: primary filled pill
+      selected:
+        "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground rounded-md",
+      // day cell wrapper: secondary bg for in-range days, rounded caps at start/end
+      day: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-secondary/40 [&:has([aria-selected])]:bg-secondary first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+      // middle range buttons: transparent bg so cell's secondary shows through
+      range_middle:
+        "aria-selected:bg-transparent aria-selected:text-secondary-foreground",
+      range_end: "day-range-end",
+    },
+    onDayMouseEnter: isRange && onDayHover
+      ? (date: Date) => onDayHover(date)
+      : undefined,
+    onDayMouseLeave: isRange && onDayHover
+      ? () => onDayHover(undefined)
+      : undefined,
+  } as const;
+
   return (
     <div className={cn("w-full", className)}>
       {isRange ? (
         <Calendar
-          month={currentMonth}
+          {...sharedCalendarProps}
           mode="range"
           selected={selected as DateRange | undefined}
           onSelect={handleSelect as (range: DateRange | undefined) => void}
-          numberOfMonths={isMobile ? 1 : showTwoMonths ? 2 : 1}
-          showOutsideDays={true}
-          weekStartsOn={weekStartsOn}
-          formatters={formatters}
-          className="p-0"
-          classNames={{
-            months: "flex flex-row gap-4",
-            month: "flex flex-col",
-            nav: "hidden",
-          }}
-          components={{ DayButton: CustomDayButton }}
         />
       ) : (
         <Calendar
-          month={currentMonth}
+          {...sharedCalendarProps}
           mode="single"
           selected={selected as Date | undefined}
           onSelect={handleSelect as (date: Date | undefined) => void}
-          numberOfMonths={isMobile ? 1 : showTwoMonths ? 2 : 1}
-          showOutsideDays={true}
-          weekStartsOn={weekStartsOn}
-          formatters={formatters}
-          className="p-0"
-          classNames={{
-            months: "flex flex-row gap-4",
-            month: "flex flex-col",
-            nav: "hidden",
-          }}
-          components={{ DayButton: CustomDayButton }}
         />
       )}
     </div>
@@ -918,9 +880,12 @@ export function DateSelector({
     [i18nOverride]
   );
 
+  const [open, setOpen] = useState(false);
+  const [tempValue, setTempValue] = useState<DateSelectorValue | undefined>(value);
+
   const selector = useDateSelector({
-    value,
-    onChange,
+    value: tempValue,
+    onChange: setTempValue,
     defaultPeriodType,
     defaultFilterType,
     presetMode,
@@ -968,6 +933,25 @@ export function DateSelector({
       setInputValue(displayValue);
     }
   }, [displayValue, isInputFocused]);
+
+  // Sync tempValue when external value changes
+  useEffect(() => {
+    if (value) {
+      setTempValue(value);
+    }
+  }, [value]);
+
+  const handleApply = useCallback(() => {
+    if (tempValue) {
+      onChange?.(tempValue);
+    }
+    setOpen(false);
+  }, [tempValue, onChange]);
+
+  const handleCancel = useCallback(() => {
+    setTempValue(value);
+    setOpen(false);
+  }, [value]);
 
   const dateFormats = useMemo(() => {
     if (dayDateFormats && dayDateFormats.length > 0) {
@@ -1022,9 +1006,9 @@ export function DateSelector({
       const newValue = e.target.value;
       setInputValue(newValue);
       const parsed = parseInputValue(newValue);
-      if (parsed) onChange?.(parsed);
+      if (parsed) setTempValue(parsed);
     },
-    [onChange, parseInputValue]
+    [parseInputValue]
   );
 
   const handleInputBlur = useCallback(() => {
@@ -1034,11 +1018,18 @@ export function DateSelector({
     }
   }, [inputValue, displayValue, parseInputValue]);
 
+  // Display the committed value, not the temp value
+  const committedDisplayValue = formatDateValue(
+    value || { period: defaultPeriodType, operator: presetMode ?? defaultFilterType },
+    mergedI18n,
+    dayDateFormat
+  );
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className={cn("justify-start text-left font-normal", !displayValue && "text-muted-foreground", className)}>
-          {displayValue || (label ? label : mergedI18n.placeholder)}
+        <Button variant="outline" className={cn("justify-start text-left font-normal", !committedDisplayValue && "text-muted-foreground", className)}>
+          {committedDisplayValue || (label ? label : mergedI18n.placeholder)}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto max-w-none p-0" align="start" sideOffset={4}>
@@ -1163,6 +1154,16 @@ export function DateSelector({
             </ScrollArea>
           </div>
         )}
+
+        {/* Action buttons */}
+        <div className="flex items-center justify-end gap-2 border-t pt-3">
+          <Button variant="ghost" size="sm" onClick={handleCancel}>
+            {mergedI18n.cancel}
+          </Button>
+          <Button size="sm" onClick={handleApply}>
+            {mergedI18n.apply}
+          </Button>
+        </div>
       </div>
     </DateSelectorContext.Provider>
       </PopoverContent>

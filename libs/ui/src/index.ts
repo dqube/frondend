@@ -1,5 +1,6 @@
 // Primitives (shadcn/ui base)
 export * from "./components/button";
+export * from "./components/button-group";
 export * from "./components/input";
 export * from "./components/label";
 export * from "./components/badge";
@@ -13,6 +14,7 @@ export * from "./components/spinner";
 export * from "./components/dialog";
 export * from "./components/popover";
 export * from "./components/dropdown-menu";
+export * from "./components/context-menu";
 export * from "./components/sheet";
 export * from "./components/tooltip";
 export * from "./components/drawer";
@@ -42,6 +44,7 @@ export type { DateRange } from "react-day-picker";
 
 // Autocomplete (combobox)
 export * from "./components/autocomplete";
+export * from "./components/multi-select";
 
 // Layout
 export * from "./components/tabs";

@@ -70,6 +70,14 @@ function DateRangePicker({
           onSelect={handleSelect}
           numberOfMonths={numberOfMonths}
           initialFocus
+          classNames={{
+            selected:
+              "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground rounded-md",
+            day: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-secondary/40 [&:has([aria-selected])]:bg-secondary first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+            range_middle:
+              "aria-selected:bg-transparent aria-selected:text-secondary-foreground",
+            range_end: "day-range-end",
+          }}
         />
       </PopoverContent>
     </Popover>

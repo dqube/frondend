@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import {
@@ -41,6 +42,26 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  // Context Menu
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+  ContextMenuSeparator,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
+  ContextMenuLabel,
+  ContextMenuShortcut,
+  // Command
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
   // Forms
   Checkbox,
   RadioGroup,
@@ -54,6 +75,9 @@ import {
   Textarea,
   // Autocomplete
   Autocomplete,
+  MultiSelect,
+  // Button Group
+  ButtonGroup,
   // Calendar & Date
   DatePicker,
   DateRangePicker,
@@ -135,6 +159,18 @@ import {
   CheckCircle2,
   XCircle,
   ArrowRight,
+  FileText,
+  Folder,
+  Image,
+  Code,
+  Terminal,
+  BookOpen,
+  Calculator,
+  Calendar,
+  Smile,
+  CreditCard,
+  UserPlus,
+  Package,
 } from "lucide-react";
 
 // ─── Section wrapper ──────────────────────────────────────────────────────────
@@ -261,6 +297,41 @@ const FRUIT_OPTIONS = [
   { value: "strawberry", label: "Strawberry" },
 ];
 
+// ─── Multi-select Options ────────────────────────────────────────────────────
+
+const TEAM_MEMBERS = [
+  {
+    value: "alice",
+    label: "Alice Johnson",
+    description: "Product Designer · San Francisco",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alice",
+  },
+  {
+    value: "bob",
+    label: "Bob Smith",
+    description: "Frontend Developer · New York",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Bob",
+  },
+  {
+    value: "carol",
+    label: "Carol Williams",
+    description: "Backend Engineer · London",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Carol",
+  },
+  {
+    value: "david",
+    label: "David Brown",
+    description: "DevOps Engineer · Berlin",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=David",
+  },
+  {
+    value: "eve",
+    label: "Eve Davis",
+    description: "Marketing Manager · Toronto",
+    image: "https://api.dicebear.com/7.x/avataaars/svg?seed=Eve",
+  },
+];
+
 // ─── Tree data ───────────────────────────────────────────────────────────────
 
 type FileNodeData = { name: string; isFolder: boolean; children?: string[] };
@@ -294,6 +365,22 @@ export function UIShowcaseView() {
   const [dateSelectorValue, setDateSelectorValue] = useState<DateSelectorValue | undefined>();
   const [treeExpandedItems, setTreeExpandedItems] = useState<string[]>(["root", "components"]);
   const [treeFocusedItem, setTreeFocusedItem] = useState<string | null>(null);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const [multiSelectValue, setMultiSelectValue] = useState<string[]>([]);
+  const [contextMenuChecked, setContextMenuChecked] = useState(false);
+  const [contextMenuRadio, setContextMenuRadio] = useState("comfortable");
+
+  // Command palette keyboard shortcut
+  React.useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setCommandOpen((open) => !open);
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   const tree = useTree<FileNodeData>({
     rootItemId: "root",
@@ -1223,6 +1310,211 @@ export function UIShowcaseView() {
                 allowRange
               />
             </div>
+          </CardContent>
+        </Card>
+      </Section>
+
+      {/* ── Button Group ── */}
+      <Section
+        title="Button Group"
+        description="Grouped buttons with automatic border handling and multiple orientations."
+      >
+        <Card>
+          <CardContent className="pt-6 space-y-6">
+            <div>
+              <Label className="text-xs text-muted-foreground mb-3 block">Horizontal (default)</Label>
+              <div className="flex flex-wrap gap-4">
+                <ButtonGroup>
+                  <Button variant="outline">Left</Button>
+                  <Button variant="outline">Center</Button>
+                  <Button variant="outline">Right</Button>
+                </ButtonGroup>
+                <ButtonGroup>
+                  <Button variant="outline" size="icon"><Minus className="h-4 w-4" /></Button>
+                  <Button variant="outline" size="icon"><Plus className="h-4 w-4" /></Button>
+                </ButtonGroup>
+                <ButtonGroup>
+                  <Button variant="outline"><Download className="h-4 w-4 mr-2" />Export</Button>
+                  <Button variant="outline"><Upload className="h-4 w-4 mr-2" />Import</Button>
+                  <Button variant="outline"><Share2 className="h-4 w-4 mr-2" />Share</Button>
+                </ButtonGroup>
+              </div>
+            </div>
+
+            <Separator />
+
+            <div>
+              <Label className="text-xs text-muted-foreground mb-3 block">Vertical</Label>
+              <div className="flex flex-wrap gap-4">
+                <ButtonGroup orientation="vertical">
+                  <Button variant="outline"><Eye className="h-4 w-4 mr-2" />Preview</Button>
+                  <Button variant="outline"><Pencil className="h-4 w-4 mr-2" />Edit</Button>
+                  <Button variant="outline"><Copy className="h-4 w-4 mr-2" />Duplicate</Button>
+                  <Button variant="outline" className="text-destructive"><Trash2 className="h-4 w-4 mr-2" />Delete</Button>
+                </ButtonGroup>
+                <ButtonGroup orientation="vertical">
+                  <Button variant="outline">Top</Button>
+                  <Button variant="outline">Middle</Button>
+                  <Button variant="outline">Bottom</Button>
+                </ButtonGroup>
+              </div>
+            </div>
+
+            <Separator />
+
+            <div>
+              <Label className="text-xs text-muted-foreground mb-3 block">Full width</Label>
+              <ButtonGroup fullWidth>
+                <Button variant="outline">Option A</Button>
+                <Button variant="outline">Option B</Button>
+                <Button variant="outline">Option C</Button>
+              </ButtonGroup>
+            </div>
+          </CardContent>
+        </Card>
+      </Section>
+
+      {/* ── Multi-Select ── */}
+      <Section
+        title="Multi-Select with Images"
+        description="Select multiple items with avatar images and multi-line descriptions."
+      >
+        <Card>
+          <CardContent className="pt-6">
+            <div className="space-y-2 max-w-md">
+              <Label>Assign Team Members</Label>
+              <MultiSelect
+                options={TEAM_MEMBERS}
+                value={multiSelectValue}
+                onValueChange={setMultiSelectValue}
+                placeholder="Select team members…"
+                searchPlaceholder="Search members…"
+                emptyMessage="No team members found."
+              />
+              {multiSelectValue.length > 0 && (
+                <p className="text-xs text-muted-foreground">
+                  Selected {multiSelectValue.length} member{multiSelectValue.length !== 1 ? "s" : ""}
+                </p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </Section>
+
+      {/* ── Command Palette ── */}
+      <Section
+        title="Command Palette"
+        description="Keyboard-driven command menu for quick navigation and actions. Press ⌘K or Ctrl+K to open."
+      >
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4">
+              <Button variant="outline" onClick={() => setCommandOpen(true)}>
+                <Search className="h-4 w-4 mr-2" /> Open Command Palette
+              </Button>
+              <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </div>
+
+            <CommandDialog open={commandOpen} onOpenChange={setCommandOpen}>
+              <CommandInput placeholder="Type a command or search…" />
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                <CommandGroup heading="Suggestions">
+                  <CommandItem>
+                    <Calendar className="mr-2 h-4 w-4" />
+                    <span>Calendar</span>
+                  </CommandItem>
+                  <CommandItem>
+                    <Smile className="mr-2 h-4 w-4" />
+                    <span>Search Emoji</span>
+                  </CommandItem>
+                  <CommandItem>
+                    <Calculator className="mr-2 h-4 w-4" />
+                    <span>Calculator</span>
+                  </CommandItem>
+                </CommandGroup>
+                <CommandSeparator />
+                <CommandGroup heading="Settings">
+                  <CommandItem>
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </CommandItem>
+                  <CommandItem>
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    <span>Billing</span>
+                  </CommandItem>
+                  <CommandItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </CommandItem>
+                </CommandGroup>
+              </CommandList>
+            </CommandDialog>
+          </CardContent>
+        </Card>
+      </Section>
+
+      {/* ── Context Menu ── */}
+      <Section
+        title="Context Menu"
+        description="Right-click menu with actions, checkboxes, radio groups, and keyboard shortcuts."
+      >
+        <Card>
+          <CardContent className="pt-6">
+            <ContextMenu>
+              <ContextMenuTrigger asChild>
+                <div className="flex h-40 w-full items-center justify-center rounded-lg border border-dashed bg-muted/30">
+                  <div className="text-center">
+                    <p className="text-sm font-medium">Right-click here</p>
+                    <p className="text-xs text-muted-foreground mt-1">Open context menu</p>
+                  </div>
+                </div>
+              </ContextMenuTrigger>
+              <ContextMenuContent className="w-56">
+                <ContextMenuItem>
+                  <FileText className="mr-2 h-4 w-4" />
+                  <span>New File</span>
+                  <ContextMenuShortcut>⌘N</ContextMenuShortcut>
+                </ContextMenuItem>
+                <ContextMenuItem>
+                  <Folder className="mr-2 h-4 w-4" />
+                  <span>New Folder</span>
+                  <ContextMenuShortcut>⇧⌘N</ContextMenuShortcut>
+                </ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuItem>
+                  <Copy className="mr-2 h-4 w-4" />
+                  <span>Copy</span>
+                  <ContextMenuShortcut>⌘C</ContextMenuShortcut>
+                </ContextMenuItem>
+                <ContextMenuItem>
+                  <Share2 className="mr-2 h-4 w-4" />
+                  <span>Share</span>
+                </ContextMenuItem>
+                <ContextMenuSeparator />
+                <ContextMenuCheckboxItem
+                  checked={contextMenuChecked}
+                  onCheckedChange={setContextMenuChecked}
+                >
+                  <span>Show Hidden Files</span>
+                </ContextMenuCheckboxItem>
+                <ContextMenuSeparator />
+                <ContextMenuLabel>View Mode</ContextMenuLabel>
+                <ContextMenuRadioGroup value={contextMenuRadio} onValueChange={setContextMenuRadio}>
+                  <ContextMenuRadioItem value="compact">Compact</ContextMenuRadioItem>
+                  <ContextMenuRadioItem value="comfortable">Comfortable</ContextMenuRadioItem>
+                  <ContextMenuRadioItem value="spacious">Spacious</ContextMenuRadioItem>
+                </ContextMenuRadioGroup>
+                <ContextMenuSeparator />
+                <ContextMenuItem className="text-destructive">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  <span>Delete</span>
+                  <ContextMenuShortcut>⌘⌫</ContextMenuShortcut>
+                </ContextMenuItem>
+              </ContextMenuContent>
+            </ContextMenu>
           </CardContent>
         </Card>
       </Section>

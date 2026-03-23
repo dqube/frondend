@@ -81,37 +81,37 @@ export function ProductCard({ product, onAddToCart, className = "", compact = fa
           {product.hasVariants ? (
             /* Eye / quick-view button */
             <button
-              className={`${compact ? "h-6 w-6" : "h-8 w-8"} rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors`}
+              className={`${compact ? "h-8 w-8" : "h-11 w-11"} rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors`}
               aria-label="Quick view"
             >
-              <Eye className={compact ? "h-3 w-3" : "h-4 w-4"} />
+              <Eye className={compact ? "h-4 w-4" : "h-5 w-5"} />
             </button>
           ) : qty === 0 ? (
             /* Add to cart button */
             <button
               onClick={increment}
-              className={`${compact ? "h-6 w-6" : "h-8 w-8"} rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors`}
+              className={`${compact ? "h-8 w-8" : "h-11 w-11"} rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors`}
               aria-label={`Add ${product.name} to cart`}
             >
-              <Plus className={compact ? "h-3 w-3" : "h-4 w-4"} />
+              <Plus className={compact ? "h-4 w-4" : "h-5 w-5"} />
             </button>
           ) : (
             /* Quantity stepper */
-            <div className="flex items-center gap-1 bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 shadow-md">
+            <div className="flex items-center gap-1 bg-primary text-primary-foreground rounded-full px-2 py-1 shadow-md">
               <button
                 onClick={decrement}
-                className="h-5 w-5 flex items-center justify-center hover:opacity-80"
+                className={`${compact ? "h-5 w-5" : "h-6 w-6"} flex items-center justify-center hover:opacity-80`}
                 aria-label="Decrease quantity"
               >
-                <Minus className="h-3 w-3" />
+                <Minus className={compact ? "h-3 w-3" : "h-4 w-4"} />
               </button>
-              <span className="text-xs font-bold min-w-[14px] text-center">{qty}</span>
+              <span className={`${compact ? "text-xs" : "text-sm"} font-bold min-w-[16px] text-center`}>{qty}</span>
               <button
                 onClick={increment}
-                className="h-5 w-5 flex items-center justify-center hover:opacity-80"
+                className={`${compact ? "h-5 w-5" : "h-6 w-6"} flex items-center justify-center hover:opacity-80`}
                 aria-label="Increase quantity"
               >
-                <Plus className="h-3 w-3" />
+                <Plus className={compact ? "h-3 w-3" : "h-4 w-4"} />
               </button>
             </div>
           )}

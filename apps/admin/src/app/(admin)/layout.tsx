@@ -13,7 +13,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <Sidebar collapsed={collapsed} />
       <div className="flex flex-1 flex-col overflow-hidden">
         <Topbar collapsed={collapsed} onToggleCollapse={() => setCollapsed(!collapsed)} />
-        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-background">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-white">
           <PageTransition>{children}</PageTransition>
         </main>
       </div>

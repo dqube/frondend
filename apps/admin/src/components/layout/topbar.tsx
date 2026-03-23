@@ -29,7 +29,7 @@ export function Topbar({ collapsed, onToggleCollapse }: TopbarProps) {
   const initials = mockUser.name.split(" ").map((n) => n[0]).join("").toUpperCase();
 
   return (
-    <header className="flex h-14 md:h-16 items-center justify-between border-b bg-card pl-14 pr-4 md:px-6">
+    <header className="sticky top-0 z-30 flex h-14 md:h-16 items-center justify-between border-b bg-white/80 backdrop-blur-md backdrop-saturate-150 pl-14 pr-4 md:px-6">
       <Button variant="ghost" size="icon" onClick={onToggleCollapse} className="hidden md:flex h-8 w-8">
         {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
       </Button>
