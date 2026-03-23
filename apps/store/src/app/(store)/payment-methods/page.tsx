@@ -46,7 +46,7 @@ export default function PaymentMethodsPage() {
         </button>
       </div>
 
-      <div className="bg-green-50 border border-green-200/80 rounded-xl p-3 flex items-center gap-2 text-xs text-green-800">
+      <div className="bg-green-50 dark:bg-green-950/30 border border-green-200/80 dark:border-green-900 rounded-xl p-3 flex items-center gap-2 text-xs text-green-800 dark:text-green-300">
         <Shield className="h-4 w-4 text-green-600 shrink-0" />
         Your payment information is encrypted and securely stored.
       </div>
@@ -59,13 +59,13 @@ export default function PaymentMethodsPage() {
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5 space-y-4">
+            <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5 space-y-4">
               <h2 className="text-sm font-semibold">Add New Card</h2>
               <div className="grid gap-3 sm:grid-cols-2">
-                <input placeholder="Cardholder Name" className="col-span-full rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                <input placeholder="Card Number" className="col-span-full rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                <input placeholder="MM/YY" className="rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                <input placeholder="CVV" className="rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input placeholder="Cardholder Name" className="col-span-full rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input placeholder="Card Number" className="col-span-full rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input placeholder="MM/YY" className="rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input placeholder="CVV" className="rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
               <div className="flex gap-2">
                 <button onClick={() => setShowForm(false)} className="px-4 py-2 rounded-xl text-xs font-semibold bg-muted/60 hover:bg-muted transition-colors">Cancel</button>
@@ -83,8 +83,8 @@ export default function PaymentMethodsPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08 }}
-            className={`bg-white/60 backdrop-blur-sm border rounded-2xl shadow-sm p-5 ${
-              method.isDefault ? "border-primary/40" : "border-white/80"
+            className={`bg-card/60 backdrop-blur-sm border rounded-2xl shadow-sm p-5 ${
+              method.isDefault ? "border-primary/40" : "border-border/50"
             }`}
           >
             <div className="flex items-center gap-3">

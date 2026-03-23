@@ -11,7 +11,7 @@ const FAQ_CATEGORIES = [
       { q: "How do I place an order?", a: "Browse our products, add items to your cart, and proceed to checkout. You can choose a delivery slot that works for you and pay securely online." },
       { q: "What are the delivery slots available?", a: "We offer same-day delivery with 1-hour slots from 7am to 10pm, Monday to Saturday, and 9am to 8pm on Sundays. Express delivery (within 2 hours) is available for an additional fee." },
       { q: "Can I change or cancel my order?", a: "You can modify or cancel your order up to 1 hour before your scheduled delivery slot. Go to Orders in your account to make changes." },
-      { q: "What is the minimum order value?", a: "The minimum order is £15. Orders over £50 qualify for free standard delivery." },
+      { q: "What is the minimum order value?", a: "The minimum order is RM 15. Orders over RM 50 qualify for free standard delivery." },
       { q: "What happens if an item is out of stock?", a: "We'll substitute with a similar product of equal or greater value. You can opt out of substitutions in your account settings or for individual items." },
     ],
   },
@@ -20,7 +20,7 @@ const FAQ_CATEGORIES = [
     items: [
       { q: "What payment methods do you accept?", a: "We accept Visa, Mastercard, American Express, Apple Pay, Google Pay, and PayPal. All payments are processed securely." },
       { q: "When am I charged for my order?", a: "Your card is authorised when you place the order and charged after delivery. The final amount may differ slightly if substitutions are made." },
-      { q: "Do you offer a price-match guarantee?", a: "Yes! If you find a lower price for the same product at a major UK supermarket, we'll match it. Contact our support team with the details." },
+      { q: "Do you offer a price-match guarantee?", a: "Yes! If you find a lower price for the same product at a major Malaysian supermarket, we'll match it. Contact our support team with the details." },
     ],
   },
   {
@@ -34,9 +34,9 @@ const FAQ_CATEGORIES = [
   {
     title: "Account & Rewards",
     items: [
-      { q: "How do I earn reward points?", a: "You earn 1 point for every £1 spent. Bonus points are available for reviews (10 pts), referrals (200 pts), and weekly shopping streaks (2x points)." },
+      { q: "How do I earn reward points?", a: "You earn 1 point for every RM 1 spent. Bonus points are available for reviews (10 pts), referrals (200 pts), and weekly shopping streaks (2x points)." },
       { q: "How do I redeem rewards?", a: "Go to the Rewards page in your account. You can redeem points for store credit, free delivery, or percentage discounts." },
-      { q: "How does the referral program work?", a: "Share your unique referral code. Your friend gets £10 off their first order, and you earn £5 in store credit when they complete a purchase." },
+      { q: "How does the referral program work?", a: "Share your unique referral code. Your friend gets RM 10 off their first order, and you earn RM 5 in store credit when they complete a purchase." },
     ],
   },
 ];
@@ -69,7 +69,7 @@ export default function FaqPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search questions..."
-          className="w-full rounded-2xl border border-border/50 bg-white/80 pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+          className="w-full rounded-2xl border border-border/50 bg-background/80 pl-11 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
         />
       </div>
 
@@ -86,7 +86,7 @@ export default function FaqPage() {
             transition={{ delay: 0.1 + ci * 0.08 }}
           >
             <h2 className="text-lg font-semibold mb-3">{category.title}</h2>
-            <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm divide-y divide-border/30 overflow-hidden">
+            <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm divide-y divide-border/30 overflow-hidden">
               {category.items.map((item) => {
                 const id = `${category.title}-${item.q}`;
                 const isOpen = openId === id;
@@ -120,7 +120,7 @@ export default function FaqPage() {
       )}
 
       {/* Still need help */}
-      <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6 text-center">
+      <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6 text-center">
         <p className="text-sm text-muted-foreground">
           Can&apos;t find what you&apos;re looking for?{" "}
           <a href="/contact" className="text-primary font-medium hover:underline">Contact our support team</a>

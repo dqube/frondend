@@ -32,6 +32,7 @@ const FOOTER_LINKS = [
       { label: "About Us", href: "/about" },
       { label: "Contact", href: "/contact" },
       { label: "Blog", href: "/blog" },
+      { label: "Partners", href: "/partners" },
       { label: "Delivery Info", href: "/delivery" },
       { label: "Referral Program", href: "/referral" },
       { label: "FAQ", href: "/faq" },

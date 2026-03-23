@@ -26,7 +26,7 @@ export default function ComparePage() {
   }
 
   const rows: { label: string; getValue: (p: StoreProduct) => string }[] = [
-    { label: "Price", getValue: (p) => p.priceMax ? `$${p.price.toFixed(2)} – $${p.priceMax.toFixed(2)}` : `$${p.price.toFixed(2)}` },
+    { label: "Price", getValue: (p) => p.priceMax ? `RM ${p.price.toFixed(2)} – RM ${p.priceMax.toFixed(2)}` : `RM ${p.price.toFixed(2)}` },
     { label: "Unit", getValue: (p) => p.unit ?? "—" },
     { label: "Category", getValue: (p) => p.categoryId },
     { label: "Rating", getValue: (p) => p.rating ? `${p.rating} ★ (${p.reviewCount})` : "—" },
@@ -46,18 +46,18 @@ export default function ComparePage() {
       </div>
 
       {selected.length === 0 ? (
-        <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-8 text-center">
+        <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-8 text-center">
           <ArrowLeftRight className="h-12 w-12 text-muted-foreground/40 mx-auto mb-3" />
           <h2 className="text-lg font-semibold mb-1">No products to compare</h2>
           <p className="text-sm text-muted-foreground mb-4">Add products from the suggestions below or browse our catalog.</p>
         </div>
       ) : (
-        <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm overflow-x-auto">
+        <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm overflow-x-auto">
           <table className="w-full text-sm min-w-[600px]">
             {/* Product headers */}
             <thead>
               <tr>
-                <th className="p-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide w-32 sticky left-0 bg-white/60">Feature</th>
+                <th className="p-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide w-32 sticky left-0 bg-card/60">Feature</th>
                 {selected.map((p) => (
                   <th key={p.id} className="p-4 text-center min-w-[180px]">
                     <div className="flex flex-col items-center gap-2">
@@ -100,7 +100,7 @@ export default function ComparePage() {
               ))}
               {/* Add to cart row */}
               <tr>
-                <td className="p-4 sticky left-0 bg-white/60" />
+                <td className="p-4 sticky left-0 bg-card/60" />
                 {selected.map((p) => (
                   <td key={p.id} className="p-4 text-center">
                     <button className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground px-4 py-2 rounded-lg text-xs font-semibold hover:bg-primary/90 transition-colors">
@@ -125,7 +125,7 @@ export default function ComparePage() {
               key={product.id}
               onClick={() => addItem(product)}
               disabled={selected.length >= 4}
-              className="flex items-center gap-3 bg-white/60 backdrop-blur-sm border border-white/80 rounded-xl p-3 hover:shadow-md transition-shadow disabled:opacity-50 disabled:cursor-not-allowed text-left"
+              className="flex items-center gap-3 bg-card/60 backdrop-blur-sm border border-border/50 rounded-xl p-3 hover:shadow-md transition-shadow disabled:opacity-50 disabled:cursor-not-allowed text-left"
             >
               <span className="text-2xl">{product.emoji}</span>
               <div className="min-w-0 flex-1">

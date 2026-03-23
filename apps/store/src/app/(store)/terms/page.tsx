@@ -9,7 +9,7 @@ export default function TermsPage() {
       </div>
       <p className="text-xs text-muted-foreground">Last updated: January 1, 2025</p>
 
-      <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6 md:p-8 space-y-6 text-sm text-muted-foreground leading-relaxed">
+      <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6 md:p-8 space-y-6 text-sm text-muted-foreground leading-relaxed">
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">1. Agreement to Terms</h2>
           <p>By accessing or using the ModernStores website and services, you agree to be bound by these Terms & Conditions. If you do not agree, please do not use our services.</p>
@@ -23,7 +23,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">3. Orders & Pricing</h2>
           <ul className="list-disc pl-5 space-y-1">
-            <li>All prices are displayed in GBP and include VAT where applicable</li>
+            <li>All prices are displayed in MYR (Malaysian Ringgit)</li>
             <li>We reserve the right to amend prices at any time before an order is confirmed</li>
             <li>An order is confirmed when we send you an order confirmation email</li>
             <li>We reserve the right to cancel orders due to pricing errors, stock issues, or suspected fraud</li>
@@ -57,12 +57,12 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">9. Governing Law</h2>
-          <p>These terms are governed by the laws of England and Wales. Any disputes shall be subject to the exclusive jurisdiction of the English courts.</p>
+          <p>These terms are governed by the laws of Malaysia. Any disputes shall be subject to the exclusive jurisdiction of the Malaysian courts.</p>
         </section>
 
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">10. Contact</h2>
-          <p>For questions about these terms, contact us at legal@modernstores.com or write to: ModernStores Ltd, 42 Green Lane, London, E1 6AN.</p>
+          <p>For questions about these terms, contact us at legal@modernstores.com or write to: ModernStores Sdn. Bhd., Lot G-12, Suria KLCC, Jalan Ampang, Kuala Lumpur 50088.</p>
         </section>
       </div>
     </div>

@@ -64,11 +64,43 @@ export default function ProductDetailPage({ params }: Props) {
 
   const [qty, setQty] = useState(1);
   const [wishlisted, setWishlisted] = useState(false);
+  const [selectedImg, setSelectedImg] = useState(0);
   const [helpfulVotes, setHelpfulVotes] = useState<Record<string, boolean>>({});
 
   const priceDisplay = product.priceMax
-    ? `$${product.price.toFixed(2)} – $${product.priceMax.toFixed(2)}`
-    : `$${product.price.toFixed(2)}`;
+    ? `RM ${product.price.toFixed(2)} – RM ${product.priceMax.toFixed(2)}`
+    : `RM ${product.price.toFixed(2)}`;
+
+  const GALLERY = [
+    {
+      id: "main",
+      label: "Product",
+      emoji: product.emoji ?? "🛒",
+      bg: "from-muted/50 to-muted/20",
+      overlay: null,
+    },
+    {
+      id: "fresh",
+      label: "Fresh",
+      emoji: product.emoji ?? "🛒",
+      bg: "from-green-50/80 to-green-100/50 dark:from-green-950/50 dark:to-green-900/30",
+      overlay: "🌿",
+    },
+    {
+      id: "pack",
+      label: "Packaged",
+      emoji: product.emoji ?? "🛒",
+      bg: "from-amber-50/80 to-amber-100/50 dark:from-amber-950/50 dark:to-amber-900/30",
+      overlay: "📦",
+    },
+    {
+      id: "serve",
+      label: "Serving",
+      emoji: product.emoji ?? "🛒",
+      bg: "from-blue-50/80 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30",
+      overlay: "🍽️",
+    },
+  ] as const;
 
   const totalReviews = MOCK_REVIEWS.length;
   const avgRating = product.rating ?? (MOCK_REVIEWS.reduce((s, r) => s + r.rating, 0) / totalReviews);
@@ -96,27 +128,46 @@ export default function ProductDetailPage({ params }: Props) {
 
         {/* Image panel */}
         <div className="space-y-3">
-          <div className="relative rounded-3xl bg-gradient-to-br from-muted/50 to-muted/20 border border-border/30 aspect-square flex items-center justify-center overflow-hidden">
+          {/* Main image */}
+          <div className={`relative rounded-3xl bg-gradient-to-br ${GALLERY[selectedImg].bg} border border-border/30 aspect-square flex items-center justify-center overflow-hidden transition-colors duration-300`}>
             {product.onSale && (
               <span className="absolute top-4 left-4 z-10 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
                 On Sale
               </span>
             )}
-            <span className="text-[9rem] md:text-[11rem] select-none drop-shadow-sm">
-              {product.emoji ?? "🛒"}
+
+            {/* View label */}
+            <span className="absolute bottom-4 left-4 z-10 bg-background/80 backdrop-blur border border-border/40 rounded-full px-2.5 py-1 text-xs font-medium text-foreground">
+              {GALLERY[selectedImg].label}
             </span>
+
+            {/* Image counter */}
+            <span className="absolute bottom-4 right-16 z-10 bg-background/80 backdrop-blur border border-border/40 rounded-full px-2.5 py-1 text-xs text-muted-foreground">
+              {selectedImg + 1} / {GALLERY.length}
+            </span>
+
+            <span className="text-[9rem] md:text-[11rem] select-none drop-shadow-sm">
+              {GALLERY[selectedImg].emoji}
+            </span>
+
+            {/* Context overlay emoji */}
+            {GALLERY[selectedImg].overlay && (
+              <span className="absolute bottom-14 right-6 text-4xl select-none opacity-50 pointer-events-none">
+                {GALLERY[selectedImg].overlay}
+              </span>
+            )}
 
             {/* Share + Wishlist float */}
             <div className="absolute top-4 right-4 flex flex-col gap-2">
               <button
                 onClick={() => setWishlisted((w) => !w)}
-                className={`h-9 w-9 rounded-full flex items-center justify-center shadow-md transition-all border ${wishlisted ? "bg-red-500 border-red-500 text-white" : "bg-white/80 backdrop-blur border-white/60 text-muted-foreground hover:text-red-500"}`}
+                className={`h-9 w-9 rounded-full flex items-center justify-center shadow-md transition-all border ${wishlisted ? "bg-red-500 border-red-500 text-white" : "bg-background/80 backdrop-blur border-border/50 text-muted-foreground hover:text-red-500"}`}
                 aria-label="Wishlist"
               >
                 <Heart className={`h-4 w-4 ${wishlisted ? "fill-current" : ""}`} />
               </button>
               <button
-                className="h-9 w-9 rounded-full bg-white/80 backdrop-blur border border-white/60 flex items-center justify-center shadow-md text-muted-foreground hover:text-foreground transition-colors"
+                className="h-9 w-9 rounded-full bg-background/80 backdrop-blur border border-border/50 flex items-center justify-center shadow-md text-muted-foreground hover:text-foreground transition-colors"
                 aria-label="Share"
               >
                 <Share2 className="h-4 w-4" />
@@ -124,11 +175,35 @@ export default function ProductDetailPage({ params }: Props) {
             </div>
           </div>
 
+          {/* Thumbnails */}
+          <div className="grid grid-cols-4 gap-2">
+            {GALLERY.map((img, i) => (
+              <button
+                key={img.id}
+                onClick={() => setSelectedImg(i)}
+                aria-label={img.label}
+                className={`relative aspect-square rounded-2xl border-2 overflow-hidden flex flex-col items-center justify-center gap-1 bg-gradient-to-br transition-all duration-200 ${img.bg} ${
+                  selectedImg === i
+                    ? "border-primary shadow-md"
+                    : "border-border/40 hover:border-primary/50 hover:shadow-sm"
+                }`}
+              >
+                <span className="text-2xl select-none">{img.emoji}</span>
+                {img.overlay && (
+                  <span className="absolute bottom-1 right-1 text-xs select-none opacity-70">{img.overlay}</span>
+                )}
+                <span className={`text-[10px] font-medium leading-none ${
+                  selectedImg === i ? "text-primary" : "text-muted-foreground"
+                }`}>{img.label}</span>
+              </button>
+            ))}
+          </div>
+
           {/* Origin + storage info pill row */}
           {(product.origin || product.storage) && (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {product.origin && (
-                <div className="flex items-start gap-2.5 bg-white/60 backdrop-blur-sm border border-border/40 rounded-2xl px-4 py-3">
+                <div className="flex items-start gap-2.5 bg-card/60 backdrop-blur-sm border border-border/40 rounded-2xl px-4 py-3">
                   <Leaf className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
                   <div>
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-0.5">Origin</p>
@@ -137,7 +212,7 @@ export default function ProductDetailPage({ params }: Props) {
                 </div>
               )}
               {product.storage && (
-                <div className="flex items-start gap-2.5 bg-white/60 backdrop-blur-sm border border-border/40 rounded-2xl px-4 py-3">
+                <div className="flex items-start gap-2.5 bg-card/60 backdrop-blur-sm border border-border/40 rounded-2xl px-4 py-3">
                   <Shield className="h-4 w-4 text-blue-500 mt-0.5 shrink-0" />
                   <div>
                     <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-0.5">Storage</p>
@@ -187,7 +262,7 @@ export default function ProductDetailPage({ params }: Props) {
             <span className="text-3xl font-bold">{priceDisplay}</span>
             {product.originalPrice && !product.priceMax && (
               <span className="text-lg text-muted-foreground line-through">
-                ${product.originalPrice.toFixed(2)}
+                RM {product.originalPrice.toFixed(2)}
               </span>
             )}
             {product.unit && (
@@ -206,7 +281,7 @@ export default function ProductDetailPage({ params }: Props) {
           {product.nutritionHighlights && product.nutritionHighlights.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {product.nutritionHighlights.map((h) => (
-                <span key={h} className="flex items-center gap-1.5 bg-green-50 border border-green-100 text-green-700 text-xs font-medium px-3 py-1.5 rounded-full">
+                <span key={h} className="flex items-center gap-1.5 bg-green-50 border border-green-100 text-green-700 dark:bg-green-950/50 dark:border-green-900 dark:text-green-400 text-xs font-medium px-3 py-1.5 rounded-full">
                   <Leaf className="h-3 w-3" />
                   {h}
                 </span>
@@ -235,7 +310,7 @@ export default function ProductDetailPage({ params }: Props) {
                 </button>
               </div>
               <span className="text-sm text-muted-foreground">
-                Total: <span className="font-bold text-foreground">${(product.price * qty).toFixed(2)}</span>
+                Total: <span className="font-bold text-foreground">RM {(product.price * qty).toFixed(2)}</span>
               </span>
             </div>
 
@@ -251,7 +326,7 @@ export default function ProductDetailPage({ params }: Props) {
           {/* Trust badges */}
           <div className="grid grid-cols-3 gap-3 pt-2 border-t border-border/40">
             {[
-              { icon: Truck, label: "Free delivery", sub: "on orders over $40" },
+              { icon: Truck, label: "Free delivery", sub: "on orders over RM 40" },
               { icon: Shield, label: "Freshness guarantee", sub: "or full refund" },
               { icon: RotateCcw, label: "Easy returns", sub: "within 24 hours" },
             ].map(({ icon: Icon, label, sub }) => (
@@ -273,14 +348,14 @@ export default function ProductDetailPage({ params }: Props) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 mb-8">
           {/* Overall score */}
-          <div className="bg-white/60 backdrop-blur-sm border border-border/40 rounded-3xl p-6 flex flex-col items-center justify-center gap-3 text-center">
+          <div className="bg-card/60 backdrop-blur-sm border border-border/40 rounded-3xl p-6 flex flex-col items-center justify-center gap-3 text-center">
             <span className="text-6xl font-bold leading-none">{avgRating.toFixed(1)}</span>
             <StarDisplay rating={avgRating} size="lg" />
             <p className="text-sm text-muted-foreground">Based on {product.reviewCount ?? totalReviews} reviews</p>
           </div>
 
           {/* Rating breakdown */}
-          <div className="md:col-span-2 bg-white/60 backdrop-blur-sm border border-border/40 rounded-3xl p-6 space-y-3">
+          <div className="md:col-span-2 bg-card/60 backdrop-blur-sm border border-border/40 rounded-3xl p-6 space-y-3">
             {ratingCounts.map(({ star, count }) => (
               <RatingBar key={star} label={`${star}★`} count={count} total={totalReviews} />
             ))}
@@ -290,7 +365,7 @@ export default function ProductDetailPage({ params }: Props) {
         {/* Review cards */}
         <div className="space-y-4">
           {MOCK_REVIEWS.map((review) => (
-            <div key={review.id} className="bg-white/60 backdrop-blur-sm border border-border/40 rounded-2xl p-5 space-y-3">
+            <div key={review.id} className="bg-card/60 backdrop-blur-sm border border-border/40 rounded-2xl p-5 space-y-3">
               <div className="flex items-start justify-between gap-3 flex-wrap">
                 <div className="flex items-center gap-3">
                   <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-sm font-bold text-primary shrink-0">
@@ -300,7 +375,7 @@ export default function ProductDetailPage({ params }: Props) {
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="text-sm font-semibold">{review.author}</span>
                       {review.verified && (
-                        <span className="text-[10px] font-medium text-green-600 bg-green-50 border border-green-100 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] font-medium text-green-600 bg-green-50 border border-green-100 dark:text-green-400 dark:bg-green-950/50 dark:border-green-900 px-2 py-0.5 rounded-full">
                           Verified Purchase
                         </span>
                       )}
@@ -339,9 +414,9 @@ export default function ProductDetailPage({ params }: Props) {
               See all
             </Link>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-4">
             {related.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p} compact />
             ))}
           </div>
         </section>

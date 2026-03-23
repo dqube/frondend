@@ -24,6 +24,10 @@ const NAV_ITEMS = [
       { label: "Meat & Seafood",    href: "/products?category=meat" },
       { label: "Bakery",            href: "/products?category=bakery" },
       { label: "Snacks & Drinks",   href: "/products?category=snacks" },
+      { label: "Cooking Oils",      href: "/products?category=indian-oils" },
+      { label: "Rice & Grains",     href: "/products?category=rice" },
+      { label: "Indian Spices",     href: "/products?category=indian-spices" },
+      { label: "Pulses & Dhals",    href: "/products?category=pulses" },
     ],
   },
   {

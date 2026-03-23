@@ -11,8 +11,8 @@ const saleProducts = ALL_PRODUCTS.filter((p) => p.onSale);
 
 const PROMO_CODES = [
   { code: "FRESH20", discount: "20% off", description: "On all fresh vegetables", expiry: "Expires Apr 15", emoji: "🥦" },
-  { code: "DAIRY10", discount: "10% off", description: "Dairy products over $20", expiry: "Expires Apr 30", emoji: "🧀" },
-  { code: "FREEDELIVERY", discount: "Free Delivery", description: "On orders over $50", expiry: "Ongoing", emoji: "🚚" },
+  { code: "DAIRY10", discount: "10% off", description: "Dairy products over RM 20", expiry: "Expires Apr 30", emoji: "🧀" },
+  { code: "FREEDELIVERY", discount: "Free Delivery", description: "On orders over RM 50", expiry: "Ongoing", emoji: "🚚" },
 ];
 
 const FLASH_DEALS = [
@@ -53,7 +53,7 @@ export default function DealsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5 relative overflow-hidden"
+              className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5 relative overflow-hidden"
             >
               <div className="absolute top-3 right-3 flex items-center gap-1 bg-destructive/10 text-destructive text-xs font-bold px-2.5 py-1 rounded-full">
                 <Clock className="h-3 w-3" />
@@ -67,8 +67,8 @@ export default function DealsPage() {
                 </div>
               </div>
               <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-xl font-bold text-primary">${deal.price.toFixed(2)}</span>
-                <span className="text-sm text-muted-foreground line-through">${deal.originalPrice.toFixed(2)}</span>
+                <span className="text-xl font-bold text-primary">RM {deal.price.toFixed(2)}</span>
+                <span className="text-sm text-muted-foreground line-through">RM {deal.originalPrice.toFixed(2)}</span>
                 <span className="text-xs font-bold text-white bg-destructive px-2 py-0.5 rounded-full">
                   {Math.round((1 - deal.price / deal.originalPrice) * 100)}% OFF
                 </span>
@@ -97,7 +97,7 @@ export default function DealsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 + i * 0.08 }}
-              className="bg-white/60 backdrop-blur-sm border border-dashed border-primary/40 rounded-2xl p-5 flex items-center gap-4"
+              className="bg-card/60 backdrop-blur-sm border border-dashed border-primary/40 rounded-2xl p-5 flex items-center gap-4"
             >
               <span className="text-3xl">{promo.emoji}</span>
               <div className="flex-1 min-w-0">
@@ -117,13 +117,13 @@ export default function DealsPage() {
       <section>
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-xl font-bold">On Sale Now</h2>
-          <Link href="/products?sort=sale" className="text-xs font-semibold text-primary bg-white/60 backdrop-blur-sm border border-white/80 px-3 py-1.5 rounded-full hover:bg-white/80 transition-colors flex items-center gap-1">
+          <Link href="/products?sort=sale" className="text-xs font-semibold text-primary bg-card/60 backdrop-blur-sm border border-border/50 px-3 py-1.5 rounded-full hover:bg-background/80 transition-colors flex items-center gap-1">
             View all <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
           {saleProducts.slice(0, 10).map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} compact />
           ))}
         </div>
       </section>

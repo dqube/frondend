@@ -115,7 +115,7 @@ export default function RecipePage({ params }: Props) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
       >
         <h2 className="text-lg font-semibold mb-3">Ingredients</h2>
         <div className="space-y-2">
@@ -134,7 +134,7 @@ export default function RecipePage({ params }: Props) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
       >
         <h2 className="text-lg font-semibold mb-3">Instructions</h2>
         <ol className="space-y-3">
@@ -152,7 +152,7 @@ export default function RecipePage({ params }: Props) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
       >
         <h2 className="text-lg font-semibold mb-3">Shop the Ingredients</h2>
         <div className="space-y-2">
@@ -160,7 +160,7 @@ export default function RecipePage({ params }: Props) {
             <div key={p.name} className="flex items-center gap-3">
               <span className="text-xl">{p.emoji}</span>
               <span className="flex-1 text-sm font-medium">{p.name}</span>
-              <span className="text-sm text-muted-foreground">${p.price.toFixed(2)}</span>
+              <span className="text-sm text-muted-foreground">RM {p.price.toFixed(2)}</span>
               <button className="inline-flex items-center gap-1 bg-primary text-primary-foreground px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-primary/90 transition-colors">
                 <ShoppingCart className="h-3 w-3" /> Add
               </button>
@@ -168,7 +168,7 @@ export default function RecipePage({ params }: Props) {
           ))}
         </div>
         <div className="border-t pt-3 mt-3 flex justify-between items-center">
-          <span className="text-sm font-semibold">Total: ${recipe.products.reduce((s, p) => s + p.price, 0).toFixed(2)}</span>
+          <span className="text-sm font-semibold">Total: RM {recipe.products.reduce((s, p) => s + p.price, 0).toFixed(2)}</span>
           <button className="inline-flex items-center gap-1.5 bg-primary text-primary-foreground px-4 py-2 rounded-xl text-xs font-semibold hover:bg-primary/90 transition-colors">
             <ShoppingCart className="h-3.5 w-3.5" /> Add All to Cart
           </button>

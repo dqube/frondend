@@ -55,7 +55,7 @@ export default function NotificationsPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
-              className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+              className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
             >
               <div className="flex items-start gap-3">
                 <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
@@ -92,7 +92,7 @@ export default function NotificationsPage() {
       {/* Recent notifications */}
       <section>
         <h2 className="text-lg font-semibold mb-3">Recent Notifications</h2>
-        <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm divide-y divide-border/30">
+        <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm divide-y divide-border/30">
           {[
             { title: "Order #ORD-1042 delivered", time: "2 hours ago", read: false },
             { title: "Flash sale: 30% off fresh produce", time: "Yesterday", read: true },

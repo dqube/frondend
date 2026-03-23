@@ -29,7 +29,7 @@ export default function SearchPage() {
   return (
     <div className="space-y-6">
       {/* Search bar */}
-      <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6">
+      <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6">
         <div className="relative max-w-2xl mx-auto">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
           <input
@@ -53,7 +53,7 @@ export default function SearchPage() {
 
       {/* No query state */}
       {!query.trim() && (
-        <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-8">
+        <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-8">
           <h2 className="text-lg font-semibold mb-4">Popular Categories</h2>
           <div className="flex flex-wrap gap-2">
             {CATEGORIES.slice(0, 8).map((cat) => (
@@ -92,7 +92,7 @@ export default function SearchPage() {
               <Link
                 key={cat.id}
                 href={`/products?category=${cat.id}`}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/60 backdrop-blur-sm border border-white/80 shadow-sm hover:shadow-md transition-shadow text-sm font-medium"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-shadow text-sm font-medium"
               >
                 <span className="text-2xl">{cat.emoji}</span>
                 <span>{cat.label}</span>
@@ -113,13 +113,13 @@ export default function SearchPage() {
           </div>
 
           {results.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {results.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} compact />
               ))}
             </div>
           ) : (
-            <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-8 text-center">
+            <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-8 text-center">
               <Search className="h-12 w-12 text-muted-foreground/40 mx-auto mb-3" />
               <h3 className="text-lg font-semibold mb-1">No results found</h3>
               <p className="text-sm text-muted-foreground mb-4">

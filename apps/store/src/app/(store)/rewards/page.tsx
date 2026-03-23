@@ -11,10 +11,10 @@ const NEXT_TIER_POINTS = 5000;
 
 const REWARDS = [
   { id: "1", name: "Free Delivery", points: 500, emoji: "🚚", available: true },
-  { id: "2", name: "$5 Store Credit", points: 1000, emoji: "💰", available: true },
+  { id: "2", name: "RM 5 Store Credit", points: 1000, emoji: "💰", available: true },
   { id: "3", name: "10% Off Order", points: 1500, emoji: "🏷️", available: true },
   { id: "4", name: "Free Premium Box", points: 3000, emoji: "📦", available: false },
-  { id: "5", name: "$25 Store Credit", points: 5000, emoji: "💎", available: false },
+  { id: "5", name: "RM 25 Store Credit", points: 5000, emoji: "💎", available: false },
 ];
 
 const HISTORY = [
@@ -67,7 +67,7 @@ export default function RewardsPage() {
       {/* How to earn */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
-          { label: "Shop", desc: "1pt/$1", emoji: "🛒" },
+          { label: "Shop", desc: "1pt/RM 1", emoji: "🛒" },
           { label: "Review", desc: "+10pts", emoji: "⭐" },
           { label: "Refer", desc: "+200pts", emoji: "👥" },
           { label: "Streak", desc: "2x pts", emoji: "🔥" },
@@ -77,7 +77,7 @@ export default function RewardsPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + i * 0.06 }}
-            className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-xl p-3 text-center"
+            className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-xl p-3 text-center"
           >
             <span className="text-2xl">{item.emoji}</span>
             <p className="text-xs font-semibold mt-1">{item.label}</p>
@@ -96,7 +96,7 @@ export default function RewardsPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15 + i * 0.06 }}
-              className={`bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-4 flex items-center gap-3 ${
+              className={`bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-4 flex items-center gap-3 ${
                 !reward.available ? "opacity-60" : ""
               }`}
             >
@@ -120,7 +120,7 @@ export default function RewardsPage() {
       {/* Points history */}
       <section>
         <h2 className="text-lg font-semibold mb-3">Points History</h2>
-        <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm divide-y divide-border/30">
+        <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm divide-y divide-border/30">
           {HISTORY.map((item) => (
             <div key={item.action + item.date} className="flex items-center gap-3 px-5 py-3">
               <div className="flex-1 min-w-0">

@@ -70,14 +70,14 @@ export default function CollectionPage({ params }: Props) {
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`bg-gradient-to-br ${collection.gradient} border border-white/80 rounded-2xl p-6 md:p-8 text-center`}
+        className={`bg-gradient-to-br ${collection.gradient} border border-border/50 rounded-2xl p-6 md:p-8 text-center`}
       >
         <span className="text-6xl">{collection.emoji}</span>
         <h1 className="text-2xl font-bold mt-3">{collection.title}</h1>
         <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">{collection.description}</p>
         <div className="flex justify-center gap-2 mt-3">
           {collection.tags.map((tag) => (
-            <span key={tag} className="inline-flex items-center gap-1 bg-white/80 px-2.5 py-0.5 rounded-full text-xs font-medium">
+            <span key={tag} className="inline-flex items-center gap-1 bg-background/80 px-2.5 py-0.5 rounded-full text-xs font-medium">
               <Tag className="h-2.5 w-2.5" /> {tag}
             </span>
           ))}
@@ -90,7 +90,7 @@ export default function CollectionPage({ params }: Props) {
           <Link
             key={s}
             href={`/collections/${s}`}
-            className="inline-flex items-center gap-1.5 bg-white/60 backdrop-blur-sm border border-white/80 rounded-xl px-3 py-2 text-xs font-medium hover:shadow-md transition-shadow shrink-0"
+            className="inline-flex items-center gap-1.5 bg-card/60 backdrop-blur-sm border border-border/50 rounded-xl px-3 py-2 text-xs font-medium hover:shadow-md transition-shadow shrink-0"
           >
             <span>{c.emoji}</span> {c.title}
           </Link>
@@ -98,9 +98,9 @@ export default function CollectionPage({ params }: Props) {
       </div>
 
       {/* Products grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-4">
         {displayProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} compact />
         ))}
       </div>
 

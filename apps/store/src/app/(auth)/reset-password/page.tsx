@@ -79,7 +79,7 @@ export default function ResetPasswordPage() {
       </div>
 
       {error && (
-        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 dark:bg-red-950/30 dark:border-red-900 dark:text-red-400 px-4 py-3 text-sm text-red-600">
           {error}
         </div>
       )}
@@ -100,7 +100,7 @@ export default function ResetPasswordPage() {
               placeholder="Create a strong password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-border bg-white/60 py-2.5 pl-10 pr-10 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary"
+              className="w-full rounded-xl border border-border bg-card/60 py-2.5 pl-10 pr-10 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary"
             />
             <button
               type="button"
@@ -158,7 +158,7 @@ export default function ResetPasswordPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className={cn(
-                "w-full rounded-xl border bg-white/60 py-2.5 pl-10 pr-10 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary",
+                "w-full rounded-xl border bg-card/60 py-2.5 pl-10 pr-10 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary",
                 confirmPassword.length > 0
                   ? passwordsMatch
                     ? "border-green-400"

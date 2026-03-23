@@ -85,10 +85,10 @@ const columns: ColumnDef<Product>[] = [
       if (!variant) return <span className="text-muted-foreground">—</span>;
       return (
         <div className="flex flex-col">
-          <span className="font-medium">${variant.price.toFixed(2)}</span>
+          <span className="font-medium">RM {variant.price.toFixed(2)}</span>
           {variant.compareAtPrice && (
             <span className="text-xs text-muted-foreground line-through">
-              ${variant.compareAtPrice.toFixed(2)}
+              RM {variant.compareAtPrice.toFixed(2)}
             </span>
           )}
         </div>

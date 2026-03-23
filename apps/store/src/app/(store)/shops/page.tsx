@@ -36,57 +36,57 @@ interface StoreLocation {
 
 const STORES: StoreLocation[] = [
   {
-    id: "downtown",
-    name: "ModernStores Downtown",
-    address: "42 Market Street, City Center",
-    city: "London EC2A 1AH",
-    phone: "+44 20 7123 4567",
-    lat: 51.5225,
-    lng: -0.0834,
+    id: "klcc",
+    name: "ModernStores KLCC",
+    address: "Lot G-12, Suria KLCC, Jalan Ampang",
+    city: "Kuala Lumpur 50088",
+    phone: "+60 3-2382 0123",
+    lat: 3.1579,
+    lng: 101.7116,
     rating: 4.8,
     reviewCount: 324,
     hours: [
-      { day: "Mon – Fri", time: "7:00 AM – 10:00 PM" },
-      { day: "Saturday", time: "8:00 AM – 9:00 PM" },
-      { day: "Sunday", time: "9:00 AM – 7:00 PM" },
+      { day: "Mon – Fri", time: "10:00 AM – 10:00 PM" },
+      { day: "Saturday", time: "10:00 AM – 10:00 PM" },
+      { day: "Sunday", time: "10:00 AM – 9:00 PM" },
     ],
     features: ["Organic Section", "Bakery", "Deli Counter", "Free Parking"],
     image: "🏬",
     isOpen: true,
   },
   {
-    id: "westside",
-    name: "ModernStores Westside",
-    address: "185 Holland Park Avenue",
-    city: "London W11 4UL",
-    phone: "+44 20 7890 1234",
-    lat: 51.5074,
-    lng: -0.2058,
+    id: "bangsar",
+    name: "ModernStores Bangsar",
+    address: "19 Jalan Telawi 2, Bangsar Baru",
+    city: "Kuala Lumpur 59100",
+    phone: "+60 3-2201 4567",
+    lat: 3.1301,
+    lng: 101.6713,
     rating: 4.6,
     reviewCount: 198,
     hours: [
-      { day: "Mon – Fri", time: "8:00 AM – 9:00 PM" },
-      { day: "Saturday", time: "8:00 AM – 8:00 PM" },
-      { day: "Sunday", time: "10:00 AM – 6:00 PM" },
+      { day: "Mon – Fri", time: "9:00 AM – 9:00 PM" },
+      { day: "Saturday", time: "9:00 AM – 9:00 PM" },
+      { day: "Sunday", time: "10:00 AM – 7:00 PM" },
     ],
     features: ["Organic Section", "Click & Collect", "Wheelchair Accessible"],
     image: "🛒",
     isOpen: true,
   },
   {
-    id: "riverside",
-    name: "ModernStores Riverside",
-    address: "12 Canary Wharf, Docklands",
-    city: "London E14 5AB",
-    phone: "+44 20 7456 7890",
-    lat: 51.5054,
-    lng: -0.0235,
+    id: "penang",
+    name: "ModernStores Penang",
+    address: "88 Gurney Drive, Gurney Plaza",
+    city: "George Town, Penang 10250",
+    phone: "+60 4-226 8901",
+    lat: 5.4141,
+    lng: 100.3288,
     rating: 4.9,
     reviewCount: 412,
     hours: [
-      { day: "Mon – Fri", time: "6:30 AM – 11:00 PM" },
-      { day: "Saturday", time: "7:00 AM – 10:00 PM" },
-      { day: "Sunday", time: "8:00 AM – 8:00 PM" },
+      { day: "Mon – Fri", time: "9:00 AM – 10:00 PM" },
+      { day: "Saturday", time: "9:00 AM – 10:00 PM" },
+      { day: "Sunday", time: "10:00 AM – 8:00 PM" },
     ],
     features: ["24hr Click & Collect", "Bakery", "Juice Bar", "Free WiFi", "Deli Counter"],
     image: "🏪",
@@ -112,7 +112,7 @@ function StoreCard({
         "w-full rounded-2xl border-2 p-5 text-left transition-all duration-200",
         isSelected
           ? "border-primary bg-primary/5 shadow-md"
-          : "border-white/80 bg-white/60 shadow-sm backdrop-blur-sm hover:border-primary/30 hover:shadow-md"
+          : "border-border/50 bg-card/60 shadow-sm backdrop-blur-sm hover:border-primary/30 hover:shadow-md"
       )}
     >
       {/* Header */}
@@ -197,7 +197,7 @@ function StoreCard({
 
 function StoreDetail({ store }: { store: StoreLocation }) {
   return (
-    <div className="rounded-2xl border border-white/80 bg-white/60 p-6 shadow-sm backdrop-blur-sm">
+    <div className="rounded-2xl border border-border/50 bg-card/60 p-6 shadow-sm backdrop-blur-sm">
       {/* Header */}
       <div className="mb-5 flex items-center gap-4">
         <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-muted text-3xl">
@@ -342,7 +342,7 @@ export default function ShopsPage() {
           placeholder="Search by store name, address, or city…"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded-xl border border-border bg-white/60 py-2.5 pl-10 pr-4 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary"
+          className="w-full rounded-xl border border-border bg-card/60 py-2.5 pl-10 pr-4 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary"
         />
       </div>
 
@@ -368,7 +368,7 @@ export default function ShopsPage() {
           </div>
 
           {filteredStores.length === 0 && (
-            <div className="flex flex-col items-center rounded-2xl border border-white/80 bg-white/60 py-12 shadow-sm backdrop-blur-sm">
+            <div className="flex flex-col items-center rounded-2xl border border-border/50 bg-card/60 py-12 shadow-sm backdrop-blur-sm">
               <MapPin className="mb-3 h-8 w-8 text-muted-foreground/40" />
               <p className="text-sm font-medium">No stores found</p>
               <p className="mt-1 text-xs text-muted-foreground">
@@ -381,7 +381,7 @@ export default function ShopsPage() {
         {/* Map — right side on desktop, first on mobile */}
         <div className="order-1 w-full lg:order-2 lg:flex-1">
           <div className="sticky top-20 space-y-4">
-            <div className="overflow-hidden rounded-2xl border border-white/80 shadow-sm">
+            <div className="overflow-hidden rounded-2xl border border-border/50 shadow-sm">
               <StoreMap
                 stores={STORES}
                 selectedId={selectedId}

@@ -6,7 +6,7 @@ import { cn } from "@modernstores/ui";
 const stats = [
   {
     title: "Total Revenue",
-    value: "$124,563",
+    value: "RM 124,563",
     change: "+12.5%",
     trend: "up" as const,
     sub: "vs last month",

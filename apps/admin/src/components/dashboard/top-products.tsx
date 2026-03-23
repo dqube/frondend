@@ -1,9 +1,9 @@
 const products = [
-  { rank: 1,  name: "Organic Berry Mix",       category: "Fruits & Veg", sales: 842,  revenue: "$40,416",  trend: "+14%" },
-  { rank: 2,  name: "Cold Press Orange Juice",  category: "Beverages",    sales: 716,  revenue: "$28,640",  trend: "+9%"  },
-  { rank: 3,  name: "Premium Cheddar Block",    category: "Dairy",        sales: 688,  revenue: "$13,071",  trend: "+6%"  },
-  { rank: 4,  name: "Sourdough Bread Loaf",     category: "Bakery",       sales: 624,  revenue: "$11,232",  trend: "+11%" },
-  { rank: 5,  name: "Baby Spinach 400g",        category: "Fruits & Veg", sales: 591,  revenue: "$8,865",   trend: "-2%"  },
+  { rank: 1,  name: "Organic Berry Mix",       category: "Fruits & Veg", sales: 842,  revenue: "RM 40,416",  trend: "+14%" },
+  { rank: 2,  name: "Cold Press Orange Juice",  category: "Beverages",    sales: 716,  revenue: "RM 28,640",  trend: "+9%"  },
+  { rank: 3,  name: "Premium Cheddar Block",    category: "Dairy",        sales: 688,  revenue: "RM 13,071",  trend: "+6%"  },
+  { rank: 4,  name: "Sourdough Bread Loaf",     category: "Bakery",       sales: 624,  revenue: "RM 11,232",  trend: "+11%" },
+  { rank: 5,  name: "Baby Spinach 400g",        category: "Fruits & Veg", sales: 591,  revenue: "RM 8,865",   trend: "-2%"  },
 ];
 
 export function TopProducts() {

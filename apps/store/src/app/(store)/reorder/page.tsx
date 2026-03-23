@@ -76,7 +76,7 @@ export default function ReorderPage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm overflow-hidden"
+              className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm overflow-hidden"
             >
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/50 px-5 py-3">
                 <div className="flex items-center gap-3">
@@ -105,21 +105,21 @@ export default function ReorderPage() {
                       <p className="text-sm font-medium">{item.name}</p>
                       <p className="text-xs text-muted-foreground">Qty: {item.qty}</p>
                     </div>
-                    <p className="text-sm font-semibold">${(item.price * item.qty).toFixed(2)}</p>
+                    <p className="text-sm font-semibold">₴{(item.price * item.qty).toFixed(2)}</p>
                   </div>
                 ))}
               </div>
 
               <div className="flex items-center justify-between px-5 py-3 bg-muted/20">
                 <span className="text-xs text-muted-foreground">{order.items.length} items</span>
-                <span className="text-sm font-bold">Total: ${order.total.toFixed(2)}</span>
+                <span className="text-sm font-bold">Total: RM {order.total.toFixed(2)}</span>
               </div>
             </motion.div>
           );
         })}
       </div>
 
-      <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6 text-center">
+      <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6 text-center">
         <p className="text-sm text-muted-foreground">
           Looking for something else?{" "}
           <Link href="/products" className="text-primary font-medium hover:underline">

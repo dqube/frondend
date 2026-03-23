@@ -79,7 +79,7 @@ export default function ReviewOrderPage({ params }: Props) {
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5 space-y-3"
+          className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5 space-y-3"
         >
           <h2 className="text-sm font-semibold">Delivery Experience</h2>
           <div className="flex items-center justify-between">
@@ -113,7 +113,7 @@ export default function ReviewOrderPage({ params }: Props) {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5 space-y-3"
+          className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5 space-y-3"
         >
           <h2 className="text-sm font-semibold">Rate Products</h2>
           <div className="divide-y divide-border/30">
@@ -132,7 +132,7 @@ export default function ReviewOrderPage({ params }: Props) {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5 space-y-3"
+          className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5 space-y-3"
         >
           <h2 className="text-sm font-semibold">Additional Comments</h2>
           <textarea
@@ -140,7 +140,7 @@ export default function ReviewOrderPage({ params }: Props) {
             onChange={(e) => setComment(e.target.value)}
             placeholder="Tell us more about your experience..."
             rows={3}
-            className="w-full rounded-xl border border-border/50 bg-white/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+            className="w-full rounded-xl border border-border/50 bg-background/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
           />
         </motion.div>
 

@@ -22,7 +22,7 @@ const ORDER_ITEMS = [
 ];
 
 const ADDRESSES = [
-  { id: "home", label: "Home", detail: "Wolfson Institute of Preventive Medicine, London EC1M 7BA, UK" },
+  { id: "home", label: "Home", detail: "No. 12, Jalan Ampang, KLCC, Kuala Lumpur 50450" },
   { id: "office", label: "Office", detail: "80 Windsor Park Rd, Singapore 574175" },
 ];
 
@@ -61,8 +61,8 @@ function DeliveryAddressStep({ onNext }: { onNext: () => void }) {
             onClick={() => setSelected(addr.id)}
             className={`relative text-left p-5 rounded-xl border-2 transition-colors ${
               selected === addr.id
-                ? "border-primary bg-white"
-                : "border-border bg-white/60 hover:border-primary/40"
+                ? "border-primary bg-background"
+                : "border-border bg-card/60 hover:border-primary/40"
             }`}
           >
             <p className="font-semibold text-sm mb-2">{addr.label}</p>
@@ -75,7 +75,7 @@ function DeliveryAddressStep({ onNext }: { onNext: () => void }) {
           </button>
         ))}
 
-        <button className="flex items-center gap-2 p-5 rounded-xl border-2 border-dashed border-primary/50 bg-white/40 hover:border-primary hover:bg-white/60 transition-colors text-sm text-primary">
+        <button className="flex items-center gap-2 p-5 rounded-xl border-2 border-dashed border-primary/50 bg-card/40 hover:border-primary hover:bg-card/60 transition-colors text-sm text-primary">
           <Plus className="h-4 w-4" />
           Add Address
         </button>
@@ -102,7 +102,7 @@ function DeliveryScheduleStep({ onNext }: { onNext: () => void }) {
             key={s.id}
             onClick={() => setSlot(s.id)}
             className={`text-left p-4 rounded-xl border-2 transition-colors ${
-              slot === s.id ? "border-primary bg-white" : "border-border bg-white/60 hover:border-primary/40"
+              slot === s.id ? "border-primary bg-background" : "border-border bg-card/60 hover:border-primary/40"
             }`}
           >
             <p className="font-semibold text-sm">{s.label}</p>
@@ -119,7 +119,7 @@ function ContactNumberStep({ onNext }: { onNext: () => void }) {
   return (
     <div className="space-y-4">
       <div className="flex gap-3">
-        <select className="border border-border rounded-xl px-3 py-2.5 text-sm bg-white/60 backdrop-blur-sm outline-none focus:border-primary">
+        <select className="border border-border rounded-xl px-3 py-2.5 text-sm bg-card/60 backdrop-blur-sm outline-none focus:border-primary">
           <option>+1</option>
           <option>+44</option>
           <option>+61</option>
@@ -128,7 +128,7 @@ function ContactNumberStep({ onNext }: { onNext: () => void }) {
         <input
           type="tel"
           placeholder="Phone number"
-          className="flex-1 border border-border rounded-xl px-4 py-2.5 text-sm bg-white/60 backdrop-blur-sm outline-none focus:border-primary placeholder:text-muted-foreground"
+          className="flex-1 border border-border rounded-xl px-4 py-2.5 text-sm bg-card/60 backdrop-blur-sm outline-none focus:border-primary placeholder:text-muted-foreground"
         />
       </div>
       <NextStepButton onClick={onNext} />
@@ -152,7 +152,7 @@ function PaymentOptionStep({ onNext }: { onNext: () => void }) {
             key={m.id}
             onClick={() => setMethod(m.id)}
             className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 transition-colors text-left ${
-              method === m.id ? "border-primary bg-white" : "border-border bg-white/60 hover:border-primary/40"
+              method === m.id ? "border-primary bg-background" : "border-border bg-card/60 hover:border-primary/40"
             }`}
           >
             <span className="text-xl">{m.emoji}</span>
@@ -171,7 +171,7 @@ function DeliveryInstructionsStep() {
       <textarea
         rows={3}
         placeholder="Any special delivery instructions? (e.g. leave at door, ring bell)"
-        className="w-full border border-border rounded-xl px-4 py-3 text-sm bg-white/60 backdrop-blur-sm outline-none focus:border-primary placeholder:text-muted-foreground resize-none"
+        className="w-full border border-border rounded-xl px-4 py-3 text-sm bg-card/60 backdrop-blur-sm outline-none focus:border-primary placeholder:text-muted-foreground resize-none"
       />
       <div className="flex justify-end">
         <button className="bg-primary text-primary-foreground px-8 py-2.5 rounded-lg text-sm font-semibold hover:bg-primary/90 transition-colors">
@@ -190,7 +190,7 @@ function OrderSummary() {
   const total = subtotal + shipping;
 
   return (
-    <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl p-6 shadow-sm sticky top-24">
+    <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl p-6 shadow-sm sticky top-24">
       <div className="flex justify-between border-b border-border/50 pb-3 mb-4">
         <span className="text-sm font-semibold text-muted-foreground">Product</span>
         <span className="text-sm font-semibold text-muted-foreground">Subtotal</span>
@@ -203,7 +203,7 @@ function OrderSummary() {
               {item.emoji}
             </span>
             <p className="flex-1 text-sm text-foreground leading-snug">{item.name}</p>
-            <span className="text-sm font-semibold shrink-0">${item.price.toFixed(2)}</span>
+            <span className="text-sm font-semibold shrink-0">RM {item.price.toFixed(2)}</span>
           </div>
         ))}
       </div>
@@ -211,15 +211,15 @@ function OrderSummary() {
       <div className="border-t border-border/50 pt-4 space-y-3 mb-5">
         <div className="flex justify-between text-sm">
           <span className="font-semibold">Subtotal</span>
-          <span className="font-medium">${subtotal.toFixed(2)}</span>
+          <span className="font-medium">RM {subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-sm">
           <span className="font-semibold">Shipping</span>
-          <span className="font-medium">{shipping === 0 ? "$0.00" : `$${(shipping as number).toFixed(2)}`}</span>
+          <span className="font-medium">{shipping === 0 ? "RM 0.00" : `RM ${(shipping as number).toFixed(2)}`}</span>
         </div>
         <div className="flex justify-between text-sm font-bold border-t border-border/50 pt-3">
           <span>Total</span>
-          <span>${total.toFixed(2)}</span>
+          <span>RM {total.toFixed(2)}</span>
         </div>
       </div>
 
@@ -295,7 +295,7 @@ export default function CheckoutPage() {
             <StepperPanel className="flex-1 min-w-0">
               {STEPS.map((step) => (
                 <StepperContent key={step.id} value={step.id}>
-                  <div className="rounded-2xl border border-white/80 bg-white/60 backdrop-blur-sm shadow-sm p-6">
+                  <div className="rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm shadow-sm p-6">
                     {step.id === 1 && <DeliveryAddressStep onNext={() => completeStep(1)} />}
                     {step.id === 2 && <DeliveryScheduleStep onNext={() => completeStep(2)} />}
                     {step.id === 3 && <ContactNumberStep onNext={() => completeStep(3)} />}

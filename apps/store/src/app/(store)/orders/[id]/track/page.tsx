@@ -48,7 +48,7 @@ export default function TrackOrderPage({ params }: Props) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
       >
         <h2 className="text-sm font-semibold mb-4">Delivery Progress</h2>
         <div className="space-y-0">
@@ -80,7 +80,7 @@ export default function TrackOrderPage({ params }: Props) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
       >
         <h2 className="text-sm font-semibold mb-3">Your Driver</h2>
         <div className="flex items-center gap-3">
@@ -100,14 +100,14 @@ export default function TrackOrderPage({ params }: Props) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.35 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
       >
         <h2 className="text-sm font-semibold mb-3">Order Summary</h2>
         <div className="space-y-2 text-sm">
           {[
-            { name: "Organic Bananas x2", price: "$3.98", emoji: "🍌" },
-            { name: "Whole Milk x1", price: "$3.49", emoji: "🥛" },
-            { name: "Sourdough Bread x1", price: "$4.99", emoji: "🍞" },
+            { name: "Organic Bananas x2", price: "RM 3.98", emoji: "🍌" },
+            { name: "Whole Milk x1", price: "RM 3.49", emoji: "🥛" },
+            { name: "Sourdough Bread x1", price: "RM 4.99", emoji: "🍞" },
           ].map((item) => (
             <div key={item.name} className="flex items-center gap-2">
               <span>{item.emoji}</span>
@@ -117,7 +117,7 @@ export default function TrackOrderPage({ params }: Props) {
           ))}
           <div className="border-t pt-2 mt-2 flex justify-between font-semibold">
             <span>Total</span>
-            <span>$12.46</span>
+            <span>RM 12.46</span>
           </div>
         </div>
       </motion.div>

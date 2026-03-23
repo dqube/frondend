@@ -8,7 +8,7 @@ const DELIVERY_OPTIONS = [
     icon: Zap,
     name: "Express Delivery",
     time: "Within 2 hours",
-    price: "£4.99",
+    price: "RM 19.90",
     desc: "For urgent orders — we'll prioritise your delivery.",
     color: "bg-orange-100 text-orange-600",
   },
@@ -16,7 +16,7 @@ const DELIVERY_OPTIONS = [
     icon: Clock,
     name: "Same-Day Delivery",
     time: "Choose a 1-hour slot",
-    price: "£2.99",
+    price: "RM 12.90",
     desc: "Select a convenient time slot for today.",
     color: "bg-blue-100 text-blue-600",
   },
@@ -24,7 +24,7 @@ const DELIVERY_OPTIONS = [
     icon: Truck,
     name: "Standard Delivery",
     time: "Next day",
-    price: "FREE over £50",
+    price: "FREE over RM 200",
     desc: "Scheduled next-day delivery with flexible time slots.",
     color: "bg-green-100 text-green-600",
   },
@@ -39,10 +39,10 @@ const DELIVERY_OPTIONS = [
 ];
 
 const ZONES = [
-  { area: "Central London (Zones 1–2)", sameDay: "✓", express: "✓", nextDay: "✓" },
-  { area: "Inner London (Zones 3–4)", sameDay: "✓", express: "✓", nextDay: "✓" },
-  { area: "Outer London (Zones 5–6)", sameDay: "✓", express: "—", nextDay: "✓" },
-  { area: "Greater London", sameDay: "—", express: "—", nextDay: "✓" },
+  { area: "Kuala Lumpur (City Centre)", sameDay: "✓", express: "✓", nextDay: "✓" },
+  { area: "Petaling Jaya / Subang", sameDay: "✓", express: "✓", nextDay: "✓" },
+  { area: "Shah Alam / Klang", sameDay: "✓", express: "—", nextDay: "✓" },
+  { area: "Penang / Johor Bahru", sameDay: "—", express: "—", nextDay: "✓" },
 ];
 
 export default function DeliveryPage() {
@@ -63,7 +63,7 @@ export default function DeliveryPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.08 }}
-              className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+              className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
             >
               <div className={`h-10 w-10 rounded-xl ${opt.color} flex items-center justify-center mb-3`}>
                 <Icon className="h-5 w-5" />
@@ -84,7 +84,7 @@ export default function DeliveryPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm overflow-hidden"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm overflow-hidden"
       >
         <div className="px-5 py-4 border-b border-border/50">
           <h2 className="text-lg font-semibold">Delivery Zones</h2>
@@ -118,7 +118,7 @@ export default function DeliveryPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6"
       >
         <div className="flex items-center gap-3 mb-3">
           <div className="h-9 w-9 rounded-xl bg-green-100 flex items-center justify-center">
@@ -137,7 +137,7 @@ export default function DeliveryPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6"
       >
         <div className="flex items-center gap-3 mb-3">
           <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -150,7 +150,7 @@ export default function DeliveryPage() {
           <li>• You can add delivery instructions (buzzer code, gate info) in checkout</li>
           <li>• Track your order in real-time once it&apos;s out for delivery</li>
           <li>• Contact your driver directly through the app if needed</li>
-          <li>• Orders over £50 qualify for free standard delivery</li>
+          <li>• Orders over RM 200 qualify for free standard delivery</li>
         </ul>
       </motion.div>
     </div>

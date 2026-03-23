@@ -43,7 +43,7 @@ function formatDate(iso: string) {
 }
 
 function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(amount);
+  return "RM " + new Intl.NumberFormat("ms-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
 }
 
 export function OrderCard({ order }: { order: Order }) {
@@ -55,7 +55,7 @@ export function OrderCard({ order }: { order: Order }) {
 
   return (
     <Link href={`/orders/${order.id}`} className="block group">
-      <Card className="overflow-hidden border-white/80 dark:border-border bg-white/70 dark:bg-card/70 backdrop-blur-md hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5">
+      <Card className="overflow-hidden border-border/50 dark:border-border bg-card/70 dark:bg-card/70 backdrop-blur-md hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-0.5">
         {/* Top bar — status + date */}
         <div className="flex items-center justify-between px-5 py-3 border-b border-dashed border-border/50">
           <div className="flex items-center gap-2">

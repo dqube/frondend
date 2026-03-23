@@ -549,7 +549,7 @@ export function UIShowcaseView() {
               <CardDescription>Monthly recurring revenue</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-3xl font-bold">$45,231</p>
+              <p className="text-3xl font-bold">RM 45,231</p>
               <p className="text-xs text-emerald-600 mt-1">+20.1% from last month</p>
             </CardContent>
           </Card>

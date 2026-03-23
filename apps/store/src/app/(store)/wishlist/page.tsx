@@ -37,7 +37,7 @@ export default function WishlistPage() {
 
   if (items.length === 0) {
     return (
-      <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-8 md:p-12">
+      <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-8 md:p-12">
         <div className="flex flex-col items-center justify-center py-12 gap-4 text-center">
           <Heart className="h-16 w-16 text-muted-foreground/40" />
           <h1 className="text-2xl font-bold">Your wishlist is empty</h1>
@@ -72,7 +72,7 @@ export default function WishlistPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.05 }}
-            className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5 flex flex-col gap-4"
+            className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5 flex flex-col gap-4"
           >
             <div className="flex items-start gap-4">
               <Link href={`/products/${item.id}`} className="h-20 w-20 rounded-xl bg-muted/40 flex items-center justify-center text-4xl shrink-0">
@@ -84,9 +84,9 @@ export default function WishlistPage() {
                 </Link>
                 <p className="text-xs text-muted-foreground mt-1">{item.unit}</p>
                 <div className="flex items-baseline gap-1.5 mt-2">
-                  <span className="text-sm font-bold">${item.price.toFixed(2)}</span>
+                  <span className="text-sm font-bold">RM {item.price.toFixed(2)}</span>
                   {item.originalPrice && (
-                    <span className="text-xs text-muted-foreground line-through">${item.originalPrice.toFixed(2)}</span>
+                    <span className="text-xs text-muted-foreground line-through">RM {item.originalPrice.toFixed(2)}</span>
                   )}
                   {item.onSale && (
                     <span className="text-[10px] font-bold text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">SALE</span>

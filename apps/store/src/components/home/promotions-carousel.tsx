@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -61,22 +61,45 @@ const PROMOTIONS: Promotion[] = [
 
 export function PromotionsCarousel() {
   const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const hovered = useRef(false);
 
-  const prev = () => setCurrent((c) => (c - 1 + PROMOTIONS.length) % PROMOTIONS.length);
-  const next = () => setCurrent((c) => (c + 1) % PROMOTIONS.length);
+  const prev = () => {
+    setDirection(-1);
+    setCurrent((c) => (c - 1 + PROMOTIONS.length) % PROMOTIONS.length);
+  };
+  const next = () => {
+    setDirection(1);
+    setCurrent((c) => (c + 1) % PROMOTIONS.length);
+  };
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!hovered.current) {
+        setDirection(1);
+        setCurrent((c) => (c + 1) % PROMOTIONS.length);
+      }
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
 
   const promo = PROMOTIONS[current] ?? PROMOTIONS[0]!;
 
   return (
-    <div className="relative w-full overflow-hidden rounded-2xl">
-      <AnimatePresence mode="wait">
+    <div
+      className="relative w-full overflow-hidden rounded-2xl h-[240px] md:h-[280px]"
+      onMouseEnter={() => { hovered.current = true; }}
+      onMouseLeave={() => { hovered.current = false; }}
+    >
+      <AnimatePresence mode="wait" custom={direction}>
       <motion.div
         key={promo.id}
-        initial={{ opacity: 0, x: 40 }}
+        custom={direction}
+        initial={(d: number) => ({ opacity: 0, x: d * 60 })}
         animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -40 }}
+        exit={(d: number) => ({ opacity: 0, x: d * -60 })}
         transition={{ duration: 0.35, ease: "easeOut" }}
-        className={`bg-gradient-to-br ${promo.gradient} ${promo.dark ? "text-gray-800" : "text-white"} p-8 md:p-12 min-h-[240px] flex flex-col justify-between`}>
+        className={`absolute inset-0 bg-gradient-to-br ${promo.gradient} ${promo.dark ? "text-gray-800" : "text-white"} p-8 md:p-12 flex flex-col justify-between`}>
         <div className="flex items-start justify-between gap-4">
           <div className="max-w-sm">
             <span className={`inline-block backdrop-blur text-xs font-bold px-3 py-1 rounded-full mb-3 ${promo.dark ? "bg-gray-900/10 text-gray-700" : "bg-white/20 text-white"}`}>
@@ -93,11 +116,11 @@ export function PromotionsCarousel() {
             {PROMOTIONS.map((_, i) => (
               <button
                 key={i}
-                onClick={() => setCurrent(i)}
+                onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i); }}
                 className={`h-2 rounded-full transition-all ${
                   i === current
                     ? promo.dark ? "bg-gray-600 w-6" : "bg-white w-6"
-                    : promo.dark ? "bg-gray-400/60 w-2" : "bg-white/40 w-2"
+                    : promo.dark ? "bg-gray-400/60 w-2" : "bg-card/40 w-2"
                 }`}
                 aria-label={`Go to slide ${i + 1}`}
               />

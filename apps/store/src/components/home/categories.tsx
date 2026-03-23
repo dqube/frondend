@@ -19,8 +19,12 @@ const CATEGORIES = [
   { id: "chicken",     label: "Raw Chicken",       emoji: "🍗" },
   { id: "breakfast",   label: "Breakfast Item",    emoji: "🍳" },
   { id: "fish",        label: "Fish Items",        emoji: "🐟" },
-  { id: "greens",      label: "Green Vegetables",  emoji: "🥬" },
-  { id: "snacks",      label: "Cookies & Biscuits",emoji: "🍪" },
+  { id: "greens",       label: "Green Vegetables",  emoji: "🥬" },
+  { id: "snacks",       label: "Cookies & Biscuits",emoji: "🍪" },
+  { id: "indian-oils",  label: "Cooking Oils",      emoji: "🫙" },
+  { id: "rice",         label: "Rice & Grains",     emoji: "🍚" },
+  { id: "indian-spices",label: "Indian Spices",     emoji: "🌶️" },
+  { id: "pulses",       label: "Pulses & Dhals",    emoji: "🫘" },
 ];
 
 export function Categories() {

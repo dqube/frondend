@@ -179,7 +179,7 @@ function FilterDrawer({ open, onClose, draft, setDraft, onApply, onClear }: Filt
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex-1 relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">RM</span>
                   <input
                     type="number" min={MIN_PRICE} max={draft.maxPrice} step={1}
                     value={draft.minPrice}
@@ -187,12 +187,12 @@ function FilterDrawer({ open, onClose, draft, setDraft, onApply, onClear }: Filt
                       const v = Math.max(MIN_PRICE, Math.min(Number(e.target.value), draft.maxPrice));
                       setDraft({ ...draft, minPrice: v });
                     }}
-                    className="w-full pl-6 pr-3 py-2 text-sm border border-border rounded-xl bg-background outline-none focus:border-primary focus:ring-[1px] focus:ring-primary/20 transition-colors"
+                    className="w-full pl-9 pr-3 py-2 text-sm border border-border rounded-xl bg-background outline-none focus:border-primary focus:ring-[1px] focus:ring-primary/20 transition-colors"
                   />
                 </div>
                 <span className="text-muted-foreground text-sm shrink-0">–</span>
                 <div className="flex-1 relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">RM</span>
                   <input
                     type="number" min={draft.minPrice} max={MAX_PRICE} step={1}
                     value={draft.maxPrice}
@@ -200,7 +200,7 @@ function FilterDrawer({ open, onClose, draft, setDraft, onApply, onClear }: Filt
                       const v = Math.min(MAX_PRICE, Math.max(Number(e.target.value), draft.minPrice));
                       setDraft({ ...draft, maxPrice: v });
                     }}
-                    className="w-full pl-6 pr-3 py-2 text-sm border border-border rounded-xl bg-background outline-none focus:border-primary focus:ring-[1px] focus:ring-primary/20 transition-colors"
+                    className="w-full pl-9 pr-3 py-2 text-sm border border-border rounded-xl bg-background outline-none focus:border-primary focus:ring-[1px] focus:ring-primary/20 transition-colors"
                   />
                 </div>
               </div>
@@ -391,7 +391,7 @@ export default function ProductsPage() {
         )}
         {(filters.minPrice > MIN_PRICE || filters.maxPrice < MAX_PRICE) && (
           <FilterChip
-            label={`$${filters.minPrice} – $${filters.maxPrice}`}
+            label={`RM ${filters.minPrice} – RM ${filters.maxPrice}`}
             onRemove={() => { removeFilter("minPrice"); removeFilter("maxPrice"); }}
           />
         )}
@@ -428,9 +428,9 @@ export default function ProductsPage() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {paged.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} compact />
             ))}
           </div>
 

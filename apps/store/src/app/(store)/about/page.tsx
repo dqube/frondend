@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 const VALUES = [
   { icon: Leaf, title: "Fresh & Local", desc: "We source from local farms and suppliers within 50 miles wherever possible." },
   { icon: Heart, title: "Quality First", desc: "Every product is hand-selected and quality-checked before it reaches you." },
-  { icon: Truck, title: "Fast Delivery", desc: "Same-day delivery available across London with 1-hour express slots." },
+  { icon: Truck, title: "Fast Delivery", desc: "Same-day delivery available across Klang Valley with 1-hour express slots." },
   { icon: Users, title: "Community", desc: "Supporting local producers and giving back to the communities we serve." },
   { icon: Award, title: "Best Prices", desc: "Price-match guarantee on all everyday essentials — we won't be beaten." },
   { icon: ShieldCheck, title: "Sustainability", desc: "Zero-waste packaging and carbon-neutral delivery by 2026." },
@@ -40,7 +40,7 @@ export default function AboutPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6 md:p-8"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6 md:p-8"
       >
         <h2 className="text-xl font-bold mb-3">Our Story</h2>
         <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
@@ -49,8 +49,8 @@ export default function AboutPage() {
             without the hassle of crowded supermarkets or lengthy commutes.
           </p>
           <p>
-            Starting with a small team in East London, we built direct relationships with local farmers, artisan
-            bakers, and independent producers. Today, we serve thousands of customers across London with same-day
+            Starting with a small team in Kuala Lumpur, we built direct relationships with local farmers, artisan
+            bakers, and independent producers. Today, we serve thousands of customers across Malaysia with same-day
             delivery and a curated selection of over 5,000 products.
           </p>
           <p>
@@ -72,7 +72,7 @@ export default function AboutPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 + i * 0.06 }}
-                className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+                className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
               >
                 <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
                   <Icon className="h-4 w-4 text-primary" />
@@ -116,7 +116,7 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 + i * 0.06 }}
-              className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-4 text-center"
+              className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-4 text-center"
             >
               <span className="text-4xl">{member.emoji}</span>
               <p className="text-sm font-semibold mt-2">{member.name}</p>

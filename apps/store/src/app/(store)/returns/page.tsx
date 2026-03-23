@@ -79,11 +79,11 @@ export default function ReturnsPage() {
       </div>
 
       {/* Policy info */}
-      <div className="bg-amber-50 border border-amber-200/80 rounded-xl p-4 flex gap-3 text-sm">
+      <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200/80 dark:border-amber-900 rounded-xl p-4 flex gap-3 text-sm">
         <AlertCircle className="h-4 w-4 text-amber-600 mt-0.5 shrink-0" />
         <div>
-          <p className="font-medium text-amber-900">Return Policy</p>
-          <p className="text-amber-700 text-xs mt-0.5">
+          <p className="font-medium text-amber-900 dark:text-amber-300">Return Policy</p>
+          <p className="text-amber-700 dark:text-amber-400 text-xs mt-0.5">
             Returns are accepted within 7 days of delivery for damaged, wrong, or expired items.
             Perishable items must be reported within 24 hours.
           </p>
@@ -94,7 +94,7 @@ export default function ReturnsPage() {
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">Select the items you&apos;d like to return:</p>
           {RETURNABLE_ORDERS.map((order) => (
-            <div key={order.id} className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm overflow-hidden">
+            <div key={order.id} className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm overflow-hidden">
               <div className="flex items-center gap-2 px-5 py-3 border-b border-border/50">
                 <Package className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm font-semibold">{order.id}</span>
@@ -145,7 +145,7 @@ export default function ReturnsPage() {
             Returning {selectedItems.length} item{selectedItems.length > 1 ? "s" : ""}. Select a reason:
           </p>
 
-          <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5 space-y-2">
+          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5 space-y-2">
             {RETURN_REASONS.map((r) => (
               <button
                 key={r}
@@ -160,7 +160,7 @@ export default function ReturnsPage() {
           </div>
 
           {/* Photo upload placeholder */}
-          <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5">
+          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5">
             <h3 className="text-sm font-semibold mb-2">Upload photos (optional)</h3>
             <div className="border-2 border-dashed border-muted-foreground/20 rounded-xl p-6 text-center">
               <Camera className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />

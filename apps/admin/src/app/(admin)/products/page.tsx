@@ -284,8 +284,8 @@ function getPriceDisplay(product: Product): string {
   const prices = product.variants.map((v) => v.price);
   const min = Math.min(...prices);
   const max = Math.max(...prices);
-  if (min === max) return `$${min.toFixed(2)}`;
-  return `$${min.toFixed(2)} – $${max.toFixed(2)}`;
+  if (min === max) return `RM ${min.toFixed(2)}`;
+  return `RM ${min.toFixed(2)} – RM ${max.toFixed(2)}`;
 }
 
 function getBasePrice(product: Product) {
@@ -566,7 +566,7 @@ const rangeFilters: DataTableRangeFilterConfig[] = [
   {
     columnId: "price",
     title: "Price",
-    prefix: "$",
+    prefix: "RM ",
     min: 0,
     step: 0.01,
   },

@@ -16,7 +16,7 @@ export default function CategoryPage({ params }: Props) {
 
   if (!category) {
     return (
-      <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-8 text-center">
+      <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-8 text-center">
         <h1 className="text-2xl font-bold mb-2">Category Not Found</h1>
         <p className="text-muted-foreground text-sm mb-4">The category you&apos;re looking for doesn&apos;t exist.</p>
         <Link href="/products" className="text-sm font-semibold text-primary hover:underline">Browse all products</Link>
@@ -40,7 +40,7 @@ export default function CategoryPage({ params }: Props) {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-8 flex items-center gap-6"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-8 flex items-center gap-6"
       >
         <span className="text-6xl md:text-7xl">{category.emoji}</span>
         <div>
@@ -55,7 +55,7 @@ export default function CategoryPage({ params }: Props) {
           <Link
             key={cat.id}
             href={`/categories/${cat.id}`}
-            className="flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-white/60 hover:bg-primary/10 hover:border-primary/30 transition-colors text-sm shrink-0"
+            className="flex items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-card/60 hover:bg-primary/10 hover:border-primary/30 transition-colors text-sm shrink-0"
           >
             <span>{cat.emoji}</span>
             <span>{cat.label}</span>
@@ -64,14 +64,14 @@ export default function CategoryPage({ params }: Props) {
       </div>
 
       {/* Products grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard key={product.id} product={product} compact />
         ))}
       </div>
 
       {products.length === 0 && (
-        <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-8 text-center">
+        <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-8 text-center">
           <p className="text-muted-foreground">No products found in this category yet.</p>
           <Link href="/products" className="text-sm font-semibold text-primary hover:underline mt-2 inline-block">
             Browse all products

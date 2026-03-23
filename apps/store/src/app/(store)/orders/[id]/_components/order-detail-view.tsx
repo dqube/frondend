@@ -126,7 +126,7 @@ function formatDateTime(iso: string) {
 }
 
 function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(amount);
+  return "RM " + new Intl.NumberFormat("ms-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount);
 }
 
 /* ── component ── */
@@ -170,7 +170,7 @@ export function OrderDetailView({ orderId }: { orderId: string }) {
 
       {/* Header card */}
       <AnimatedSection delay={0.05}>
-        <Card className="overflow-hidden border-white/80 dark:border-border bg-white/70 dark:bg-card/70 backdrop-blur-md">
+        <Card className="overflow-hidden border-border/50 dark:border-border bg-card/70 dark:bg-card/70 backdrop-blur-md">
           <div className="px-5 py-5">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-3">
@@ -250,7 +250,7 @@ export function OrderDetailView({ orderId }: { orderId: string }) {
 
       {/* Items card */}
       <AnimatedSection delay={0.1}>
-        <Card className="border-white/80 dark:border-border bg-white/70 dark:bg-card/70 backdrop-blur-md">
+        <Card className="border-border/50 dark:border-border bg-card/70 dark:bg-card/70 backdrop-blur-md">
           <div className="px-5 py-4">
             <h2 className="text-sm font-semibold mb-4">Items</h2>
             <div className="space-y-3">
@@ -310,7 +310,7 @@ export function OrderDetailView({ orderId }: { orderId: string }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Shipping address */}
         <AnimatedSection delay={0.15}>
-          <Card className="border-white/80 dark:border-border bg-white/70 dark:bg-card/70 backdrop-blur-md h-full">
+          <Card className="border-border/50 dark:border-border bg-card/70 dark:bg-card/70 backdrop-blur-md h-full">
             <div className="px-5 py-4">
               <div className="flex items-center gap-2 mb-3">
                 <MapPin className="h-4 w-4 text-muted-foreground" />
@@ -331,7 +331,7 @@ export function OrderDetailView({ orderId }: { orderId: string }) {
 
         {/* Payment info */}
         <AnimatedSection delay={0.2}>
-          <Card className="border-white/80 dark:border-border bg-white/70 dark:bg-card/70 backdrop-blur-md h-full">
+          <Card className="border-border/50 dark:border-border bg-card/70 dark:bg-card/70 backdrop-blur-md h-full">
             <div className="px-5 py-4">
               <div className="flex items-center gap-2 mb-3">
                 <CreditCard className="h-4 w-4 text-muted-foreground" />

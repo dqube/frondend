@@ -9,7 +9,7 @@ const ORDER = {
   id: "ORD-1043",
   date: new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" }),
   deliverySlot: "Today, 2:00 – 3:00 PM",
-  address: "42 Green Lane, London, E1 6AN",
+  address: "12 Jalan Ampang, KLCC, Kuala Lumpur 50450",
   payment: "Visa ending in 4242",
   items: [
     { name: "Organic Bananas", emoji: "🍌", qty: 2, price: 1.99 },
@@ -59,7 +59,7 @@ export default function CheckoutConfirmationPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
       >
         <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <MapPin className="h-4 w-4 text-primary" /> Delivery Details
@@ -85,7 +85,7 @@ export default function CheckoutConfirmationPage() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.25 }}
-        className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5"
+        className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5"
       >
         <h2 className="text-sm font-semibold mb-3 flex items-center gap-2">
           <Package className="h-4 w-4 text-primary" /> Items ({ORDER.items.length})
@@ -98,22 +98,22 @@ export default function CheckoutConfirmationPage() {
                 <p className="text-sm font-medium">{item.name}</p>
                 <p className="text-xs text-muted-foreground">Qty: {item.qty}</p>
               </div>
-              <p className="text-sm font-semibold">${(item.price * item.qty).toFixed(2)}</p>
+              <p className="text-sm font-semibold">RM {(item.price * item.qty).toFixed(2)}</p>
             </div>
           ))}
         </div>
         <div className="border-t pt-3 mt-3 space-y-1.5 text-sm">
           <div className="flex justify-between text-muted-foreground">
             <span>Subtotal</span>
-            <span>${ORDER.subtotal.toFixed(2)}</span>
+            <span>RM {ORDER.subtotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between text-muted-foreground">
             <span>Delivery</span>
-            <span>${ORDER.delivery.toFixed(2)}</span>
+            <span>RM {ORDER.delivery.toFixed(2)}</span>
           </div>
           <div className="flex justify-between font-bold text-base pt-1">
             <span>Total</span>
-            <span>${ORDER.total.toFixed(2)}</span>
+            <span>RM {ORDER.total.toFixed(2)}</span>
           </div>
         </div>
       </motion.div>

@@ -42,7 +42,7 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div>
-        <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-8 md:p-12">
+        <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-8 md:p-12">
           <div className="flex flex-col items-center justify-center py-12 gap-4 text-center">
             <ShoppingBag className="h-16 w-16 text-muted-foreground/40" />
             <h1 className="text-2xl font-bold">Your cart is empty</h1>
@@ -64,7 +64,7 @@ export default function CartPage() {
       <div className="flex flex-col lg:flex-row gap-6 items-start">
 
         {/* Cart items card */}
-        <div className="flex-1 bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6 md:p-8">
+        <div className="flex-1 bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6 md:p-8">
           <h1 className="text-xl font-bold mb-6">My Cart</h1>
 
           {/* Table header - desktop only */}
@@ -90,7 +90,7 @@ export default function CartPage() {
                   <div className="min-w-0">
                     <p className="text-sm font-medium leading-snug">{item.name}</p>
                     <p className="text-xs text-muted-foreground mt-1">{item.unit}</p>
-                    <p className="text-sm font-bold mt-1">${item.price.toFixed(2)}</p>
+                    <p className="text-sm font-bold mt-1">RM {item.price.toFixed(2)}</p>
                   </div>
                 </div>
 
@@ -100,14 +100,14 @@ export default function CartPage() {
                   <div className="flex items-center gap-2 justify-center">
                     <button
                       onClick={() => updateQty(item.id, -1)}
-                      className="h-7 w-7 flex items-center justify-center rounded-full border border-border bg-white/60 hover:bg-white hover:border-primary transition-colors text-foreground"
+                      className="h-7 w-7 flex items-center justify-center rounded-full border border-border bg-card/60 hover:bg-accent hover:border-primary transition-colors text-foreground"
                     >
                       <Minus className="h-3 w-3" />
                     </button>
                     <span className="text-sm font-semibold w-6 text-center">{item.qty}</span>
                     <button
                       onClick={() => updateQty(item.id, 1)}
-                      className="h-7 w-7 flex items-center justify-center rounded-full border border-border bg-white/60 hover:bg-white hover:border-primary transition-colors text-foreground"
+                      className="h-7 w-7 flex items-center justify-center rounded-full border border-border bg-card/60 hover:bg-accent hover:border-primary transition-colors text-foreground"
                     >
                       <Plus className="h-3 w-3" />
                     </button>
@@ -115,7 +115,7 @@ export default function CartPage() {
 
                   {/* Line total */}
                   <span className="text-sm font-bold text-right w-[100px]">
-                    ${(item.price * item.qty).toFixed(2)}
+                    RM {(item.price * item.qty).toFixed(2)}
                   </span>
 
                   {/* Remove */}
@@ -143,23 +143,23 @@ export default function CartPage() {
         </div>
 
         {/* Order summary card */}
-        <div className="w-full lg:w-80 shrink-0 bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6 md:p-8 sticky top-24">
+        <div className="w-full lg:w-80 shrink-0 bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6 md:p-8 sticky top-24">
           <h2 className="text-lg font-bold mb-6">Order Summary</h2>
 
           <div className="space-y-3 text-sm mb-6">
             <div className="flex justify-between">
               <span className="text-muted-foreground">Subtotal ({items.reduce((s, i) => s + i.qty, 0)} items)</span>
-              <span className="font-medium">${subtotal.toFixed(2)}</span>
+              <span className="font-medium">RM {subtotal.toFixed(2)}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-muted-foreground">Shipping</span>
               <span className="font-medium">
-                {shipping === 0 ? <span className="text-primary font-semibold">Free</span> : `$${shipping.toFixed(2)}`}
+                {shipping === 0 ? <span className="text-primary font-semibold">Free</span> : `RM ${shipping.toFixed(2)}`}
               </span>
             </div>
             {shipping > 0 && (
               <p className="text-xs text-muted-foreground">
-                Free shipping on orders over $30.00
+                Free shipping on orders over RM 30.00
               </p>
             )}
           </div>
@@ -167,7 +167,7 @@ export default function CartPage() {
           <div className="border-t border-border/50 pt-4 mb-6">
             <div className="flex justify-between text-base font-bold">
               <span>Total</span>
-              <span>${total.toFixed(2)}</span>
+              <span>RM {total.toFixed(2)}</span>
             </div>
           </div>
 

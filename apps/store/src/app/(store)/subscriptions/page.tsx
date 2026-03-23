@@ -90,11 +90,11 @@ export default function SubscriptionsPage() {
       </p>
 
       {/* Savings banner */}
-      <div className="bg-green-50 border border-green-200/60 rounded-xl p-4 flex items-center gap-3">
+      <div className="bg-green-50 dark:bg-green-950/30 border border-green-200/60 dark:border-green-900 rounded-xl p-4 flex items-center gap-3">
         <span className="text-2xl">💰</span>
         <div>
-          <p className="text-sm font-semibold text-green-900">You&apos;ve saved $23.40 with subscriptions</p>
-          <p className="text-xs text-green-700">5% discount applied automatically to all recurring orders</p>
+          <p className="text-sm font-semibold text-green-900 dark:text-green-300">You&apos;ve saved RM 23.40 with subscriptions</p>
+          <p className="text-xs text-green-700 dark:text-green-400">5% discount applied automatically to all recurring orders</p>
         </div>
       </div>
 
@@ -105,8 +105,8 @@ export default function SubscriptionsPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08 }}
-            className={`bg-white/60 backdrop-blur-sm border rounded-2xl shadow-sm overflow-hidden ${
-              sub.active ? "border-white/80" : "border-amber-200/60"
+            className={`bg-card/60 backdrop-blur-sm border rounded-2xl shadow-sm overflow-hidden ${
+              sub.active ? "border-border/50" : "border-amber-200/60"
             }`}
           >
             <div className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 border-b border-border/50">
@@ -156,14 +156,14 @@ export default function SubscriptionsPage() {
                 <span className="flex items-center gap-1"><RefreshCw className="h-3 w-3" /> {sub.frequency}</span>
                 <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> Next: {sub.nextDelivery}</span>
               </div>
-              <span className="font-semibold text-sm">${sub.total.toFixed(2)}</span>
+              <span className="font-semibold text-sm">RM {sub.total.toFixed(2)}</span>
             </div>
           </motion.div>
         ))}
       </div>
 
       {subs.length === 0 && (
-        <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-8 text-center">
+        <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-8 text-center">
           <RefreshCw className="h-12 w-12 text-muted-foreground/40 mx-auto mb-3" />
           <h2 className="text-lg font-semibold mb-1">No active subscriptions</h2>
           <p className="text-sm text-muted-foreground mb-4">Set up recurring deliveries to save time and money.</p>

@@ -1,11 +1,11 @@
 
 const orders = [
-  { id: "#ORD-8821", customer: "Emma Johnson",    email: "emma@example.com",  product: "Organic Berry Mix",      amount: "$48.20",  status: "Delivered",  date: "Aug 12" },
-  { id: "#ORD-8820", customer: "Liam Chen",       email: "liam@example.com",  product: "Whole Grain Bread Pack", amount: "$22.50",  status: "Processing", date: "Aug 12" },
-  { id: "#ORD-8819", customer: "Sofia Martínez",  email: "sofia@example.com", product: "Almond Milk x6",         amount: "$34.80",  status: "Shipped",    date: "Aug 11" },
-  { id: "#ORD-8818", customer: "Noah Williams",   email: "noah@example.com",  product: "Premium Cheddar Block",  amount: "$18.99",  status: "Delivered",  date: "Aug 11" },
-  { id: "#ORD-8817", customer: "Olivia Brown",    email: "olivia@example.com", product: "Seasonal Veg Box",      amount: "$62.00",  status: "Cancelled",  date: "Aug 10" },
-  { id: "#ORD-8816", customer: "Ethan Taylor",    email: "ethan@example.com",  product: "Cold Press Juice x4",  amount: "$29.60",  status: "Delivered",  date: "Aug 10" },
+  { id: "#ORD-8821", customer: "Emma Johnson",    email: "emma@example.com",  product: "Organic Berry Mix",      amount: "RM 48.20",  status: "Delivered",  date: "Aug 12" },
+  { id: "#ORD-8820", customer: "Liam Chen",       email: "liam@example.com",  product: "Whole Grain Bread Pack", amount: "RM 22.50",  status: "Processing", date: "Aug 12" },
+  { id: "#ORD-8819", customer: "Sofia Martínez",  email: "sofia@example.com", product: "Almond Milk x6",         amount: "RM 34.80",  status: "Shipped",    date: "Aug 11" },
+  { id: "#ORD-8818", customer: "Noah Williams",   email: "noah@example.com",  product: "Premium Cheddar Block",  amount: "RM 18.99",  status: "Delivered",  date: "Aug 11" },
+  { id: "#ORD-8817", customer: "Olivia Brown",    email: "olivia@example.com", product: "Seasonal Veg Box",      amount: "RM 62.00",  status: "Cancelled",  date: "Aug 10" },
+  { id: "#ORD-8816", customer: "Ethan Taylor",    email: "ethan@example.com",  product: "Cold Press Juice x4",  amount: "RM 29.60",  status: "Delivered",  date: "Aug 10" },
 ];
 
 const FALLBACK_STATUS = { label: "Processing", className: "bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-950/40 dark:text-blue-400 dark:border-blue-900" };

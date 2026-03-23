@@ -11,7 +11,7 @@ export interface Product {
   name: string;
   price: number;
   originalPrice?: number;
-  priceMax?: number; // for price range display e.g. "$5.00 - $15.00"
+  priceMax?: number; // for price range display e.g. "RM 5.00 - RM 15.00"
   image?: string;
   emoji?: string;
   unit?: string;
@@ -23,9 +23,10 @@ interface ProductCardProps {
   product: Product;
   onAddToCart?: (id: string, qty: number) => void;
   className?: string;
+  compact?: boolean;
 }
 
-export function ProductCard({ product, onAddToCart, className = "" }: ProductCardProps) {
+export function ProductCard({ product, onAddToCart, className = "", compact = false }: ProductCardProps) {
   const [qty, setQty] = useState(0);
 
   function increment() {
@@ -42,8 +43,8 @@ export function ProductCard({ product, onAddToCart, className = "" }: ProductCar
   }
 
   const priceDisplay = product.priceMax
-    ? `$${product.price.toFixed(2)} - $${product.priceMax.toFixed(2)}`
-    : `$${product.price.toFixed(2)}`;
+    ? `RM ${product.price.toFixed(2)} - RM ${product.priceMax.toFixed(2)}`
+    : `RM ${product.price.toFixed(2)}`;
 
   return (
     <motion.div
@@ -51,7 +52,7 @@ export function ProductCard({ product, onAddToCart, className = "" }: ProductCar
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       whileHover={{ y: -4 }}
-      className={`group flex flex-col w-full rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-shadow overflow-visible pb-4 ${className}`}
+      className={`group flex flex-col w-full rounded-2xl bg-card/60 backdrop-blur-sm border border-border/50 shadow-sm hover:shadow-md transition-shadow overflow-visible ${compact ? "pb-2" : "pb-4"} ${className}`}
     >
       {/* Image area */}
       <Link href={`/products/${product.id}`} className="block">
@@ -64,7 +65,7 @@ export function ProductCard({ product, onAddToCart, className = "" }: ProductCar
               className="w-full h-full object-contain"
             />
           ) : (
-            <span className="text-5xl sm:text-6xl select-none">{product.emoji ?? "🛒"}</span>
+            <span className={`${compact ? "text-3xl sm:text-4xl" : "text-5xl sm:text-6xl"} select-none`}>{product.emoji ?? "🛒"}</span>
           )}
         </div>
 
@@ -80,19 +81,19 @@ export function ProductCard({ product, onAddToCart, className = "" }: ProductCar
           {product.hasVariants ? (
             /* Eye / quick-view button */
             <button
-              className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors"
+              className={`${compact ? "h-6 w-6" : "h-8 w-8"} rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors`}
               aria-label="Quick view"
             >
-              <Eye className="h-4 w-4" />
+              <Eye className={compact ? "h-3 w-3" : "h-4 w-4"} />
             </button>
           ) : qty === 0 ? (
             /* Add to cart button */
             <button
               onClick={increment}
-              className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors"
+              className={`${compact ? "h-6 w-6" : "h-8 w-8"} rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-md hover:bg-primary/90 transition-colors`}
               aria-label={`Add ${product.name} to cart`}
             >
-              <Plus className="h-4 w-4" />
+              <Plus className={compact ? "h-3 w-3" : "h-4 w-4"} />
             </button>
           ) : (
             /* Quantity stepper */
@@ -119,16 +120,16 @@ export function ProductCard({ product, onAddToCart, className = "" }: ProductCar
       </Link>
 
       {/* Info area */}
-      <Link href={`/products/${product.id}`} className="pt-2 px-3 flex flex-col gap-0.5">
+      <Link href={`/products/${product.id}`} className={`${compact ? "pt-1 px-2" : "pt-2 px-3"} flex flex-col gap-0.5`}>
         <div className="flex items-baseline gap-1.5 flex-wrap">
           <span className="text-sm font-bold text-foreground">{priceDisplay}</span>
           {product.originalPrice && !product.priceMax && (
             <span className="text-xs text-muted-foreground line-through">
-              ${product.originalPrice.toFixed(2)}
+              RM {product.originalPrice.toFixed(2)}
             </span>
           )}
         </div>
-        <p className="text-sm text-foreground leading-snug line-clamp-2">{product.name}</p>
+        <p className={`${compact ? "text-xs font-medium" : "text-sm"} text-foreground leading-snug line-clamp-2`}>{product.name}</p>
         {product.unit && (
           <p className="text-xs text-muted-foreground">{product.unit}</p>
         )}

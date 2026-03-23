@@ -158,7 +158,7 @@ export function OrdersView() {
             placeholder="Search by order number or product name..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-10 h-11 bg-white/60 dark:bg-card/60 backdrop-blur-sm border-white/80 dark:border-border rounded-xl"
+            className="pl-10 h-11 bg-card/60 dark:bg-card/60 backdrop-blur-sm border-border/50 dark:border-border rounded-xl"
           />
         </div>
       </AnimatedSection>
@@ -166,7 +166,7 @@ export function OrdersView() {
       {/* Tabs + Content */}
       <AnimatedSection delay={0.1}>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="w-full justify-start gap-1 bg-white/50 dark:bg-card/50 backdrop-blur-sm border border-white/80 dark:border-border rounded-xl p-1.5 h-auto flex-wrap">
+          <TabsList className="w-full justify-start gap-1 bg-card/50 dark:bg-card/50 backdrop-blur-sm border border-border/50 dark:border-border rounded-xl p-1.5 h-auto flex-wrap">
             {STATUS_TABS.map((tab) => {
               const count =
                 tab.value === "all"

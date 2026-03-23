@@ -23,10 +23,10 @@ const INITIAL_ADDRESSES: Address[] = [
     label: "Home",
     type: "home",
     name: "John Doe",
-    line1: "42 Green Lane",
-    city: "London",
-    postcode: "E1 6AN",
-    phone: "+44 7700 900000",
+    line1: "No. 12, Jalan Ampang",
+    city: "Kuala Lumpur",
+    postcode: "50450",
+    phone: "+60 3-2382 0100",
     isDefault: true,
   },
   {
@@ -36,9 +36,9 @@ const INITIAL_ADDRESSES: Address[] = [
     name: "John Doe",
     line1: "100 Tech Park",
     line2: "Floor 3",
-    city: "London",
-    postcode: "EC2A 4NE",
-    phone: "+44 7700 900001",
+    city: "Petaling Jaya",
+    postcode: "47810",
+    phone: "+60 3-7965 1200",
     isDefault: false,
   },
 ];
@@ -80,15 +80,15 @@ export default function AddressesPage() {
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5 space-y-4">
+            <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5 space-y-4">
               <h2 className="text-sm font-semibold">New Address</h2>
               <div className="grid gap-3 sm:grid-cols-2">
-                <input placeholder="Full Name" className="col-span-full rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                <input placeholder="Address Line 1" className="col-span-full rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                <input placeholder="Address Line 2 (optional)" className="col-span-full rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                <input placeholder="City" className="rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                <input placeholder="Postcode" className="rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                <input placeholder="Phone Number" className="col-span-full rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input placeholder="Full Name" className="col-span-full rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input placeholder="Address Line 1" className="col-span-full rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input placeholder="Address Line 2 (optional)" className="col-span-full rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input placeholder="City" className="rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input placeholder="Postcode" className="rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input placeholder="Phone Number" className="col-span-full rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
               <div className="flex gap-2">
                 <button
@@ -116,8 +116,8 @@ export default function AddressesPage() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.08 }}
-            className={`bg-white/60 backdrop-blur-sm border rounded-2xl shadow-sm p-5 ${
-              addr.isDefault ? "border-primary/40" : "border-white/80"
+            className={`bg-card/60 backdrop-blur-sm border rounded-2xl shadow-sm p-5 ${
+              addr.isDefault ? "border-primary/40" : "border-border/50"
             }`}
           >
             <div className="flex items-start gap-3">
@@ -164,7 +164,7 @@ export default function AddressesPage() {
       </div>
 
       {addresses.length === 0 && (
-        <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-8 text-center">
+        <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-8 text-center">
           <MapPin className="h-12 w-12 text-muted-foreground/40 mx-auto mb-3" />
           <h2 className="text-lg font-semibold mb-1">No saved addresses</h2>
           <p className="text-sm text-muted-foreground">Add an address for faster checkout.</p>

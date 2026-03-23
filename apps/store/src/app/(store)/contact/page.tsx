@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Mail, Phone, MapPin, Clock, MessageCircle, Send, CheckCircle2 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@modernstores/ui";
 import { motion } from "motion/react";
 
 export default function ContactPage() {
@@ -22,7 +23,7 @@ export default function ContactPage() {
       {/* Contact cards */}
       <div className="grid gap-4 sm:grid-cols-3">
         {[
-          { icon: Phone, title: "Call Us", detail: "+44 20 7123 4567", sub: "Mon–Sat, 8am–8pm" },
+          { icon: Phone, title: "Call Us", detail: "+60 3-2382 0199", sub: "Mon–Sat, 9am–9pm" },
           { icon: Mail, title: "Email Us", detail: "hello@modernstores.com", sub: "We reply within 24h" },
           { icon: MessageCircle, title: "Live Chat", detail: "Start a conversation", sub: "Available 24/7" },
         ].map((card, i) => {
@@ -33,7 +34,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.08 }}
-              className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-5 text-center"
+              className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-5 text-center"
             >
               <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
                 <Icon className="h-5 w-5 text-primary" />
@@ -52,7 +53,7 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6"
+          className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6"
         >
           {submitted ? (
             <div className="text-center py-8 space-y-3">
@@ -67,22 +68,27 @@ export default function ContactPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <h2 className="text-lg font-semibold">Send a Message</h2>
               <div className="grid gap-3 sm:grid-cols-2">
-                <input required placeholder="Your Name" className="rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
-                <input required type="email" placeholder="Email Address" className="rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input required placeholder="Your Name" className="rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
+                <input required type="email" placeholder="Email Address" className="rounded-xl border border-border/50 bg-background/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30" />
               </div>
-              <select className="w-full rounded-xl border border-border/50 bg-white/80 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30">
-                <option>General Inquiry</option>
-                <option>Order Issue</option>
-                <option>Delivery Problem</option>
-                <option>Product Feedback</option>
-                <option>Partnership</option>
-                <option>Other</option>
-              </select>
+              <Select>
+                <SelectTrigger className="rounded-xl border-border/60 bg-background/80 h-auto py-2.5 text-sm focus:ring-primary/30">
+                  <SelectValue placeholder="Select a topic" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="general">General Inquiry</SelectItem>
+                  <SelectItem value="order">Order Issue</SelectItem>
+                  <SelectItem value="delivery">Delivery Problem</SelectItem>
+                  <SelectItem value="feedback">Product Feedback</SelectItem>
+                  <SelectItem value="partnership">Partnership</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
               <textarea
                 required
                 rows={4}
                 placeholder="Your message..."
-                className="w-full rounded-xl border border-border/50 bg-white/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+                className="w-full rounded-xl border border-border/50 bg-background/80 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
               />
               <button
                 type="submit"
@@ -101,12 +107,12 @@ export default function ContactPage() {
           transition={{ delay: 0.3 }}
           className="space-y-4"
         >
-          <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6">
+          <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6">
             <h2 className="text-lg font-semibold mb-3">Visit Our Store</h2>
             <div className="space-y-3 text-sm">
               <div className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                <p className="text-muted-foreground">42 Green Lane, Shoreditch<br />London, E1 6AN</p>
+                <p className="text-muted-foreground">Lot G-12, Suria KLCC, Jalan Ampang<br />Kuala Lumpur 50088</p>
               </div>
               <div className="flex items-start gap-2">
                 <Clock className="h-4 w-4 text-primary mt-0.5 shrink-0" />

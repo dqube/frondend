@@ -97,7 +97,7 @@ export default function BlogPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search articles..."
-            className="w-full rounded-xl border border-border/50 bg-white/80 pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+            className="w-full rounded-xl border border-border/50 bg-background/80 pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
           />
         </div>
         <div className="flex gap-2 flex-wrap">
@@ -123,9 +123,9 @@ export default function BlogPage() {
           transition={{ delay: 0.1 }}
         >
           <Link href={`/blog/${filtered[0]!.slug}`} className="block group">
-            <div className={`bg-gradient-to-br ${filtered[0]!.image} border border-white/80 rounded-2xl p-6 md:p-8`}>
+            <div className={`bg-gradient-to-br ${filtered[0]!.image} border border-border/50 rounded-2xl p-6 md:p-8`}>
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-medium bg-white/80 px-2.5 py-0.5 rounded-full">{filtered[0]!.category}</span>
+                <span className="text-xs font-medium bg-background/80 px-2.5 py-0.5 rounded-full">{filtered[0]!.category}</span>
                 <span className="text-xs text-muted-foreground flex items-center gap-1"><Clock className="h-3 w-3" /> {filtered[0]!.readTime}</span>
               </div>
               <div className="flex items-center gap-4">
@@ -153,7 +153,7 @@ export default function BlogPage() {
             transition={{ delay: 0.15 + i * 0.06 }}
           >
             <Link href={`/blog/${post.slug}`} className="block group">
-              <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm overflow-hidden h-full">
+              <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm overflow-hidden h-full">
                 <div className={`bg-gradient-to-br ${post.image} h-32 flex items-center justify-center`}>
                   <span className="text-5xl">{post.emoji}</span>
                 </div>

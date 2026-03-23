@@ -71,13 +71,13 @@ function FlyToSelected({ stores, selectedId }: { stores: Store[]; selectedId: st
 
 export default function StoreMap({ stores, selectedId, onSelectStore }: StoreMapProps) {
   // Center the map to show all stores
-  const center: [number, number] = [51.512, -0.1];
+  const center: [number, number] = [4.2105, 101.9758];
 
   return (
     <div className="relative">
       <MapContainer
         center={center}
-        zoom={12}
+        zoom={6}
         scrollWheelZoom={true}
         className="z-0 h-[300px] w-full sm:h-[400px] lg:h-[450px]"
       >

@@ -31,7 +31,7 @@ export function RevenueChart() {
       <div className="mb-6 flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-muted-foreground">Revenue Overview</p>
-          <p className="mt-0.5 text-2xl font-bold tracking-tight">$124,563</p>
+          <p className="mt-0.5 text-2xl font-bold tracking-tight">RM 124,563</p>
         </div>
         <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400">
           +12.5% this month
@@ -61,13 +61,13 @@ export function RevenueChart() {
             tickLine={false}
             axisLine={false}
             tick={{ fontSize: 11 }}
-            tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`}
+            tickFormatter={(v) => `RM ${(v / 1000).toFixed(0)}k`}
           />
           <ChartTooltip
             content={
               <ChartTooltipContent
                 formatter={(value) =>
-                  `$${Number(value).toLocaleString()}`
+                  `RM ${Number(value).toLocaleString()}`
                 }
               />
             }

@@ -41,7 +41,7 @@ export default function LoginPage() {
       </div>
 
       {error && (
-        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+        <div className="mb-6 rounded-xl border border-red-200 bg-red-50 dark:bg-red-950/30 dark:border-red-900 dark:text-red-400 px-4 py-3 text-sm text-red-600">
           {error}
         </div>
       )}
@@ -62,7 +62,7 @@ export default function LoginPage() {
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-border bg-white/60 py-2.5 pl-10 pr-4 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary"
+              className="w-full rounded-xl border border-border bg-card/60 py-2.5 pl-10 pr-4 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary"
             />
           </div>
         </div>
@@ -90,7 +90,7 @@ export default function LoginPage() {
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-border bg-white/60 py-2.5 pl-10 pr-10 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary"
+              className="w-full rounded-xl border border-border bg-card/60 py-2.5 pl-10 pr-10 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary"
             />
             <button
               type="button"
@@ -114,7 +114,7 @@ export default function LoginPage() {
               "flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-md border transition-colors",
               rememberMe
                 ? "border-primary bg-primary text-primary-foreground"
-                : "border-border bg-white/60"
+                : "border-border bg-card/60"
             )}
           >
             {rememberMe && (
@@ -149,7 +149,7 @@ export default function LoginPage() {
           <div className="w-full border-t border-border/50" />
         </div>
         <div className="relative flex justify-center text-xs">
-          <span className="bg-white/60 px-3 text-muted-foreground">or continue with</span>
+          <span className="bg-card/60 px-3 text-muted-foreground">or continue with</span>
         </div>
       </div>
 
@@ -157,7 +157,7 @@ export default function LoginPage() {
       <div className="grid grid-cols-2 gap-3">
         <button
           type="button"
-          className="flex items-center justify-center gap-2 rounded-xl border border-border bg-white/60 py-2.5 text-sm font-medium transition-colors hover:bg-accent/60"
+          className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card/60 py-2.5 text-sm font-medium transition-colors hover:bg-accent/60"
         >
           <svg className="h-4 w-4" viewBox="0 0 24 24">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -169,7 +169,7 @@ export default function LoginPage() {
         </button>
         <button
           type="button"
-          className="flex items-center justify-center gap-2 rounded-xl border border-border bg-white/60 py-2.5 text-sm font-medium transition-colors hover:bg-accent/60"
+          className="flex items-center justify-center gap-2 rounded-xl border border-border bg-card/60 py-2.5 text-sm font-medium transition-colors hover:bg-accent/60"
         >
           <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M16.365 1.43c0 1.14-.493 2.27-1.177 3.08-.744.9-1.99 1.57-2.987 1.57-.18 0-.36-.02-.53-.06-.01-.1-.02-.2-.02-.3 0-1.06.55-2.18 1.23-2.95.76-.87 2.03-1.54 2.94-1.54.05 0 .1 0 .15.01.03.07.05.14.05.22l-.03-.03zM20.5 17.12c-.33.74-.49 1.07-.92 1.73-.6.92-1.44 2.06-2.48 2.07-.93.01-1.17-.61-2.43-.6-1.27.01-1.53.62-2.46.61-1.04-.01-1.83-1.03-2.43-1.95-1.68-2.57-1.86-5.59-.82-7.19.73-1.13 1.9-1.79 3-1.79 1.11 0 1.82.62 2.74.62.89 0 1.44-.62 2.73-.62 1.0 0 2.02.54 2.76 1.48-2.44 1.33-2.04 4.82.31 5.64z" />

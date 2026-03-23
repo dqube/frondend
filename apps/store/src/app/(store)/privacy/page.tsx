@@ -9,7 +9,7 @@ export default function PrivacyPage() {
       </div>
       <p className="text-xs text-muted-foreground">Last updated: January 1, 2025</p>
 
-      <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6 md:p-8 space-y-6 text-sm text-muted-foreground leading-relaxed">
+      <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6 md:p-8 space-y-6 text-sm text-muted-foreground leading-relaxed">
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">1. Introduction</h2>
           <p>ModernStores Ltd (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) is committed to protecting your personal data. This Privacy Policy explains how we collect, use, store, and share your information when you use our website, mobile app, and services.</p>
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
 
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">8. Contact</h2>
-          <p>For privacy-related questions, contact our Data Protection Officer at privacy@modernstores.com or write to: ModernStores Ltd, 42 Green Lane, London, E1 6AN.</p>
+          <p>For privacy-related questions, contact our Data Protection Officer at privacy@modernstores.com or write to: ModernStores Sdn. Bhd., Lot G-12, Suria KLCC, Jalan Ampang, Kuala Lumpur 50088.</p>
         </section>
       </div>
     </div>

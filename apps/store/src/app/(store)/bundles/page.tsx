@@ -128,7 +128,7 @@ export default function BundlesPage() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.08 }}
-              className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm overflow-hidden"
+              className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm overflow-hidden"
             >
               {/* Header */}
               <div className="bg-gradient-to-r from-primary/5 to-primary/10 p-4 flex items-center gap-3">
@@ -143,9 +143,9 @@ export default function BundlesPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-lg font-bold">${bundle.bundlePrice.toFixed(2)}</p>
-                  <p className="text-xs text-muted-foreground line-through">${bundle.originalPrice.toFixed(2)}</p>
-                  <p className="text-[10px] text-green-600 font-semibold">Save ${savings.toFixed(2)}</p>
+                  <p className="text-lg font-bold">RM {bundle.bundlePrice.toFixed(2)}</p>
+                  <p className="text-xs text-muted-foreground line-through">RM {bundle.originalPrice.toFixed(2)}</p>
+                  <p className="text-[10px] text-green-600 font-semibold">Save RM {savings.toFixed(2)}</p>
                 </div>
               </div>
 
@@ -185,7 +185,7 @@ export default function BundlesPage() {
       </div>
 
       {/* Custom bundle CTA */}
-      <div className="bg-white/60 backdrop-blur-sm border border-white/80 rounded-2xl shadow-sm p-6 text-center">
+      <div className="bg-card/60 backdrop-blur-sm border border-border/50 rounded-2xl shadow-sm p-6 text-center">
         <Package className="h-8 w-8 text-primary mx-auto mb-2" />
         <h3 className="text-sm font-semibold">Build Your Own Bundle</h3>
         <p className="text-xs text-muted-foreground mt-1 mb-3">Pick any 5+ items and save 10% automatically.</p>

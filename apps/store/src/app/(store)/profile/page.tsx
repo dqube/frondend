@@ -88,7 +88,7 @@ function TextInput({
         placeholder={placeholder}
         defaultValue={defaultValue}
         className={cn(
-          "w-full rounded-xl border border-border bg-white/60 py-2.5 pr-4 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary",
+          "w-full rounded-xl border border-border bg-card/60 py-2.5 pr-4 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary",
           Icon ? "pl-10" : "pl-4"
         )}
       />
@@ -104,7 +104,7 @@ function PasswordInput({ placeholder }: { placeholder?: string }) {
       <input
         type={show ? "text" : "password"}
         placeholder={placeholder}
-        className="w-full rounded-xl border border-border bg-white/60 py-2.5 pl-10 pr-10 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary"
+        className="w-full rounded-xl border border-border bg-card/60 py-2.5 pl-10 pr-10 text-sm outline-none backdrop-blur-sm transition-colors placeholder:text-muted-foreground/50 focus:border-primary"
       />
       <button
         type="button"
@@ -172,7 +172,7 @@ function SectionCard({
   actions?: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-white/80 bg-white/60 p-6 shadow-sm backdrop-blur-sm">
+    <div className="rounded-2xl border border-border/50 bg-card/60 p-6 shadow-sm backdrop-blur-sm">
       <div className="mb-6 flex items-start justify-between gap-4">
         <div>
           <h2 className="text-base font-bold">{title}</h2>
@@ -295,7 +295,7 @@ function PersonalInfoPanel() {
 
 function AddressPanel() {
   const addresses = [
-    { id: "home", label: "Home", detail: "Wolfson Institute of Preventive Medicine, London EC1M 7BA, UK", isDefault: true },
+    { id: "home", label: "Home", detail: "No. 12, Jalan Ampang, KLCC, Kuala Lumpur 50450", isDefault: true },
     { id: "office", label: "Office", detail: "80 Windsor Park Rd, Singapore 574175", isDefault: false },
   ];
 
@@ -319,7 +319,7 @@ function AddressPanel() {
                 "group relative rounded-xl border-2 p-5 transition-colors",
                 addr.isDefault
                   ? "border-primary bg-primary/5"
-                  : "border-border bg-white/40 hover:border-primary/30"
+                  : "border-border bg-card/40 hover:border-primary/30"
               )}
             >
               <div className="mb-3 flex items-center gap-2">
@@ -402,7 +402,7 @@ function SecurityPanel() {
       >
         <div className="space-y-3">
           {[
-            { device: "MacBook Pro — Chrome", location: "London, UK", current: true },
+            { device: "MacBook Pro — Chrome", location: "Kuala Lumpur, MY", current: true },
             { device: "iPhone 15 — Safari", location: "Singapore", current: false },
           ].map((s) => (
             <div key={s.device} className="flex items-center justify-between rounded-xl border border-border/50 p-4">
@@ -483,10 +483,10 @@ function PaymentPanel() {
 
 function OrdersPanel() {
   const orders = [
-    { id: "#ORD-2587", date: "Mar 18, 2026", items: 5, total: "$47.90", status: "Delivered", statusColor: "text-green-700 bg-green-100" },
-    { id: "#ORD-2543", date: "Mar 12, 2026", items: 3, total: "$22.50", status: "In Transit", statusColor: "text-blue-700 bg-blue-100" },
-    { id: "#ORD-2501", date: "Mar 5, 2026", items: 8, total: "$89.20", status: "Delivered", statusColor: "text-green-700 bg-green-100" },
-    { id: "#ORD-2489", date: "Feb 28, 2026", items: 2, total: "$15.98", status: "Cancelled", statusColor: "text-red-700 bg-red-100" },
+    { id: "#ORD-2587", date: "Mar 18, 2026", items: 5, total: "RM 47.90", status: "Delivered", statusColor: "text-green-700 bg-green-100" },
+    { id: "#ORD-2543", date: "Mar 12, 2026", items: 3, total: "RM 22.50", status: "In Transit", statusColor: "text-blue-700 bg-blue-100" },
+    { id: "#ORD-2501", date: "Mar 5, 2026", items: 8, total: "RM 89.20", status: "Delivered", statusColor: "text-green-700 bg-green-100" },
+    { id: "#ORD-2489", date: "Feb 28, 2026", items: 2, total: "RM 15.98", status: "Cancelled", statusColor: "text-red-700 bg-red-100" },
   ];
 
   return (
@@ -525,10 +525,10 @@ function OrdersPanel() {
 
 function WishlistPanel() {
   const items = [
-    { id: "1", name: "Broccoli Crown", emoji: "🥦", price: "$3.49" },
-    { id: "2", name: "Strawberry Pack 500g", emoji: "🍓", price: "$5.99" },
-    { id: "3", name: "Cheddar Block 400g", emoji: "🧀", price: "$7.49" },
-    { id: "4", name: "Organic Avocados (3pk)", emoji: "🥑", price: "$6.99" },
+    { id: "1", name: "Broccoli Crown", emoji: "🥦", price: "RM 3.49" },
+    { id: "2", name: "Strawberry Pack 500g", emoji: "🍓", price: "RM 5.99" },
+    { id: "3", name: "Cheddar Block 400g", emoji: "🧀", price: "RM 7.49" },
+    { id: "4", name: "Organic Avocados (3pk)", emoji: "🥑", price: "RM 6.99" },
   ];
 
   return (
@@ -646,7 +646,7 @@ function ChangePasswordPanel() {
 
 function PlaceholderPanel({ label, icon: Icon }: { label: string; icon: React.ElementType }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-white/80 bg-white/60 py-20 shadow-sm backdrop-blur-sm">
+    <div className="flex flex-col items-center justify-center rounded-2xl border border-border/50 bg-card/60 py-20 shadow-sm backdrop-blur-sm">
       <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-muted">
         <Icon className="h-6 w-6 text-muted-foreground" />
       </div>
@@ -697,7 +697,7 @@ export default function ProfilePage() {
 
         {/* ── Mobile dropdown nav ── */}
         <div className="block lg:hidden">
-          <div className="rounded-2xl border border-white/80 bg-white/60 shadow-sm backdrop-blur-sm">
+          <div className="rounded-2xl border border-border/50 bg-card/60 shadow-sm backdrop-blur-sm">
             {/* User summary */}
             <div className="flex items-center gap-3 border-b border-border/50 px-5 py-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
@@ -772,7 +772,7 @@ export default function ProfilePage() {
         </div>
 
         {/* ── Desktop sidebar ── */}
-        <aside className="hidden w-64 shrink-0 overflow-hidden rounded-2xl border border-white/80 bg-white/60 shadow-sm backdrop-blur-sm lg:block">
+        <aside className="hidden w-64 shrink-0 overflow-hidden rounded-2xl border border-border/50 bg-card/60 shadow-sm backdrop-blur-sm lg:block">
           {/* User summary — mobile & desktop */}
           <div className="flex items-center gap-3 border-b border-border/50 p-5">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
