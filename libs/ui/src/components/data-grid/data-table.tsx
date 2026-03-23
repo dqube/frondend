@@ -182,6 +182,7 @@ export function DataTable<TData extends object, TValue>({
             rowBorder: true,
             headerBackground: true,
             headerBorder: true,
+            headerSticky: true,
             width: "fixed",
           }}
         >
@@ -298,8 +299,12 @@ export function DataTable<TData extends object, TValue>({
 
           {/* Table */}
           <div className="px-4">
-            <DataGridContainer className="overflow-x-auto rounded-md border" border={false}>
-              <DataGridTable />
+            <DataGridContainer className="rounded-md border" border={false}>
+              <div className="overflow-x-auto">
+                <div className="overflow-y-auto max-h-[460px]">
+                  <DataGridTable />
+                </div>
+              </div>
             </DataGridContainer>
           </div>
 

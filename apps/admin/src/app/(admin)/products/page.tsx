@@ -332,6 +332,10 @@ function StatCard({ icon, label, value, iconBg }: StatCardProps) {
 const columns: ColumnDef<Product>[] = [
   {
     id: "select",
+    meta: {
+      headerClassName: "px-0!",
+      cellClassName: "px-0!",
+    },
     header: ({ table }) => (
       <div className="flex items-center justify-center">
         <Checkbox
