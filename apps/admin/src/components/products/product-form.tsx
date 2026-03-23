@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Save, Loader2, Eye, Tag, X } from "lucide-react";
 import { toast, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@modernstores/ui";
+import { PageHeader } from "@/components/layout/page-header";
 import { adminProductsApi } from "@modernstores/api-client/admin";
 import { ImageUploader, type UploadedImage } from "./image-uploader";
 import { VariantsEditor } from "./variants-editor";
@@ -131,54 +132,37 @@ export function ProductForm() {
       noValidate
     >
       {/* ─── Header ─── */}
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/products"
-            className="flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-card shadow-sm transition-colors hover:bg-muted"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Link>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground lg:text-3xl">
-              Add Product
-            </h1>
-            <p className="mt-0.5 text-sm text-muted-foreground">
-              Fill in the details below to add a new product to your catalog.
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="submit"
-            disabled={saving}
-            onClick={() => setPublishMode("draft")}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted disabled:opacity-60"
-          >
-            {saving && publishMode === "draft" ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Save className="h-4 w-4" />
-            )}
-            Save Draft
-          </button>
-          <button
-            type="submit"
-            disabled={saving}
-            onClick={() => setPublishMode("publish")}
-            className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
-          >
-            {saving && publishMode === "publish" ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Eye className="h-4 w-4" />
-            )}
-            Publish
-          </button>
-        </div>
-      </div>
+      <PageHeader title="Add Product" description="Fill in the details below to add a new product to your catalog." backHref="/products">
+        <button
+          type="submit"
+          disabled={saving}
+          onClick={() => setPublishMode("draft")}
+          className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm transition-colors hover:bg-muted disabled:opacity-60"
+        >
+          {saving && publishMode === "draft" ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Save className="h-4 w-4" />
+          )}
+          Save Draft
+        </button>
+        <button
+          type="submit"
+          disabled={saving}
+          onClick={() => setPublishMode("publish")}
+          className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
+        >
+          {saving && publishMode === "publish" ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Eye className="h-4 w-4" />
+          )}
+          Publish
+        </button>
+      </PageHeader>
 
       {/* ─── Layout ─── */}
+      <div className="p-4 md:p-6">
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
 
         {/* ── Left column (main content) ── */}
@@ -418,6 +402,7 @@ export function ProductForm() {
             Publish Product
           </button>
         </div>
+      </div>
       </div>
     </form>
   );

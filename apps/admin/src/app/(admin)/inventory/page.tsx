@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import { PageHeader } from "@/components/layout/page-header";
 
 export const metadata: Metadata = { title: "Inventory" };
 
 export default function InventoryPage() {
   return (
-    <div>
-      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6 md:mb-8">Inventory</h1>
-    </div>
+    <>
+      <PageHeader title="Inventory" description="Track stock levels and manage inventory." />
+      <div className="p-4 md:p-6">
+      </div>
+    </>
   );
 }

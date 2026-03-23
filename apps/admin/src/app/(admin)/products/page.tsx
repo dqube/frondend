@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { Product } from "@modernstores/types";
+import { PageHeader } from "@/components/layout/page-header";
 import {
   DataTable,
   type DataTableFilterConfig,
@@ -578,33 +579,25 @@ export default function ProductsPage() {
   const stats = computeStats(data);
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <h1 className="text-xl md:text-2xl font-bold tracking-tight">Product Catalog</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Manage inventory, pricing, and product listings
-          </p>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs">
-            <Upload className="h-3.5 w-3.5" />
-            Import
-          </Button>
-          <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs">
-            <Download className="h-3.5 w-3.5" />
-            Export
-          </Button>
-          <Button asChild size="sm" className="h-9 gap-1.5">
-            <Link href="/products/new">
-              <Plus className="h-3.5 w-3.5" />
-              Add Product
-            </Link>
-          </Button>
-        </div>
-      </div>
+    <>
+      <PageHeader title="Product Catalog" description="Manage inventory, pricing, and product listings">
+        <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs">
+          <Upload className="h-3.5 w-3.5" />
+          Import
+        </Button>
+        <Button variant="outline" size="sm" className="h-9 gap-1.5 text-xs">
+          <Download className="h-3.5 w-3.5" />
+          Export
+        </Button>
+        <Button asChild size="sm" className="h-9 gap-1.5">
+          <Link href="/products/new">
+            <Plus className="h-3.5 w-3.5" />
+            Add Product
+          </Link>
+        </Button>
+      </PageHeader>
 
+      <div className="space-y-6 p-4 md:p-6">
       {/* Summary stats */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <StatCard
@@ -643,6 +636,7 @@ export default function ProductsPage() {
         rangeFilters={rangeFilters}
         pageSizes={[10, 25, 50]}
       />
-    </div>
+      </div>
+    </>
   );
 }

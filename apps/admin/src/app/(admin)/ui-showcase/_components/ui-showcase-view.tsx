@@ -245,14 +245,7 @@ export function UIShowcaseView() {
   const [stepperValue, setStepperValue] = useState(2);
 
   return (
-    <div className="space-y-10 pb-12">
-      {/* Page Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground lg:text-3xl">UI Components</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          A showcase of all shadcn/ui and reui controls used across the application.
-        </p>
-      </div>
+    <div className="space-y-10 pb-12 min-w-0 overflow-x-hidden">
 
       {/* ── Buttons ──────────────────────────────────────────────────────── */}
       <Section title="Buttons" description="Different variants, sizes, and states.">
@@ -627,20 +620,20 @@ export function UIShowcaseView() {
                   <StepperTrigger>
                     <StepperIndicator>1</StepperIndicator>
                   </StepperTrigger>
+                  <StepperSeparator />
                 </StepperItem>
-                <StepperSeparator />
                 <StepperItem step={2} completed={stepperValue > 2}>
                   <StepperTrigger>
                     <StepperIndicator>2</StepperIndicator>
                   </StepperTrigger>
+                  <StepperSeparator />
                 </StepperItem>
-                <StepperSeparator />
                 <StepperItem step={3} completed={stepperValue > 3}>
                   <StepperTrigger>
                     <StepperIndicator>3</StepperIndicator>
                   </StepperTrigger>
+                  <StepperSeparator />
                 </StepperItem>
-                <StepperSeparator />
                 <StepperItem step={4}>
                   <StepperTrigger>
                     <StepperIndicator>4</StepperIndicator>
@@ -839,6 +832,7 @@ export function UIShowcaseView() {
 
       {/* ── DataTable ────────────────────────────────────────────────────── */}
       <Section title="Data Table" description="Full-featured table with sorting, filtering, pagination, and row selection.">
+        <div className="min-w-0 overflow-hidden">
         <DataTable
           title="Team Members"
           columns={userColumns}
@@ -867,6 +861,7 @@ export function UIShowcaseView() {
           ]}
           pageSizes={[5, 10, 25]}
         />
+        </div>
       </Section>
     </div>
   );

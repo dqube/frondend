@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
+import { PageHeader } from "@/components/layout/page-header";
 
 export const metadata: Metadata = { title: "Orders" };
 
 export default function OrdersPage() {
   return (
-    <div>
-      <h1 className="text-xl md:text-2xl lg:text-3xl font-bold mb-6 md:mb-8">Orders</h1>
-    </div>
+    <>
+      <PageHeader title="Orders" description="View and manage customer orders." />
+      <div className="p-4 md:p-6">
+      </div>
+    </>
   );
 }
