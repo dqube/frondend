@@ -268,7 +268,7 @@ export function DataTable<TData extends object, TValue>({
                         onClick={() =>
                           setRangeValues((prev) => ({ ...prev, [f.columnId]: ["", ""] }))
                         }
-                        className="ml-0.5 text-muted-foreground hover:text-foreground transition-colors"
+                        className="ml-0.5 flex items-center justify-center rounded-full w-5 h-5 bg-accent text-accent-foreground transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:rotate-90 hover:scale-110 active:bg-primary active:text-primary-foreground active:scale-95"
                       >
                         <X className="h-3 w-3" />
                       </button>

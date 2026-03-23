@@ -59,7 +59,7 @@ function Autocomplete({
               <span
                 role="button"
                 tabIndex={0}
-                className="rounded-sm p-0.5 hover:bg-accent"
+                className="flex items-center justify-center rounded-full w-5 h-5 bg-accent text-accent-foreground transition-all duration-200 hover:bg-primary hover:text-primary-foreground hover:rotate-90 hover:scale-110 active:bg-primary active:text-primary-foreground active:scale-95"
                 onClick={(e) => {
                   e.stopPropagation();
                   onValueChange?.("");
