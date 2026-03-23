@@ -167,7 +167,7 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
               <Logo size={32} />
               <div className="flex items-baseline gap-1.5">
                 <span className="text-lg font-bold tracking-tight leading-none">
-                  Modern<span className="text-foreground">Stores</span>
+                  Modern <span className="text-foreground">Stores</span>
                 </span>
                 <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Admin</span>
               </div>
@@ -191,7 +191,7 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
               <Logo size={32} />
               <div className="flex items-baseline gap-1.5">
                 <span className="text-lg font-bold tracking-tight leading-none">
-                  Modern<span className="text-foreground">Stores</span>
+                  Modern <span className="text-foreground">Stores</span>
                 </span>
                 <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">Admin</span>
               </div>

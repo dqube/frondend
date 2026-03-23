@@ -73,7 +73,7 @@ export function Header() {
         <Link href="/" className="flex items-center gap-2 text-primary">
           <Logo />
           <span className="text-lg font-bold tracking-tight leading-none">
-            Modern<span className="text-foreground">Stores</span>
+            Modern <span className="text-foreground">Stores</span>
           </span>
         </Link>
         </motion.div>
