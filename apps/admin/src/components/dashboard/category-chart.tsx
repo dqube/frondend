@@ -29,7 +29,7 @@ const COLORS = [
 
 export function CategoryChart() {
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-sm">
       <div className="mb-4">
         <p className="text-sm font-medium text-muted-foreground">Sales by Category</p>
         <p className="mt-0.5 text-2xl font-bold tracking-tight">5 Categories</p>

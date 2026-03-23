@@ -27,7 +27,7 @@ const chartConfig = {
 
 export function RevenueChart() {
   return (
-    <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <div className="flex h-full flex-col rounded-2xl border border-border bg-card p-5 shadow-sm">
       <div className="mb-6 flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-muted-foreground">Revenue Overview</p>
