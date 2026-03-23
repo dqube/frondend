@@ -43,6 +43,8 @@ import {
   DropdownMenuTrigger,
   // Forms
   Checkbox,
+  RadioGroup,
+  RadioGroupItem,
   Select,
   SelectContent,
   SelectItem,
@@ -55,6 +57,7 @@ import {
   // Calendar & Date
   DatePicker,
   DateRangePicker,
+  DateTimePicker,
   // Layout
   Tabs,
   TabsContent,
@@ -80,7 +83,15 @@ import {
   DataGridColumnHeader,
   // Theme
   ThemeToggle,
+  // Utils
+  cn,
+  // Types
+  type DateRange,
 } from "@modernstores/ui";
+import { Toolbar } from "@/components/ui/toolbar";
+import { BentoGrid } from "@/components/ui/bento-grid";
+import { SpotlightCards } from "@/components/ui/spotlight-cards";
+import { ProfileDropdown } from "@/components/ui/profile-dropdown";
 import {
   Bell,
   Check,
@@ -241,6 +252,8 @@ export function UIShowcaseView() {
   const [checkA, setCheckA] = useState(true);
   const [checkB, setCheckB] = useState(false);
   const [dateValue, setDateValue] = useState<Date>();
+  const [dateRangeValue, setDateRangeValue] = useState<DateRange | undefined>();
+  const [dateTimeValue, setDateTimeValue] = useState<Date>();
   const [autocompleteValue, setAutocompleteValue] = useState("");
   const [stepperValue, setStepperValue] = useState(2);
 
@@ -414,17 +427,37 @@ export function UIShowcaseView() {
       </Section>
 
       {/* ── Date Pickers ─────────────────────────────────────────────────── */}
-      <Section title="Date Pickers" description="Single date and date range pickers.">
+      <Section title="Date Pickers" description="Single date, date range, and date-time pickers.">
         <Card>
           <CardContent className="pt-6">
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="grid gap-6 sm:grid-cols-3">
               <div className="space-y-2">
                 <Label>Single Date</Label>
                 <DatePicker value={dateValue} onChange={setDateValue} placeholder="Pick a date" />
+                {dateValue && (
+                  <p className="text-xs text-muted-foreground">Selected: {dateValue.toLocaleDateString()}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <Label>Date Range</Label>
-                <DateRangePicker placeholder="Select range" />
+                <DateRangePicker
+                  value={dateRangeValue}
+                  onChange={setDateRangeValue}
+                  placeholder="Select date range"
+                  numberOfMonths={1}
+                />
+                {dateRangeValue?.from && (
+                  <p className="text-xs text-muted-foreground">
+                    {dateRangeValue.from.toLocaleDateString()}{dateRangeValue.to ? ` – ${dateRangeValue.to.toLocaleDateString()}` : " – …"}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Label>Date &amp; Time</Label>
+                <DateTimePicker value={dateTimeValue} onChange={setDateTimeValue} placeholder="Pick date &amp; time" />
+                {dateTimeValue && (
+                  <p className="text-xs text-muted-foreground">Selected: {dateTimeValue.toLocaleString()}</p>
+                )}
               </div>
             </div>
           </CardContent>
@@ -830,6 +863,168 @@ export function UIShowcaseView() {
         </Card>
       </Section>
 
+      {/* ── Checkbox Groups ───────────────────────────────────────────── */}
+      <Section title="Checkbox Groups" description="Grouped checkboxes in vertical, horizontal, and card layouts.">
+        <div className="grid gap-4 sm:grid-cols-3">
+          {/* Vertical */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Notifications</CardTitle>
+              <CardDescription className="text-xs">Vertical group</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {[
+                { id: "notif-email", label: "Email" },
+                { id: "notif-sms", label: "SMS" },
+                { id: "notif-push", label: "Push notifications" },
+                { id: "notif-slack", label: "Slack", disabled: true },
+              ].map(({ id, label, disabled }) => (
+                <div key={id} className="flex items-center gap-2">
+                  <Checkbox id={id} disabled={disabled} defaultChecked={id === "notif-email"} />
+                  <Label htmlFor={id} className={cn("font-normal text-sm", disabled && "text-muted-foreground")}>{label}</Label>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
+          {/* Horizontal */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Permissions</CardTitle>
+              <CardDescription className="text-xs">Horizontal group</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-4">
+                {[
+                  { id: "perm-read", label: "Read" },
+                  { id: "perm-write", label: "Write" },
+                  { id: "perm-delete", label: "Delete" },
+                  { id: "perm-admin", label: "Admin", disabled: true },
+                ].map(({ id, label, disabled }) => (
+                  <div key={id} className="flex items-center gap-2">
+                    <Checkbox id={id} disabled={disabled} defaultChecked={id === "perm-read"} />
+                    <Label htmlFor={id} className={cn("font-normal text-sm", disabled && "text-muted-foreground")}>{label}</Label>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Card style */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Features</CardTitle>
+              <CardDescription className="text-xs">Card-style checkboxes</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {[
+                { id: "feat-analytics", label: "Analytics", desc: "Track user activity" },
+                { id: "feat-api", label: "API Access", desc: "Connect external apps" },
+                { id: "feat-export", label: "Data Export", desc: "Download CSV / JSON", disabled: true },
+              ].map(({ id, label, desc, disabled }) => (
+                <label
+                  key={id}
+                  htmlFor={id}
+                  className={cn(
+                    "flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors hover:bg-muted/50",
+                    disabled && "cursor-not-allowed opacity-60"
+                  )}
+                >
+                  <Checkbox id={id} disabled={disabled} className="mt-0.5" defaultChecked={id === "feat-analytics"} />
+                  <div className="leading-tight">
+                    <p className="text-sm font-medium">{label}</p>
+                    <p className="text-xs text-muted-foreground">{desc}</p>
+                  </div>
+                </label>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+      </Section>
+
+      {/* ── Radio Groups ─────────────────────────────────────────────────── */}
+      <Section title="Radio Groups" description="Mutually exclusive selection in vertical, horizontal, and card layouts.">
+        <div className="grid gap-4 sm:grid-cols-3">
+          {/* Vertical */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Plan</CardTitle>
+              <CardDescription className="text-xs">Vertical group</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RadioGroup defaultValue="pro" className="gap-3">
+                {[
+                  { value: "free", label: "Free" },
+                  { value: "pro", label: "Pro" },
+                  { value: "business", label: "Business" },
+                  { value: "enterprise", label: "Enterprise", disabled: true },
+                ].map(({ value, label, disabled }) => (
+                  <div key={value} className="flex items-center gap-2">
+                    <RadioGroupItem value={value} id={`plan-${value}`} disabled={disabled} />
+                    <Label htmlFor={`plan-${value}`} className={cn("font-normal text-sm", disabled && "text-muted-foreground")}>{label}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </CardContent>
+          </Card>
+
+          {/* Horizontal */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Priority</CardTitle>
+              <CardDescription className="text-xs">Horizontal group</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RadioGroup defaultValue="medium" className="flex flex-wrap gap-4">
+                {[
+                  { value: "low", label: "Low" },
+                  { value: "medium", label: "Medium" },
+                  { value: "high", label: "High" },
+                  { value: "critical", label: "Critical", disabled: true },
+                ].map(({ value, label, disabled }) => (
+                  <div key={value} className="flex items-center gap-2">
+                    <RadioGroupItem value={value} id={`pri-${value}`} disabled={disabled} />
+                    <Label htmlFor={`pri-${value}`} className={cn("font-normal text-sm", disabled && "text-muted-foreground")}>{label}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </CardContent>
+          </Card>
+
+          {/* Card style */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium">Billing Cycle</CardTitle>
+              <CardDescription className="text-xs">Card-style radio</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RadioGroup defaultValue="annual" className="gap-2">
+                {[
+                  { value: "monthly", label: "Monthly", desc: "Billed every month" },
+                  { value: "annual", label: "Annual", desc: "Save 20% per year" },
+                  { value: "lifetime", label: "Lifetime", desc: "Contact sales", disabled: true },
+                ].map(({ value, label, desc, disabled }) => (
+                  <label
+                    key={value}
+                    htmlFor={`bill-${value}`}
+                    className={cn(
+                      "flex cursor-pointer items-start gap-3 rounded-lg border p-3 transition-colors hover:bg-muted/50",
+                      disabled && "cursor-not-allowed opacity-60"
+                    )}
+                  >
+                    <RadioGroupItem value={value} id={`bill-${value}`} disabled={disabled} className="mt-0.5" />
+                    <div className="leading-tight">
+                      <p className="text-sm font-medium">{label}</p>
+                      <p className="text-xs text-muted-foreground">{desc}</p>
+                    </div>
+                  </label>
+                ))}
+              </RadioGroup>
+            </CardContent>
+          </Card>
+        </div>
+      </Section>
+
       {/* ── DataTable ────────────────────────────────────────────────────── */}
       <Section title="Data Table" description="Full-featured table with sorting, filtering, pagination, and row selection.">
         <div className="min-w-0 overflow-hidden">
@@ -861,6 +1056,42 @@ export function UIShowcaseView() {
           ]}
           pageSizes={[5, 10, 25]}
         />
+        </div>
+      </Section>
+
+      {/* ── Toolbar ── */}
+      <Section
+        title="Toolbar"
+        description="Figma-inspired animated action toolbar — click items to expand labels, toggle the lock/edit button."
+      >
+        <div className="flex flex-col items-center gap-8 py-6">
+          <Toolbar />
+        </div>
+      </Section>
+
+      {/* ── Spotlight Cards ── */}
+      <Section
+        title="Spotlight Cards"
+        description="Feature cards with magnetic 3D tilt, aurora glow, shimmer sweep, and focus-dim siblings."
+      >
+        <SpotlightCards />
+      </Section>
+
+      {/* ── Bento Grid ── */}
+      <Section
+        title="Bento Grid"
+        description="Mosaic grid with staggered entrance, 3D tilt hover, typing animation, metrics bars, and integration icons."
+      >
+        <BentoGrid />
+      </Section>
+
+      {/* ── Profile Dropdown ── */}
+      <Section
+        title="Profile Dropdown"
+        description="User profile trigger with gradient avatar ring, bending-line indicator, plan badge, and sign-out."
+      >
+        <div className="flex justify-center py-6">
+          <ProfileDropdown />
         </div>
       </Section>
     </div>

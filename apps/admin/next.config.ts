@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   transpilePackages: ["@modernstores/ui"],
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "**.modernstores.com" }
+      { protocol: "https", hostname: "**.modernstores.com" },
     ]
   }
 };

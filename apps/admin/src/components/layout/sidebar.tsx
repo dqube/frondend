@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "motion/react";
 import {
   LayoutDashboard, Package, ShoppingCart, Users,
   Warehouse, Tag, Settings, Menu, ChevronLeft,
@@ -38,24 +39,34 @@ function SidebarNav({ collapsed, onNavigate }: { collapsed?: boolean; onNavigate
   return (
     <>
       <nav className="flex-1 space-y-1 px-3 py-4">
-        {navItems.map(({ href, label, icon: Icon }) => (
-          <Link
-            key={href}
-            href={href}
-            onClick={onNavigate}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-              collapsed && "justify-center px-2",
-              pathname.startsWith(href)
-                ? "bg-primary text-primary-foreground"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
-            )}
-            title={collapsed ? label : undefined}
-          >
-            <Icon className="h-4 w-4 shrink-0" />
-            {!collapsed && label}
-          </Link>
-        ))}
+        {navItems.map(({ href, label, icon: Icon }) => {
+          const isActive = pathname.startsWith(href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              onClick={onNavigate}
+              className={cn(
+                "relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+                collapsed && "justify-center px-2",
+                isActive
+                  ? "bg-primary/10 text-primary font-medium"
+                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+              )}
+              title={collapsed ? label : undefined}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId="sidebar-active"
+                  className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-full bg-primary"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+              <Icon className="relative z-10 h-4 w-4 shrink-0" />
+              {!collapsed && <span className="relative z-10">{label}</span>}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Bottom user menu */}

@@ -67,13 +67,13 @@ function GlobalSearch<TData>({
   placeholder: string
 }) {
   return (
-    <div className="relative">
+    <div className="relative flex-1 sm:flex-none">
       <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
       <Input
         placeholder={placeholder}
         value={(table.getColumn(column)?.getFilterValue() as string) ?? ""}
         onChange={(e) => table.getColumn(column)?.setFilterValue(e.target.value)}
-        className="h-8 w-48 pl-8 text-xs lg:w-64"
+        className="h-8 w-full pl-8 text-xs sm:w-48 lg:w-64"
       />
     </div>
   )
@@ -186,8 +186,9 @@ export function DataTable<TData extends object, TValue>({
           }}
         >
           {/* Toolbar */}
-          <div className="flex min-w-0 flex-wrap items-center justify-between gap-2 p-4">
-            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+          <div className="flex min-w-0 flex-col gap-2 p-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
+            {/* Mobile top row: search + columns toggle */}
+            <div className="flex min-w-0 items-center gap-2">
               {globalSearchColumn && (
                 <GlobalSearch
                   table={table}
@@ -195,7 +196,12 @@ export function DataTable<TData extends object, TValue>({
                   placeholder={globalSearchPlaceholder}
                 />
               )}
-
+              <div className="ml-auto shrink-0 sm:hidden">
+                <DataGridColumnVisibility table={table} />
+              </div>
+            </div>
+            {/* Filter pills row */}
+            <div className="flex min-w-0 flex-wrap items-center gap-2">
               {filters.map((f) => {
                 const col = table.getColumn(f.columnId)
                 if (!col) return null
@@ -284,7 +290,8 @@ export function DataTable<TData extends object, TValue>({
               )}
             </div>
 
-            <div className="shrink-0">
+            {/* Columns toggle — desktop only */}
+            <div className="hidden shrink-0 sm:block">
               <DataGridColumnVisibility table={table} />
             </div>
           </div>

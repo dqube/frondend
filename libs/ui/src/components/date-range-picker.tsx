@@ -30,12 +30,22 @@ function DateRangePicker({
   numberOfMonths = 2,
 }: DateRangePickerProps) {
   const [open, setOpen] = React.useState(false);
+  // Support both controlled and uncontrolled usage
+  const [internal, setInternal] = React.useState<DateRange | undefined>(undefined);
+  const range = value !== undefined ? value : internal;
+
+  function handleSelect(r: DateRange | undefined) {
+    setInternal(r);
+    onChange?.(r);
+    // Auto-close once both ends are picked
+    if (r?.from && r?.to) setOpen(false);
+  }
 
   const label = React.useMemo(() => {
-    if (!value?.from) return placeholder;
-    if (!value.to) return format(value.from, dateFormat);
-    return `${format(value.from, dateFormat)} – ${format(value.to, dateFormat)}`;
-  }, [value, dateFormat, placeholder]);
+    if (!range?.from) return placeholder;
+    if (!range.to) return format(range.from, dateFormat);
+    return `${format(range.from, dateFormat)} – ${format(range.to, dateFormat)}`;
+  }, [range, dateFormat, placeholder]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -45,7 +55,7 @@ function DateRangePicker({
           disabled={disabled}
           className={cn(
             "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none placeholder:text-muted-foreground focus:border-primary focus:ring-primary/20 focus:ring-[1px] disabled:cursor-not-allowed disabled:opacity-50",
-            !value?.from && "text-muted-foreground",
+            !range?.from && "text-muted-foreground",
             className
           )}
         >
@@ -56,8 +66,8 @@ function DateRangePicker({
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="range"
-          selected={value}
-          onSelect={onChange}
+          selected={range}
+          onSelect={handleSelect}
           numberOfMonths={numberOfMonths}
           initialFocus
         />
